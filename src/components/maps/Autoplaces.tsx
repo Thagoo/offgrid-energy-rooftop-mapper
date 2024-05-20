@@ -1,10 +1,6 @@
+"use client";
 import { useState, useMemo } from "react";
-import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  DrawingManagerF,
-} from "@react-google-maps/api";
+
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -17,9 +13,16 @@ import {
   ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  DrawingManagerF,
+} from "@react-google-maps/api";
 
 export default function Places({ selected, zoom, mapcenter, question }: any) {
   const { isLoaded } = useLoadScript({
+    id: "google-map-script",
     googleMapsApiKey: "AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y",
     libraries: ["places", "drawing"],
   });
@@ -40,6 +43,8 @@ function Map({ selected, zoom, mapcenter, question }: any) {
     () => ({ lat: 22.879440307617188, lng: 78.96288299560547 }),
     []
   );
+  console.log(question);
+
   const myoptions = useMemo(
     () => ({
       fullscreenControl: false,
@@ -47,6 +52,8 @@ function Map({ selected, zoom, mapcenter, question }: any) {
       streetViewControl: false,
       mapTypeControl: false,
       mapTypeId: "satellite",
+      tilt: 0,
+      rotateControl: false,
     }),
     []
   );
@@ -73,11 +80,12 @@ function Map({ selected, zoom, mapcenter, question }: any) {
           center={mapcenter}
           mapContainerClassName="map-container"
           options={myoptions}
+
           //onClick
         >
           {console.log("Selected: ", selected, "Question: ", question)}
 
-          {question > 5 ? (
+          {question >= 5 ? (
             <DrawingManagerF
               drawingMode={state.drawingMode as unknown as any}
               options={{
@@ -150,6 +158,7 @@ export const PlacesAutocomplete = ({
     setMapCenter({ lat, lng });
     setZoom(20);
     setQuestion((prev: any) => prev + 1);
+    setFormState((prev: any) => ({ ...prev, 4: value }));
   };
 
   return (
@@ -158,7 +167,6 @@ export const PlacesAutocomplete = ({
         value={value}
         onChange={(e) => {
           setValue(e.target.value);
-          setFormState((prev: any) => ({ ...prev, 4: e.target.value }));
         }}
         disabled={!ready}
         className=" p-4 rounded-full w-[100%] bg-yellow-200 border-none outline-none"

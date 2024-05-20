@@ -1,3 +1,4 @@
+"use client";
 import Places, { PlacesAutocomplete } from "@/components/maps/Autoplaces";
 import Modal from "@/components/modal";
 import Navbar from "@/components/navbar";

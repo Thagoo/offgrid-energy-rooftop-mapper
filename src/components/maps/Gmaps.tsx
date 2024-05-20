@@ -2,7 +2,7 @@
 
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 
-function Gmaps() {
+function Gmaps({ position }: { position: string }) {
   //   const google = window.google;
   //   const service = google.maps.places.Autocomplete;
   const mapcenter = { lat: 22.879440307617188, lng: 78.96288299560547 };
@@ -10,12 +10,9 @@ function Gmaps() {
     <APIProvider apiKey={"AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y" as string}>
       <div style={{ height: "100vh", width: "100vw" }}>
         <Map
-          defaultZoom={4.8}
+          center={position}
           defaultCenter={mapcenter}
-          fullscreenControl={false}
-          zoomControl={false}
-          streetViewControl={false}
-          mapTypeControl={false}
+          zoom={10}
           mapTypeId={"satellite"}
           //   mapTypeControl={true}
           //   mapTypeId={"Satellite"}

@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const HeroSection = () => {
-  const router = useRouter();
   return (
     <>
       <div className=" h-[70vh] md:h-[80vh] flex justify-center items-center">
@@ -22,12 +22,12 @@ const HeroSection = () => {
               <div>Luckily the sun also does.</div>
             </div>
             <div className=" flex justify-between items-center">
-              <button
-                onClick={() => router.push("/form")}
+              <Link
+                href={"/form"}
                 className=" border-none outline-none px-4 rounded-full py-2 bg-black text-white"
               >
                 Get quote now &nbsp; {" ->"}
-              </button>
+              </Link>
               <div className=" underline cursor-pointer">Learn more</div>
             </div>
           </div>
