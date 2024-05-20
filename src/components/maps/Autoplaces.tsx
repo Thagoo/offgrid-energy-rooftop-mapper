@@ -43,7 +43,6 @@ function Map({ selected, zoom, mapcenter, question }: any) {
     () => ({ lat: 22.879440307617188, lng: 78.96288299560547 }),
     []
   );
-  console.log(question);
 
   const myoptions = useMemo(
     () => ({
@@ -85,7 +84,7 @@ function Map({ selected, zoom, mapcenter, question }: any) {
         >
           {console.log("Selected: ", selected, "Question: ", question)}
 
-          {question >= 5 ? (
+          {question > 5 ? (
             <DrawingManagerF
               drawingMode={state.drawingMode as unknown as any}
               options={{

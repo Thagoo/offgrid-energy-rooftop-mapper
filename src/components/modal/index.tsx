@@ -37,16 +37,16 @@ export default function Modal({
       </button>
       {showModal ? (
         <>
-          <div className="justify-center items-center flex px-4 overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-auto my-6 mx-auto h-[70vh] py-2">
+          <div className="overflow-hidden fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto py-2">
               <div className="border-0 rounded-lg shadow-lg h-full relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
-                  <div className=" font-semibold flex w-[95vw] pt-4">
+                  <div className="flex w-[95vw] pt-4">
                     <div className=" w-full">
                       <div className=" text-2xl text-center ">
                         Make your roof
                       </div>
-                      <div className=" font-semibold text-sm text-gray-400 text-center">
+                      <div className="text-sm text-gray-400 text-center">
                         Draw your roof on the map. So we can estimate whether
                         you have space for solar.
                       </div>
@@ -56,13 +56,19 @@ export default function Modal({
                             <div className=" bg-gray-200 my-4 rounded-lg h-[150px] p-4">
                               <div className=" flex gap-4">
                                 <div>
-                                  <div className=" flex gap-2 font-semibold">
+                                  <div className=" flex gap-2">
                                     <div className=" h-[30px] flex justify-center items-center w-[30px] bg-yellow-300 rounded-full">
                                       {idx + 1}
                                     </div>
-                                    <div>{item.title}</div>
+                                    <div>
+                                      <p className="font-semibold">
+                                        {item.title}
+                                      </p>
+                                    </div>
                                   </div>
-                                  <div>{item.subTitle}</div>
+                                  <div>
+                                    <p>{item.subTitle}</p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
