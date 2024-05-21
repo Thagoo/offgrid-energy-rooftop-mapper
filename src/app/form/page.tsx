@@ -1,4 +1,8 @@
 "use client";
+import StepFour from "@/components/form/StepFour";
+import StepOne from "@/components/form/StepOne";
+import StepThree from "@/components/form/StepThree";
+import StepTwo from "@/components/form/StepTwo";
 import Places, { PlacesAutocomplete } from "@/components/maps/Autoplaces";
 import Modal from "@/components/modal";
 import Navbar from "@/components/navbar";
@@ -12,10 +16,6 @@ const SolarTips = {
   3: "this helps us estimate how many units of electricity you consume and what your system size should be.",
   4: "Your location helps us understand data in terms of sunlight and temperature",
 };
-
-const halfDayArray = [40, 20, 80, 40, 30, 40, 90, 100, 80, 40, 30, 10, 30];
-
-const fullDayArray = [80, 90, 100, 90, 80, 90, 80, 100, 120, 100, 120, 90, 90];
 
 const FormPage = () => {
   const [question, setQuestion] = useState(0);
@@ -69,221 +69,22 @@ const FormPage = () => {
       <Head>
         <title>Offgrid</title>
       </Head>
-      <div className=" flex">
-        <div className=" h-[100vh] w-full px-4">
+      <div className="flex flex-col md:flex-row h-screen ">
+        <div className="w-full px-4">
           <Navbar />
-          <div className=" h-[80vh] w-full flex justify-center items-center">
+          <div className="md:h-[80vh] w-full flex justify-center items-center">
             {question === 0 && (
-              <div className=" flex flex-col justify-center w-[400px] items-center gap-4">
-                <div className=" font-semibold text-xl">
-                  Where do you want to install solar?
-                </div>
-                <div className=" flex w-full gap-4">
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          0: "home",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[0] === "home" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>Home</div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          0: "office",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[0] === "office" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>Office</div>
-                  </div>
-                </div>
-              </div>
+              <StepOne setFormState={setFormState} formState={formState} />
             )}
             {question === 1 && (
-              <div className=" flex flex-col justify-center w-[400px] items-center gap-4">
-                <div className=" font-semibold text-xl">
-                  How many floors does your building have?
-                </div>
-                <div className=" flex flex-wrap gap-4">
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          1: "one",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[1] === "one" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>One</div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          1: "two",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[1] === "two" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>Two</div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          1: "three",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[1] === "three" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>Three</div>
-                  </div>
-                  <div
-                    onClick={() => {
-                      setFormState((prev) => {
-                        return {
-                          ...prev,
-                          1: "four",
-                        };
-                      });
-                    }}
-                    className=" bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
-                  >
-                    <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
-                      {formState[1] === "four" && (
-                        <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
-                      )}
-                    </div>
-                    <div>Four+</div>
-                  </div>
-                </div>
-              </div>
+              <StepTwo setFormState={setFormState} formState={formState} />
             )}
+
             {question === 2 && (
-              <div className=" flex flex-col justify-center w-[400px] items-center gap-4">
-                <div className=" font-semibold text-xl">
-                  When is your peak electricity usage?
-                </div>
-                <div
-                  onClick={() =>
-                    setFormState((prev) => {
-                      return {
-                        ...prev,
-                        2: "half",
-                      };
-                    })
-                  }
-                  className=" h-[220px] cursor-pointer w-[400px] bg-yellow-200 relative rounded-lg"
-                >
-                  <div className="absolute h-[30px] top-[40%] left-2 w-[30px] flex justify-center items-center bg-white rounded-full">
-                    {formState[2] === "half" && (
-                      <div className=" h-[20px] w-[20px] bg-blue-800 rounded-full" />
-                    )}
-                  </div>
-                  <div className=" h-[120px] flex gap-4 ml-12 mt-8 mr-5">
-                    {halfDayArray.map((item, idx) => (
-                      <div
-                        key={`${item}-${idx}`}
-                        className=" w-[10px] h-[120px] bg-white rounded-md flex flex-col justify-end"
-                      >
-                        <div
-                          style={{ height: `${item}px` }}
-                          className={` bg-yellow-600 rounded-md`}
-                        ></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className=" text-center my-4 font-semibold">
-                    Half of the day
-                  </div>
-                </div>
-                <div
-                  onClick={() =>
-                    setFormState((prev) => {
-                      return {
-                        ...prev,
-                        2: "full",
-                      };
-                    })
-                  }
-                  className=" h-[220px] cursor-pointer w-[400px] bg-yellow-200 relative rounded-lg"
-                >
-                  <div className="absolute h-[30px] top-[40%] left-2 w-[30px] flex justify-center items-center bg-white rounded-full">
-                    {formState[2] === "full" && (
-                      <div className=" h-[20px] w-[20px] bg-blue-800 rounded-full" />
-                    )}
-                  </div>
-                  <div className="  h-[120px] flex gap-4 ml-12 mt-8 mr-5">
-                    {fullDayArray.map((item, idx) => (
-                      <div
-                        key={`${item}-${idx}`}
-                        className=" w-[10px] h-[120px] bg-white rounded-md flex flex-col justify-end"
-                      >
-                        <div
-                          style={{ height: `${item}px` }}
-                          className={` bg-yellow-600 rounded-md`}
-                        ></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className=" text-center my-4 font-semibold">All day</div>
-                </div>
-              </div>
+              <StepThree setFormState={setFormState} formState={formState} />
             )}
             {question === 3 && (
-              <div className=" flex flex-col w-[400px] text-center justify-center gap-4 items-center">
-                <div className=" font-semibold text-2xl">
-                  What is your average electricity bill every month?
-                </div>
-                <input
-                  value={formState[3]}
-                  onChange={(e) =>
-                    setFormState((prev) => ({ ...prev, 3: e.target.value }))
-                  }
-                  className=" p-4 rounded-full w-[80%] bg-yellow-200 border-none outline-none"
-                  placeholder="Enter Value"
-                />
-              </div>
+              <StepFour setFormState={setFormState} formState={formState} />
             )}
             {question === 4 && (
               <div className=" flex flex-col w-[400px] justify-center gap-4 items-center">
@@ -419,6 +220,14 @@ const FormPage = () => {
               </div>
             )}
           </div>
+          {question <= 4 && (
+            <div className="md:hidden w-full flex justify-center items-center p-4 md:bg-yellow-400 rounded-tl-3xl rounded-bl-3xl md:h-[100vh]">
+              <div className=" w-[400px] p-6 border rounded-md border-black bg-white text-black">
+                <div className=" text-xl mb-2 font-semibold">Solar Tip</div>
+                <div>{SolarTips?.[question as keyof typeof SolarTips]}</div>
+              </div>
+            </div>
+          )}
           <div className="">
             <div className=" flex justify-between items-center">
               {question !== 0 && (
@@ -444,7 +253,7 @@ const FormPage = () => {
           </div>
         </div>
         {question <= 4 && (
-          <div className=" w-full flex justify-center items-center p-4 bg-yellow-400 rounded-tl-3xl rounded-bl-3xl h-[100vh]">
+          <div className="hidden md:flex w-full justify-center items-center p-4 md:bg-yellow-400 rounded-tl-3xl rounded-bl-3xl md:h-[100vh]">
             <div className=" w-[400px] p-6 border rounded-md border-black bg-white text-black">
               <div className=" text-xl mb-2 font-semibold">Solar Tip</div>
               <div>{SolarTips?.[question as keyof typeof SolarTips]}</div>
