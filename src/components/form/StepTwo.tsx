@@ -6,7 +6,8 @@ export default function StepTwo({ setFormState, formState }) {
       <div className=" font-semibold text-xl">
         How many floors does your building have?
       </div>
-      <div className=" flex flex-wrap gap-4">
+      <div className="flex flex-col gap-4">
+        <div className="flex gap-4">
         <div
           onClick={() => {
             setFormState((prev) => {
@@ -16,11 +17,11 @@ export default function StepTwo({ setFormState, formState }) {
               };
             });
           }}
-          className=" bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
+          className="bg-yellow-100 w-full max-w-[180px] justify-center h-[50px] flex pl-2 pr-6 gap-2 items-center rounded-full py-1 cursor-pointer"
         >
           <div className=" bg-white h-[10px] flex justify-center items-center w-[10px] rounded-full">
             {formState[1] === "one" && (
-              <div className=" h-[8px] w-[8px] rounded-full bg-blue-800"></div>
+              <div className=" h-[8px] w-full rounded-full bg-blue-800"></div>
             )}
           </div>
           <div>One</div>
@@ -43,6 +44,8 @@ export default function StepTwo({ setFormState, formState }) {
           </div>
           <div>Two</div>
         </div>
+        </div>
+        <div className="flex gap-4">
         <div
           onClick={() => {
             setFormState((prev) => {
@@ -78,7 +81,7 @@ export default function StepTwo({ setFormState, formState }) {
             )}
           </div>
           <div>Four+</div>
-        </div>
+        </div></div>
       </div>
     </div>
   );
