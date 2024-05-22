@@ -6,7 +6,7 @@ const Navbar = () => {
       <div className="text-xl font-semibold">
         <Link href={"/"}>Offgrid</Link>
       </div>
-      <div className="bg-black rounded-full px-4 py-1 text-white">Help ?</div>
+      <div className="border border-yellow-500 px-4 rounded-full">Help ?</div>
     </div>
   );
 };

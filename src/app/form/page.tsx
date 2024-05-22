@@ -228,14 +228,14 @@ const FormPage = () => {
               </div>
             </div>
           )}
-          <div className="">
+          <div className="font-semibold">
             <div className=" flex justify-between items-center">
               {question !== 0 && (
                 <button
                   onClick={() => setQuestion(question - 1)}
-                  className=" bg-black px-6 py-2 text-white rounded-full"
+                  className="font-semibold"
                 >
-                  Back
+                 {"<-"} Back
                 </button>
               )}
               {question < 5 && (
@@ -244,9 +244,9 @@ const FormPage = () => {
                     formState[question as keyof typeof formState] === ""
                   }
                   onClick={() => setQuestion(question + 1)}
-                  className=" bg-black px-6 ml-auto py-2 text-white disabled:opacity-50 rounded-full"
+                  className="font-semibold"
                 >
-                  Next
+                  Next {"->"}
                 </button>
               )}
             </div>
