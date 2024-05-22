@@ -6,6 +6,6 @@ export default function Home() {
     <main>
       <Navbar />
       <HeroSection />
-    </main>
+      </main>
   );
 }

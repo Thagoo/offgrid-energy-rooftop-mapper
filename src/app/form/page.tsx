@@ -8,7 +8,6 @@ import Modal from "@/components/modal";
 import Navbar from "@/components/navbar";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import MapHelper from "@/components/form/MapHelperModal/MapHelper"
 
 const SolarTips = {
   0: "This helps us understand whether you are on commercial or residential tarifs to help calculate savings data.",
@@ -110,8 +109,52 @@ const FormPage = () => {
               </div>
             )}
             {question === 5 && (
-              <MapHelper formState={formState}/>
-            )}
+                <div className=" flex flex-col justify-center w-[400px] gap-4 items-center">
+                  
+                    <>
+                      {" "}
+                      <div className=" font-semibold text-2xl">Pin your roof</div>
+                      <div className=" text-gray-400 text-center font-medium">
+                        Drag the map to the center of your house,
+                        <br /> then click next
+                      </div>
+                      <Modal
+                        handleNextClick={() => setQuestion(question + 1)}
+                        handleGoBackClick={() => setQuestion(question - 1)}
+                      />
+                    </>
+                
+                </div>
+              )}
+                {question === 6 && (
+                  <div className=" flex flex-col justify-center gap-4 items-center">
+                    <div className=" font-semibold text-2xl">Click a corner</div>
+                    <div className=" text-gray-400">
+                      Keep clicking to outline your roof on the map
+                    </div>
+                    <button
+                      onClick={() => setQuestion(question + 1)}
+                      className=" bg-black px-6 py-2 text-white disabled:opacity-50 rounded-full"
+                    >
+                      Next {"->"}
+                    </button>
+                  </div>
+                )}
+                {question === 7 && (
+                  <div className=" flex flex-col justify-center gap-4 items-center">
+                    <div className=" font-semibold text-2xl">Roof Marked</div>
+                    <div className=" text-gray-400">
+                      Keep clicking to outline your roof on the map
+                    </div>
+                    <button
+                      onClick={() => setQuestion(question + 1)}
+                      className=" bg-black px-6 py-2 text-white disabled:opacity-50 rounded-full"
+                    >
+                      Done {"->"}
+                    </button>
+                  </div>
+                )}
+
             {question === 8 && (
               <div className=" flex flex-col justify-center gap-4 items-center">
                 <div className=" font-semibold text-2xl">Roof Type</div>
