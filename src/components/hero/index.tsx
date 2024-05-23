@@ -5,7 +5,7 @@ const HeroSection = () => {
     <>
       <div className=" h-[70vh] md:h-[80vh] flex justify-center items-center">
         <div>
-          <div className=" text-center text-5xl font-semibold">
+          <div className=" text-center text-[52px] leading-[60px] font-medium">
             Save Money <br /> with Solar
           </div>
           <div className=" text-center text-gray-400 text-xl my-3">
