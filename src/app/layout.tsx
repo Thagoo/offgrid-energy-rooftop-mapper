@@ -22,9 +22,7 @@ export default function RootLayout({
         async
       ></script>
 
-      <body className={inter.className}>
-        <div className="px-2 md:px-20">{children}</div>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

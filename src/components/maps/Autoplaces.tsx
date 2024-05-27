@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, useEffect, useContext } from "react";
 
 import usePlacesAutocomplete, {
   getGeocode,
@@ -19,6 +19,7 @@ import {
   Marker,
   DrawingManagerF,
 } from "@react-google-maps/api";
+import { SolarContext } from "@/app/form/page";
 
 export default function Places({ selected, zoom, mapcenter, question }: any) {
   const { isLoaded } = useLoadScript({
@@ -39,10 +40,24 @@ export default function Places({ selected, zoom, mapcenter, question }: any) {
 }
 
 function Map({ selected, zoom, mapcenter, question }: any) {
-  const center = useMemo(
-    () => ({ lat: 22.879440307617188, lng: 78.96288299560547 }),
-    []
-  );
+  const [center, setCenter] = useState(mapcenter);
+  const { setRoofArea } = useContext(SolarContext);
+
+  const [map, setMap] = useState(null);
+
+  const onLoad = (mapInstance) => {
+    setMap(mapInstance);
+  };
+
+  const onUnmount = () => {
+    setMap(null);
+  };
+
+  useEffect(() => {
+    if (map) {
+      map.panTo(center);
+    }
+  }, [center]);
 
   const myoptions = useMemo(
     () => ({
@@ -60,6 +75,24 @@ function Map({ selected, zoom, mapcenter, question }: any) {
     drawingMode: "polygon",
   });
 
+  const handleOverlayComplete = useCallback((e) => {
+    if (e.type === "polygon") {
+      const polygon = e.overlay;
+
+      // Returns square meters
+      const areaInSquareMeters = google.maps.geometry.spherical.computeArea(
+        polygon.getPath()
+      );
+      const areaInSquareFeet = areaInSquareMeters * 10.7639;
+      //setArea(areaInSquareFeet.toFixed(2));
+      console.log("Area in square feet:", areaInSquareFeet);
+      setRoofArea(areaInSquareFeet);
+    }
+    noDraw();
+  }, []);
+  const onDragEnd = (map, coord) => {
+    setCenter({ lat: map.latLng.lat(), lng: map.latLng.lng() });
+  };
   const noDraw = () => {
     setState(function set(prevState) {
       return Object.assign({}, prevState, {
@@ -70,13 +103,13 @@ function Map({ selected, zoom, mapcenter, question }: any) {
 
   return (
     <>
-      <div
-        style={{ height: "100vh", width: "50vw", border: "solid 1px black" }}
-      >
+      <div className="w-full">
         {console.log("Map is placed ")}
         <GoogleMap
+          onLoad={onLoad}
+          onUnmount={onUnmount}
           zoom={zoom}
-          center={mapcenter}
+          center={center}
           mapContainerClassName="map-container"
           options={myoptions}
 
@@ -103,23 +136,13 @@ function Map({ selected, zoom, mapcenter, question }: any) {
                   zIndex: 1,
                 },
               }}
-              onPolygonComplete={(poly: any) => {
-                const polyArray = poly.getPath().getArray();
-                let paths: any = [];
-                polyArray.forEach(function (path: any) {
-                  paths.push({ lat: path.lat(), lng: path.lng() });
-                });
-                console.log("onPolygonComplet polyArray: ", polyArray);
-                console.log("Paths: ", paths);
-                console.log("onPolygonComplete poly:", poly);
-                noDraw();
-              }}
+              onOverlayComplete={handleOverlayComplete}
             />
           ) : (
             <Marker
               position={selected}
               draggable={true}
-              //onDragEnd={onDragEnd}
+              onDragEnd={(map, coord) => onDragEnd(map, coord)}
             />
           )}
         </GoogleMap>
