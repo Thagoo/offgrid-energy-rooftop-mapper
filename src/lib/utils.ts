@@ -2,7 +2,7 @@ export const solarTips = [
   "Your contact details will help us stay in touch with you.",
   "This helps us understand whether you are on commercial or residential tarifs to help calculate savings data.",
   "Offgrid gives you a fixed price. Mounting, Structure and all peripherals included.",
-  "Based on your requirement we also suggest batteries and invertors to make sure you always have electricity",
+  "Based on your requirement we also suggest batteries and inverters to make sure you always have electricity",
   "this helps us estimate how many units of electricity you consume and what your system size should be.",
   "Your location helps us understand data in terms of sunlight and temperature",
 ];

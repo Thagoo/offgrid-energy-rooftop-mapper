@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center border-b-primary border-b-2 py-3 mx-5 md:mx-20">
+    <div className="flex justify-between items-center border-b-primary border-b-2 py-3 px-5 md:px-0 md:mx-20 bg-white z-50">
       <div className="text-xl font-semibold">
         <Link href={"/"}>
           <svg

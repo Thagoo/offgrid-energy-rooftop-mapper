@@ -99,7 +99,7 @@ export const creatSite = async (formData) => {
     roof_coordinates: formData.roofCoordinates,
     lead_id: formData.leadId,
   };
-
+  return;
   const response = await fetch(`${API_URL}/site/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

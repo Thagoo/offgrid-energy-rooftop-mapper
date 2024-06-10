@@ -8,7 +8,7 @@ export default function SiteType() {
   );
 
   return (
-    <div className="flex flex-col justify-center md:w-[400px] items-center gap-4">
+    <div className="flex flex-col justify-center md:w-[400px] md:items-center gap-4">
       <div className="font-semibold text-2xl text-center animate-in slide-in-from-top-4 duration-1000">
         Where do you want to install solar?
       </div>

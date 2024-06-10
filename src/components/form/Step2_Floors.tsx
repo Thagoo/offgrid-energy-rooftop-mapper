@@ -18,7 +18,7 @@ export default function Floors() {
             onClick={() => setFormState((prev) => ({ ...prev, floors: 1 }))}
             className={`${
               formState && formState.floors == 1 ? "bg-primary" : "bg-white"
-            } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary hover:transition-opacity hover:transform w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
+            } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
           >
             <span className="font-medium">1</span>
           </div>
@@ -26,7 +26,7 @@ export default function Floors() {
             onClick={() => setFormState((prev) => ({ ...prev, floors: 2 }))}
             className={`${
               formState && formState.floors == 2 ? "bg-primary" : "bg-white"
-            } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary hover:transition-opacity hover:transform w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
+            } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
           >
             <span className="font-medium">2</span>
           </div>

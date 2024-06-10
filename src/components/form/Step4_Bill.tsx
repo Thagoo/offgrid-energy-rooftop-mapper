@@ -30,7 +30,7 @@ export default function Bill() {
         />
         <button
           type="submit"
-          className={`hover:transition-colors duration-300 absolute right-4 top-1/2 -translate-y-1/2 bg-[#212121] rounded-3xl md:px-4 md:py-2 px-4 py-2 text-white disabled:bg-gray-400 hover:bg-opacity-75`}
+          className={`animate-in fade-in-0 duration-1000 absolute right-4 top-1/2 -translate-y-1/2 bg-[#212121] rounded-3xl md:px-4 md:py-2 px-4 py-2 text-white disabled:bg-gray-400 hover:bg-opacity-75`}
           disabled={bill >= 1000 ? false : true}
         >
           Next

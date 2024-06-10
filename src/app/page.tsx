@@ -11,7 +11,7 @@ export default function Home() {
             <div className="text-center md:text-[52px] text-3xl md:leading-[60px] font-medium">
               Save Money <br /> with Solar
             </div>
-            <div className=" text-center text-gray-400 md:text-xl text-sm">
+            <div className="text-center text-gray-400 md:text-xl text-sm">
               Our tool gives you a fixed price, helps understand savings{" "}
               <br className="md:block hidden" /> without having to deal with
               salesmen
