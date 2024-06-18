@@ -13,11 +13,13 @@ import usePlacesAutocomplete, {
   getLatLng,
 } from "use-places-autocomplete";
 import "@reach/combobox/styles.css";
+import FormStepContext from "@/context/FormStepContext";
 
 export default function PlacesAutocomplete() {
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormState } = useContext<any>(
     QuoteGeneratorContext
   );
+  const { goNext } = useContext(FormStepContext);
 
   const {
     ready,
@@ -42,6 +44,7 @@ export default function PlacesAutocomplete() {
       address: address,
       center: { lat: lat, lng: lng },
     }));
+    goNext();
   };
 
   return (

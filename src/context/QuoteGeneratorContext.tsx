@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import FormStepContext from "./FormStepContext";
 
 interface QuoteGeneratorForm {
   siteType: "office" | "home";
@@ -33,11 +34,12 @@ export const QuoteGeneratorContext = createContext<QuoteGeneratorForm | null>(
 );
 
 // Create a provider component
-export const QuoteGeneratorProvider = ({ children }) => {
+export const QuoteGeneratorProvider = ({ children }: { children: any }) => {
   const [formState, setFormState] = useState<QuoteGeneratorForm | null>(null);
 
-  const updateFormData = (newState: QuoteGeneratorForm) =>
+  const updateFormData = (newState: QuoteGeneratorForm) => {
     setFormState((prevState) => ({ ...prevState, ...newState }));
+  };
 
   useEffect(() => {
     const savedData = localStorage.getItem("formState");

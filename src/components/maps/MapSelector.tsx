@@ -9,22 +9,24 @@ import {
 } from "@react-google-maps/api";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
-export default function MapSelector({ currentStep }) {
+export default function MapSelector({ currentStep }: { currentStep: number }) {
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y",
     libraries: ["places", "drawing"],
   });
 
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
 
-  const [drawerCenter, setDrawerCenter] = useState();
+  const [drawerCenter, setDrawerCenter] = useState<any>(
+    formState && formState?.center
+  );
 
-  const [map, setMap] = useState(null);
+  const [map, setMap] = useState<any>(null);
 
-  const onLoad = (mapInstance) => {
+  const onLoad = (mapInstance: any) => {
     setMap(mapInstance);
   };
 
@@ -33,13 +35,10 @@ export default function MapSelector({ currentStep }) {
   };
 
   useEffect(() => {
-    if (formState?.center) {
-      setDrawerCenter(formState.center);
-    }
-
     if (map) {
       map.panTo(drawerCenter);
     }
+    updateFormData({ center: drawerCenter });
   }, [drawerCenter]);
 
   const myoptions = useMemo(
@@ -58,12 +57,12 @@ export default function MapSelector({ currentStep }) {
     drawingMode: "polygon",
   });
 
-  const handleOverlayComplete = useCallback((e) => {
+  const handleOverlayComplete = useCallback((e: any) => {
     if (e.type === "polygon") {
       const polygon = e.overlay;
       const polygonArray = polygon.getPath().getArray();
-      let polygonPoints = [];
-      polygonArray.map((polygon) => {
+      let polygonPoints: any = [];
+      polygonArray.map((polygon: any) => {
         polygonPoints.push({ lat: polygon.lat(), lng: polygon.lng() });
       });
 
@@ -82,7 +81,8 @@ export default function MapSelector({ currentStep }) {
     }
     noDraw();
   }, []);
-  const onDragEnd = (map) => {
+
+  const onDragEnd = (map: any) => {
     setDrawerCenter({ lat: map.latLng.lat(), lng: map.latLng.lng() });
   };
 
@@ -104,10 +104,8 @@ export default function MapSelector({ currentStep }) {
           onUnmount={onUnmount}
           zoom={20}
           center={drawerCenter}
-          mapContainerClassName="h-screen w-full rounded-3xl"
+          mapContainerClassName="h-dvh w-full rounded-tl-3xl rounded-bl-3xl"
           options={myoptions}
-
-          //onClick
         >
           {currentStep >= 7 ? (
             <DrawingManagerF

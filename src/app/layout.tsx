@@ -8,7 +8,14 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Offgird Energy",
-  description: "Offgrid energy savings estimator",
+  description: "Offgrid installs solar in an all new way.",
+  metadataBase: new URL("https://offgrid-website.vercel.app/"),
+  openGraph: {
+    images: "/assets/offgrid-favicon.png",
+  },
+  icons: {
+    icon: "/assets/offgrid-favicon.png",
+  },
 };
 
 export default function RootLayout({

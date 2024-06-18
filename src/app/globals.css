@@ -7,6 +7,9 @@
   height: 100vh;
 }
 
+.blur-safari {
+  -webkit-backdrop-filter: blur(6px); /* fix blur for Safari*/
+}
 /* Hide scrollbar for Chrome, Safari and Opera */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -16,4 +19,17 @@
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+@keyframes strike {
+  from {
+    text-decoration-color: transparent;
+  }
+  to {
+    text-decoration-color: auto;
+  }
+}
+.strike {
+  text-decoration: line-through;
+  animation: strike 4s linear;
 }

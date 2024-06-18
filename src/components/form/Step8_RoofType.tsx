@@ -1,14 +1,15 @@
+import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import React, { useContext, useState } from "react";
 
 export default function RoofType() {
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
-
+  const { goNext } = useContext(FormStepContext);
   return (
-    <div className=" flex flex-col justify-center gap-4 items-center">
+    <div className=" flex flex-col justify-center gap-6 items-center">
       <svg
         className="animate-in slide-in-from-top-6 duration-1000"
         width="94"
@@ -98,13 +99,14 @@ export default function RoofType() {
         Roof Type
       </div>
       <div className=" text-[#868687] animate-in slide-in-from-top-2 duration-1000">
-        is your roof flat, pitched or flat with beams ?
+        Is your roof flat, pitched or flat with beams?
       </div>
       <div className="flex w-full justify-center gap-2 animate-in slide-in-from-bottom-2 duration-1000">
         <div
-          onClick={() =>
-            setFormState((prev) => ({ ...prev, roofType: "pitched" }))
-          }
+          onClick={() => {
+            updateFormData({ roofType: "pitched" });
+            goNext();
+          }}
           className={`${
             formState && formState.roofType == "pitched"
               ? "bg-primary"
@@ -114,9 +116,10 @@ export default function RoofType() {
           <span className="font-medium">Pitched</span>
         </div>
         <div
-          onClick={() =>
-            setFormState((prev) => ({ ...prev, roofType: "flat" }))
-          }
+          onClick={() => {
+            updateFormData({ roofType: "flat" });
+            goNext();
+          }}
           className={`${
             formState && formState.roofType == "flat"
               ? "bg-primary"
@@ -128,9 +131,10 @@ export default function RoofType() {
       </div>
       <div className="w-full flex justify-center animate-in slide-in-from-bottom-4 duration-1000">
         <div
-          onClick={() =>
-            setFormState((prev) => ({ ...prev, roofType: "flat_with_beams" }))
-          }
+          onClick={() => {
+            updateFormData({ roofType: "flat_with_beams" });
+            goNext();
+          }}
           className={`${
             formState && formState.roofType == "flat_with_beams"
               ? "bg-primary"

@@ -1,6 +1,8 @@
-import { calculateDiscount } from "@/lib/utils";
+import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import { calculateGovtSubsidy } from "@/lib/utils";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useContext } from "react";
 
 export const inclusions = [
   {
@@ -172,87 +174,127 @@ export const inclusions = [
       </svg>
     ),
     title: "Solar Maintenance",
-    desc: "X years of maintenance free of cost.",
+    desc: "1 year of maintenance free of cost.",
   },
 ];
 
-const brands = {
+const description: any = {
+  basic:
+    "Our Basic Solar Plan offers a cost-effective entry point to clean energy. Generate your own power and reduce your carbon footprint. Perfect for budget-minded homeowners, this plan provides a solid foundation for a greener future",
+  standard:
+    "Our Standard Solar Plan strikes the perfect balance between affordability and power. This plan includes high-quality panels to generate significant energy savings, offsetting a substantial portion of your electricity bill. Enjoy the benefits of clean energy with minimal upfront costs.  Standard plan also covers essential monitoring and maintenance, ensuring optimal system performance",
+  premium:
+    "This top-of-the-line package features cutting-edge, high-efficiency panels that maximize energy production. Slash your electricity bills and potentially achieve energy independence. Premium also includes advanced monitoring with real-time data access and extended warranties for ultimate peace of mind. Invest in the future and embrace sustainable living",
+};
+const brands: any = {
   basic: [
     {
-      image: "/assets/solar.svg",
-      brand: "Luminous",
+      image: "/assets/panel.svg",
+      brand: "Waaree",
       panels: "15",
-      power: "350",
+      power: "500",
       units: "w",
-      url: "#",
+      url: "https://waareeimages.s3.ap-south-1.amazonaws.com/AHNAY_SERIES_Bi_55_515_545_WEL_E_and_PD_515_545_144_MPB_HC_10_24_03_2023_edd76c5487.pdf",
     },
     {
-      image: "/assets/solar.svg",
-      brand: "Luminous",
-      panels: "15",
+      image: "/assets/inverter.png",
+      brand: "Luminous Solar Inverter",
+      panels: "1",
       power: "350",
-      units: "w",
-      url: "#",
+      units: "kva",
+      url: "https://www.duetpower.in/datasheets/Luminous%20solar%20panel,%20inverter,battery%20datasheet.pdf",
     },
   ],
   standard: [
     {
-      image: "/assets/solar.svg",
-      brand: "Tata",
+      image: "/assets/panel.svg",
+      brand: "Tata Solar",
       panels: "15",
-      power: "350",
+      power: "500",
       units: "w",
-      url: "#",
+      url: "https://www.tatapowersolar.com/wp-content/themes/tpsolar/assets/pdf/TP540HG10B-(Glass-Glass).pdf",
     },
     {
-      image: "/assets/solar.svg",
-      brand: "Luminous",
+      image: "/assets/inverter.png",
+      brand: "Havells",
       panels: "15",
       power: "350",
-      units: "w",
-      url: "#",
+      units: "kva",
+      url: "https://havells.com/media/HavellsWebsitePdf/CorporatePdf/dam/havells/brouchers/Solar/Solar%20Edge%20Technical%20Catalogue.pdf",
     },
   ],
   premium: [
     {
-      image: "/assets/solar.svg",
+      image: "/assets/panel.svg",
       brand: "Panasonic",
       panels: "15",
-      power: "350",
+      power: "500",
       units: "w",
-      url: "#",
+      url: "https://lssth.panasonic.com/products/energy/product_finder/img/solar002.pdf",
     },
     {
-      image: "/assets/solar.svg",
-      brand: "Luminous",
+      image: "/assets/inverter.png",
+      brand: "Enphase",
       panels: "15",
       power: "350",
-      units: "w",
-      url: "#",
+      units: "kva",
+      url: "https://enphase.com/download/iq8m-iq8a-microinverter-data-sheet",
     },
   ],
 };
 
-export default function SelectedPlan({ plan, price, solarSize }) {
+export default function SelectedPlan({
+  plan,
+  price,
+  solarSize,
+}: {
+  plan: string;
+  price?: number;
+  solarSize: number;
+}) {
   if (!plan) {
     return;
   }
 
   const specifications = [
-    "500 W Bifacial Solar Panels",
-    `${solarSize} KVA Solar Inverter`,
-    "Cyclone Proof Mounting Structure",
-    "BIS Certified Peripherals",
-    "Solar App Monitoring",
+    {
+      icon: "/assets/quote/specifications/icon-1.svg",
+
+      title: "500 W Bifacial Solar Panels",
+    },
+    {
+      icon: "/assets/quote/specifications/icon-2.svg",
+
+      title: `${solarSize} KVA Solar Inverter`,
+    },
+    {
+      icon: "/assets/quote/specifications/icon-3.svg",
+
+      title: "Cyclone Proof Mounting Structure",
+    },
+    {
+      icon: "/assets/quote/specifications/icon-4.svg",
+
+      title: "BIS Certified Peripherals",
+    },
+    {
+      icon: "/assets/quote/specifications/icon-5.svg",
+
+      title: "Solar App Monitoring",
+    },
   ];
 
   return (
     <div className="flex md:flex-row flex-col justify-between py-5 px-5 gap-5">
       <div className="flex flex-col gap-2 w-full">
-        {brands[plan].map((item) => (
+        <h1 className="capitalize text-lg md:text-xl font-medium">
+          {plan} Plan
+        </h1>
+        {brands[plan].map((item: any, i: number) => (
           <>
             {" "}
             <BrandCard
+              key={i}
               image={item.image}
               brand={item.brand}
               panels={item.panels}
@@ -263,50 +305,31 @@ export default function SelectedPlan({ plan, price, solarSize }) {
           </>
         ))}
       </div>
-      <div className="w-full flex flex-col gap-3 items-start ">
-        <h1 className="capitalize text-xl font-medium">{plan} Plan</h1>
+      <div className="w-full flex flex-col md:gap-3 gap-2 items-start justify-center">
         <div className="w-full">
-          <p className="text-xs text-[#868687] font-light">Quotation Price</p>
+          <p className=" text-sm text-[#868687]">Quotation Price</p>
           <span className="flex items-center font-semibold md:text-2xl text-lg md:justify-between gap-3 md:gap-0">
-            <h1>₹ {price.toLocaleString()}</h1>
-            <h1 className="line-through text-[#868687]">
-              ₹ {calculateDiscount(price).toLocaleString()}
-            </h1>
-            <h1 className="text-[#FFCB00]">30% Off</h1>
+            <h1>₹ {calculateGovtSubsidy(price as number).toLocaleString()}</h1>
           </span>
         </div>
-        <p className="text-[#868687] font-light text-sm">
-          *Get Additional 30% off with Govt. Subsidy.
-        </p>
-        <button className="bg-[#FFCB00] rounded-3xl px-10 md:py-3 py-2 text-sm hover:bg-yellow-500 flex items-center gap-2 font-medium">
+        <p className="text-[#868687] text-sm">*30% Govt. Subsidy Included</p>
+        <Link
+          href={"tel:+919731893735"}
+          className="bg-[#FFCB00] rounded-3xl px-10 md:py-3 py-2 text-sm hover:bg-yellow-500 flex items-center gap-2 font-medium"
+        >
           Get in touch
-        </button>
-        <p className="text-[#868687]">
-          Basic brand solar panels and inverter. Lorem Ipsum is simply dummy
-          text of the printing and typesetting industry. Lorem Ipsum has been
-          the industry's standard dummy text ever since the 1500s, when an
-          unknown printer took a galley of type and scrambled it to make a type
-          specimen book.
+        </Link>
+        <p className="text-[#868687] md:text-base text-sm">
+          {description[plan]}
         </p>
         <div className="my-1 border-[1px] w-full"></div>
         <div>
           <h1 className="font-medium text-lg mb-2">Specifications</h1>
           <ul className="space-y-2">
             {specifications.map((item, i) => (
-              <li
-                key={i}
-                className="flex gap-2 text-sm font-light text-[#868687]"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="12" cy="12" r="12" fill="#D9D8D6" />
-                </svg>
-                {item}
+              <li key={i} className="flex gap-2 text-sm text-[#868687]">
+                <Image src={item.icon} width={20} height={20} alt="icon" />
+                {item.title}
               </li>
             ))}
           </ul>
@@ -320,7 +343,7 @@ export default function SelectedPlan({ plan, price, solarSize }) {
             {inclusions.map((item, i) => (
               <li
                 key={i}
-                className="flex items-center gap-2 text-sm font-light px-2 py-2 bg-[#F4F4F4] rounded-xl"
+                className="flex items-center gap-2 text-sm px-2 py-2 bg-[#F4F4F4] rounded-xl"
               >
                 {item.icon}
                 <div className="flex flex-col">
@@ -336,23 +359,50 @@ export default function SelectedPlan({ plan, price, solarSize }) {
   );
 }
 
-function BrandCard({ image, brand, panels, power, units, url }) {
+function BrandCard({
+  image,
+  brand,
+  panels,
+  power,
+  units,
+  url,
+}: {
+  image: string;
+  brand: string;
+  panels: number;
+  power: number;
+  units: string;
+  url: string;
+}) {
+  const { formState } = useContext<any>(QuoteGeneratorContext);
   return (
     <div className="rounded-xl px-6 py-5 md:px-8 md:py-5 flex justify-between bg-[#F4F4F4] w-full">
-      <div className="flex flex-col gap-1 md:gap-2">
+      <div className="flex flex-col  items-start gap-1 md:gap-2">
         <div className="leading-none">
           <h1 className="font-medium text-[20px]">{brand}</h1>
-          <span className="font-extralight text-[10px]">or similar</span>
+          <span className="text-sm text-[#868687]">or similar</span>
         </div>
         <div>
-          <h1>{panels} Solar Panels</h1>
           <h1>
-            {power} {units.toUpperCase()}
+            {formState && (formState.solarSize * 1000) / 500} Solar Panels
+          </h1>
+          <h1>
+            {units === "kva" ? (
+              <>{formState && formState.solarSize} KVA</>
+            ) : (
+              <>
+                {power} {units.toUpperCase()}
+              </>
+            )}
           </h1>
         </div>
-        <button className="bg-black text-white rounded-3xl px-4 py-2 text-nowrap md:text-sm text-[10px] hover:bg-gray-800 flex items-center gap-2 mt-auto">
+        <Link
+          href={url}
+          target="_blank"
+          className="bg-black text-white rounded-3xl px-4 py-2 text-nowrap md:text-sm text-[10px] hover:bg-gray-800 flex items-center gap-2 mt-auto"
+        >
           See Technical Details
-        </button>
+        </Link>
       </div>
       <Image src={image} width={120} height={115} alt={brand} />
     </div>

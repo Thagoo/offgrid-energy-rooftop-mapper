@@ -5,28 +5,33 @@ import { contactDetails } from "@/lib/action";
 import { useContext, useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
-export default function ContactDetails({ setCurrentStep, currentStep }) {
+export default function ContactDetails({ goNext }: { goNext: any }) {
   const initialState = { errors: {}, message: undefined, userData: undefined };
-  const [state, formAction] = useFormState(contactDetails, initialState);
-  const [validationError, setValidationError] = useState({});
-  const { formState, setFormState, updateFormState } = useContext(
+  const [state, formAction] = useFormState<any>(
+    contactDetails as any,
+    initialState
+  );
+  const [validationError, setValidationError] = useState<any>({});
+  const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
 
   useEffect(() => {
-    if (formState && formState.leadId) {
-      setCurrentStep(currentStep + 1);
-    }
     if (state?.errors) {
       setValidationError(state);
     } else if (state.success) {
-      setFormState((prev) => ({
-        ...prev,
+      updateFormData({
         personalDetails: state.userData,
         leadId: state.leadId,
-      }));
+      });
     }
   }, [state]);
+
+  useEffect(() => {
+    if (formState && formState.leadId) {
+      goNext();
+    }
+  }, [formState]);
 
   const handleReset = () => {
     setValidationError({});
@@ -56,13 +61,13 @@ export default function ContactDetails({ setCurrentStep, currentStep }) {
             id="name"
             name="name"
             onChange={(e) => {
-              handleReset(e);
+              handleReset();
             }}
             required
             defaultValue={formState && formState.personalDetails.name}
           />
           {validationError.errors?.name &&
-            validationError.errors.name.map((error) => (
+            validationError.errors.name.map((error: any) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
               </p>
@@ -105,7 +110,7 @@ export default function ContactDetails({ setCurrentStep, currentStep }) {
                 ? "border-red-300"
                 : "border-gray-100"
             } focus:outline-none  block w-full px-10 py-4 rounded-full focus:border-primary `}
-            placeholder="rakesh@example.com"
+            placeholder="Eg. rakesh@example.com"
             id="email"
             name="email"
             onChange={(e) => {
@@ -115,7 +120,7 @@ export default function ContactDetails({ setCurrentStep, currentStep }) {
             defaultValue={formState && formState.personalDetails.email}
           />
           {validationError.errors?.email &&
-            validationError.errors.email.map((error) => (
+            validationError.errors.email.map((error: any) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
               </p>

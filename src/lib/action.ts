@@ -45,13 +45,6 @@ export const contactDetails = async (prevState, formData) => {
   };
 
   try {
-    //remove
-    return {
-      success: true,
-      userData: userData,
-      leadId: "data.lead_id",
-    };
-    //reove end
     const response = await fetch(`${API_URL}/leads/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -99,7 +92,7 @@ export const creatSite = async (formData) => {
     roof_coordinates: formData.roofCoordinates,
     lead_id: formData.leadId,
   };
-  return;
+
   const response = await fetch(`${API_URL}/site/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -144,7 +137,7 @@ export const quoteDetails = async (formData) => {
   console.log(data);
 };
 
-export const quoteCreate = async (formData) => {
+export const quoteCreate = async (formData: any) => {
   const quoteCreate = {
     installation_size: calculateSolarSize(formData.bill),
     quoted_prices: {

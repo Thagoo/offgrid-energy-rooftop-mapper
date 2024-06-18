@@ -1,79 +1,82 @@
 "use client";
 import Navbar from "@/components/navbar";
+import Drawer from "@/components/quote/Drawer";
 import Plans from "@/components/quote/Plans";
 import SavingsEstimation from "@/components/quote/SavingsEstimation";
 import { inclusions } from "@/components/quote/SelectedPlan";
+import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { quoteCreate } from "@/lib/action";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
-
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 const images = [
   {
     src: "/assets/similar-projects/image-1.svg",
   },
   {
-    src: "/assets/similar-projects/image-1.svg",
+    src: "/assets/similar-projects/installation-1.jpeg",
   },
   {
-    src: "/assets/similar-projects/image-1.svg",
+    src: "/assets/similar-projects/installation-2.png",
   },
   {
-    src: "/assets/similar-projects/image-1.svg",
+    src: "/assets/similar-projects/installation-3.jpeg",
   },
   {
-    src: "/assets/similar-projects/image-1.svg",
-  },
-  {
-    src: "/assets/similar-projects/image-1.svg",
-  },
-  {
-    src: "/assets/similar-projects/image-1.svg",
-  },
-  {
-    src: "/assets/similar-projects/image-1.svg",
+    src: "/assets/similar-projects/installation-4.png",
   },
 ];
 
 export default function Quote() {
   const router = useRouter();
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormState } = useContext<any>(
     QuoteGeneratorContext
   );
+  const { setCurrentStep } = useContext(FormStepContext);
+  const [plan, setPlan] = useState("");
+  const [selectedPrice, setSelectedPrice] = useState();
+  const printContentRef = useRef<any>();
+  const handlePrint = useReactToPrint({
+    content: () => printContentRef.current,
+  });
+
   if (!formState) {
-    router.replace("/form");
+    //router.push("/form");
     return;
   }
-
-  useEffect(() => {
-    quoteCreate(formState);
-  }, [1]);
 
   return (
     <>
       <Navbar />
-      <div className="py-5 md:px-20 flex flex-col gap-5 bg-[#F4F4F4] ">
+      <Drawer
+        solarSize={formState.solarSize}
+        plan={plan}
+        setPlan={setPlan}
+        price={selectedPrice}
+      />
+      <div className="py-5 md:px-20 flex flex-col gap-5 bg-[#F4F4F4]">
         <div className="flex flex-col items-center gap-5 px-5 md:px-0">
-          <h1 className="font-medium text-2xl text-center">
+          <h1 className="font-medium text-2xl text-center animate-in fade-in duration-1000">
             Here’s 3 solar installation quotes
           </h1>
-          <p className="text-sm font-light text-[#868687]">
-            For your house in Bangalore, Karnataka
+          <p className="md:text-base text-sm font-light text-[#868687] animate-in fade-in duration-700 text-center">
+            For your house in {formState.address}
           </p>
-          <div className="flex gap-7">
+          <div className="flex md:gap-7 gap-3 animate-in fade-in duration-500">
             <button
               onClick={() => {
                 setFormState(null);
                 localStorage.clear();
+                setCurrentStep(0);
                 router.replace("/form");
               }}
-              className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 border border-black px-3 py-2 rounded-full flex gap-2 items-center md:text-sm text-nowrap"
+              className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 border border-black px-3 py-2 rounded-full flex gap-2 items-center text-sm text-nowrap"
             >
               <svg
-                width="25"
-                height="25"
+                className="h-4 w-4 md:h-5 md:w-5"
                 viewBox="0 0 25 25"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -88,10 +91,12 @@ export default function Quote() {
               </svg>
               Restart quote
             </button>
-            <button className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 bg-black rounded-full px-6 py-2 text-white flex gap-2 items-center md:text-sm text-nowrap">
+            <button
+              className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 bg-black rounded-full px-6 py-2 text-white flex gap-2 items-center text-sm text-nowrap"
+              onClick={handlePrint}
+            >
               <svg
-                width="25"
-                height="25"
+                className="h-4 w-4 md:h-5 md:w-5"
                 viewBox="0 0 25 25"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -108,29 +113,31 @@ export default function Quote() {
             </button>
           </div>
         </div>
-        <Plans />
-        {/* Savings estimations */}
-        <div className="flex md:flex-row flex-col w-full gap-4">
-          <SavingsEstimation />
-          <div className="md:w-1/3 bg-white rounded-2xl p-5 flex flex-col justify-center">
-            <h1 className="font-medium text-lg mb-2">
-              What’s included in this plan
-            </h1>
-            <ul className="space-y-5">
-              {inclusions.map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-center gap-2 text-sm font-light px-2 py-2 bg-[#F4F4F4] rounded-xl"
-                >
-                  {item.icon}
+        <div ref={printContentRef} className="flex flex-col gap-4">
+          <Plans setPlan={setPlan} setSelectedPrice={setSelectedPrice} />
+          {/* Savings estimations */}
+          <div className="flex md:flex-row flex-col w-full gap-4">
+            <SavingsEstimation />
+            <div className="md:w-1/3 bg-white rounded-3xl p-5 flex flex-col justify-center">
+              <h1 className="font-medium text-lg mb-2">
+                What’s included in your quote
+              </h1>
+              <ul className="space-y-5">
+                {inclusions.map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-2 text-sm font-light px-2 py-2 bg-[#F4F4F4] rounded-xl"
+                  >
+                    {item.icon}
 
-                  <div className="flex flex-col">
-                    <h1 className="font-medium">{item.title}</h1>
-                    <h1 className="text-[#868687] text-xs">{item.desc}</h1>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    <div className="flex flex-col">
+                      <h1 className="font-medium">{item.title}</h1>
+                      <h1 className="text-[#868687] text-xs">{item.desc}</h1>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
         {/* horizonatal scrollable images */}
@@ -141,15 +148,13 @@ export default function Quote() {
             Checkout a few of our installations
           </p>
           <div className="overflow-x-auto hide-scrollbar">
-            <div className="flex space-x-4 p-4 gap-4">
+            <div className="flex space-x-4 p-4 gap-4 drop-shadow-md">
               {images.map((image, index) => (
                 <div key={index} className="flex-shrink-0 ">
-                  <Image
+                  <img
                     src={image.src}
                     alt="offgrid"
-                    width={232}
-                    height={196}
-                    className="rounded-2xl"
+                    className="rounded-2xl w-auto h-40"
                   />
                 </div>
               ))}
@@ -185,10 +190,10 @@ export default function Quote() {
               </svg>
               <h1>Proposal</h1>
               <p className="text-[#868687]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                We begin by understanding your energy needs and roof. Our
+                experts design a solar system tailored to your goals.
+                You&apos;ll receive a clear proposal outlining the system&apos;s
+                benefits and the potential cost savings.
               </p>
               <h1>Done</h1>
             </div>
@@ -218,10 +223,9 @@ export default function Quote() {
 
               <h1>Validation & Payment</h1>
               <p className="text-[#868687]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                Once you approve the proposal, we handle permit applications for
+                hassle-free installation. We offer flexible financing options to
+                make solar power accessible to everyone.
               </p>
               <h1 className="rounded-3xl px-4 py-2 bg-[#FFCB00] text-sm">
                 Next 5 days
@@ -244,10 +248,9 @@ export default function Quote() {
 
               <h1>Installation </h1>
               <p className="text-[#868687]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                Once you approve the proposal, we handle permit applications for
+                hassle-free installation. We offer flexible financing options to
+                make solar power accessible to everyone.
               </p>
               <h1>1 day</h1>
             </div>
@@ -272,10 +275,10 @@ export default function Quote() {
 
               <h1>Paperwork</h1>
               <p className="text-[#868687]">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                We handle all necessary paperwork for permits and
+                interconnection with the grid. Our team will guide you through
+                system activation and monitoring. Enjoy clean energy and watch
+                your savings grow!
               </p>
               <h1>4 days</h1>
             </div>

@@ -3,7 +3,7 @@ export const solarTips = [
   "This helps us understand whether you are on commercial or residential tarifs to help calculate savings data.",
   "Offgrid gives you a fixed price. Mounting, Structure and all peripherals included.",
   "Based on your requirement we also suggest batteries and inverters to make sure you always have electricity",
-  "this helps us estimate how many units of electricity you consume and what your system size should be.",
+  "This helps us estimate how many units of electricity you consume and what your system size should be.",
   "Your location helps us understand data in terms of sunlight and temperature",
 ];
 
@@ -98,13 +98,16 @@ export const calculateCostWithSolar = (size: number) => {
 
 export const calculateBreakEven = (bill: number) => {
   const breakEven =
-    calculateCostWithSolar(calculateSolarSize(bill)).basic / bill / 12;
+    calculateGovtSubsidy(
+      calculateCostWithSolar(calculateSolarSize(bill)).basic
+    ) /
+    bill /
+    12;
   return Math.round(breakEven);
 };
 
-export const calculateDiscount = (price: number) => {
-  const discount = 30;
-  return price + (price * 30) / 100;
+export const calculateGovtSubsidy = (price: number) => {
+  return price - (price * 30) / 100;
 };
 
 export const calculateCo2 = (yearylyEnergy: number) => {
@@ -115,4 +118,23 @@ export const calculateTressPlanted = (yearlyEnergy: number) => {
   const treeCo2Consumption = 22;
   const co2saved = calculateCo2(yearlyEnergy);
   return co2saved / treeCo2Consumption;
+};
+
+export const calculateLifetimeSavings = (bill: number) => {
+  console.log("without solar", calculateCostWithoutSolar(bill));
+  console.log(
+    "with solar",
+    calculateGovtSubsidy(calculateCostWithSolar(calculateSolarSize(bill)).basic)
+  );
+  return (
+    calculateCostWithoutSolar(bill) -
+    calculateGovtSubsidy(calculateCostWithSolar(calculateSolarSize(bill)).basic)
+  );
+};
+export const calculateSolarPanels = (roofArea: number) => {
+  return Math.floor(roofArea / 27.38);
+};
+
+export const calculateSystemSize = (size: number) => {
+  return (size * 1000) / 500;
 };

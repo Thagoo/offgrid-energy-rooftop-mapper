@@ -9,48 +9,72 @@ import Bill from "@/components/form/Step4_Bill";
 import Places from "@/components/form/Step5_Places";
 import RoofType from "@/components/form/Step8_RoofType";
 import MapSelector from "@/components/maps/MapSelector";
-import Modal from "@/components/modal";
 import Navbar from "@/components/navbar";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { solarTips } from "@/lib/utils";
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import RoofArea from "@/components/form/Step9_RoofArea";
 import FormStepContext from "@/context/FormStepContext";
-import MapSelectorMobile from "@/components/form/Step6_MapSelectorMobile";
+import {
+  MobilePopupOne,
+  MobilePopupThree,
+  MobilePopupTwo,
+} from "@/components/form/Step6_MapSelectorMobile";
+import InstructionModal from "@/components/modal";
+import MapSelectorMobile from "@/components/maps/MapSelectorMobile";
+import { useRouter } from "next/navigation";
 
 export default function Form() {
-  const { currentStep, setCurrentStep } = useContext(FormStepContext);
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
-
-  useEffect(() => {
-    setCurrentStep(currentStep + 1);
-  }, [formState]);
-
+  const { currentStep, setCurrentStep, goNext, goBack } =
+    useContext(FormStepContext);
+  const router = useRouter();
+  const handleReDraw = () => {
+    setCurrentStep(6);
+  };
   return (
     <>
-      <main className="flex md:flex-row flex-col w-full h-dvh relative">
+      <main className="flex md:flex-row flex-col w-full h-dvh relative overflow-y-hidden">
         <div className="md:w-1/2 flex flex-col flex-1">
           <Navbar />
+          <ol className="flex items-center w-full ">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((step) => (
+              <li
+                key={step}
+                className={`flex-1 ${
+                  currentStep >= step
+                    ? "bg-primary"
+                    : "bg-gray-400 dark:bg-gray-600"
+                }`}
+                style={{
+                  position: "relative",
+                }}
+              >
+                <div
+                  className={`absolute top-0 transition-all duration-500 transform -translate-y-0 w-full h-1 ${
+                    currentStep >= step
+                      ? "bg-primary"
+                      : "text-gray-400 dark:text-gray-600"
+                  }`}
+                  style={{
+                    zIndex: 50,
+                    width: `100%`,
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
           <div className="flex-1 w-full flex justify-center items-start md:items-center md:pt-0 pt-5 bg-[#F4F4F4] px-5 md:px-20">
-            {currentStep === 0 && (
-              <ContactDetails
-                setCurrentStep={setCurrentStep}
-                currentStep={currentStep}
-              />
-            )}
+            {currentStep === 0 && <ContactDetails goNext={goNext} />}
             {currentStep === 1 && <SiteType />}
             {currentStep === 2 && <Floors />}
             {currentStep === 3 && <PeekUsage />}
             {currentStep === 4 && <Bill />}
             {currentStep === 5 && <Places />}
             {currentStep === 6 && (
-              <div className="hidden md:flex flex-col gap-2 items-center">
-                <>
+              <>
+                <div className="hidden md:flex flex-col gap-2 items-center">
                   <svg
                     width="74"
                     height="78"
@@ -96,88 +120,108 @@ export default function Form() {
                   <h1 className=" font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000">
                     Pin your roof
                   </h1>
-                  <p className=" text-gray-400 text-center animate-in slide-in-from-bottom-4 duration-1000">
+                  <p className=" text-[#868687] text-center animate-in slide-in-from-bottom-4 duration-1000">
                     Drag the map to the center of your house, then click next
                   </p>
-                  <Modal
-                    handleNextClick={() => setCurrentStep(currentStep + 1)}
-                    handleGoBackClick={() => setCurrentStep(currentStep - 1)}
-                  />
-                </>
-              </div>
+
+                  <button
+                    className="hidden md:flex animate-in slide-in-from-bottom-2 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                    type="button"
+                    onClick={() => goNext()}
+                  >
+                    Next <span>&#8594;</span>
+                  </button>
+
+                  <button
+                    className="mt-2 text-[#868687] underline animate-in slide-in-from-bottom-6 duration-1000"
+                    onClick={() => setCurrentStep(11)}
+                  >
+                    Skip
+                  </button>
+                </div>
+              </>
             )}
             {currentStep === 7 && (
-              <div className=" flex flex-col justify-center gap-4 items-center">
-                <svg
-                  width="80"
-                  className="text-gray-400 animate-in slide-in-from-top-6 duration-1000"
-                  height="77"
-                  viewBox="0 0 80 77"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.3691 18.3359H77.636"
-                    stroke="#868687"
-                    stroke-width="3.66693"
-                    stroke-linecap="round"
-                    stroke-dasharray="3.67 3.67"
-                  />
-                  <path
-                    d="M18.7031 3.66797L18.7031 69.9349"
-                    stroke="#868687"
-                    stroke-width="3.66693"
-                    stroke-linecap="round"
-                    stroke-dasharray="3.67 3.67"
-                  />
-                  <circle
-                    cx="18.7018"
-                    cy="18.3366"
-                    r="16.5012"
-                    fill="#F4F4F4"
-                    stroke="#FFCB00"
-                    stroke-width="3.66693"
-                  />
-                  <mask
-                    id="mask0_1018_1529"
-                    maskUnits="userSpaceOnUse"
-                    x="13"
-                    y="12"
-                    width="65"
-                    height="66"
+              <>
+                <InstructionModal />
+                <div className="hidden md:flex flex-col gap-2 items-center">
+                  <svg
+                    width="80"
+                    className="text-gray-400 animate-in slide-in-from-top-6 duration-1000"
+                    height="77"
+                    viewBox="0 0 80 77"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M13.2051 32.3398L57.8724 12.8428L77.3695 57.5101L32.7022 77.0071L13.2051 32.3398Z"
-                      fill="white"
+                      d="M11.3691 18.3359H77.636"
+                      stroke="#868687"
+                      stroke-width="3.66693"
+                      stroke-linecap="round"
+                      stroke-dasharray="3.67 3.67"
                     />
-                  </mask>
-                  <g mask="url(#mask0_1018_1529)">
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M46.4051 62.7146L32.4313 59.1556C31.0928 58.8141 29.9122 58.0229 29.0875 56.9146C28.2627 55.8063 27.8439 54.4482 27.9012 53.0679C27.9584 51.6876 28.4882 50.3689 29.4019 49.3327C30.3156 48.2966 31.5576 47.6058 32.9199 47.3763L36.1497 46.8339L29.5292 31.6666C28.9455 30.3309 28.8755 28.8268 29.3326 27.4427C29.7898 26.0586 30.7418 24.892 32.0062 24.1667C33.2705 23.4414 34.7582 23.2084 36.1837 23.5125C37.6093 23.8166 38.8724 24.6363 39.7307 25.8144L45.209 33.3242L53.4263 31.2563C54.6615 30.9457 55.948 30.8968 57.2032 31.1126C58.4584 31.3285 59.6547 31.8043 60.7152 32.5096C61.7757 33.215 62.6771 34.1342 63.3614 35.2083C64.0458 36.2825 64.4981 37.4878 64.6893 38.7471L66.7336 52.1794L46.4051 62.7146ZM60.1725 39.4324L61.7253 49.6294L45.8467 57.8566L33.5597 54.728C33.2373 54.6443 32.9533 54.4526 32.7551 54.1849C32.557 53.9171 32.4566 53.5895 32.4707 53.2567C32.4849 52.9239 32.6127 52.6061 32.8329 52.3561C33.0531 52.1062 33.3524 51.9393 33.6807 51.8833L36.9065 51.3394L42.6781 50.3689L33.7168 29.8387C33.5818 29.5343 33.5644 29.1907 33.668 28.8743C33.7715 28.5578 33.9887 28.291 34.2775 28.1253C34.5662 27.9596 34.9062 27.9067 35.2317 27.977C35.5571 28.0472 35.845 28.2356 36.0397 28.5057L41.5192 36.0183L43.3361 38.5056L46.3229 37.7569L54.5402 35.689C55.1577 35.5336 55.8009 35.5089 56.4285 35.6167C57.0561 35.7244 57.6542 35.9621 58.1845 36.3146C58.7149 36.6671 59.1656 37.1265 59.508 37.6634C59.8503 38.2003 60.0767 38.8029 60.1725 39.4324ZM69.2276 59.3932C69.7529 59.1059 70.1444 58.6239 70.3178 58.0509C70.4913 57.4779 70.4329 56.8597 70.1552 56.3293C69.8775 55.7989 69.4028 55.3987 68.833 55.2148C68.2633 55.0309 67.6441 55.078 67.1087 55.346L48.1761 65.2718C47.9047 65.4076 47.663 65.5962 47.4653 65.8265C47.2676 66.0568 47.1177 66.3242 47.0245 66.613C46.9313 66.9018 46.8965 67.2064 46.9223 67.5088C46.9481 67.8112 47.0339 68.1055 47.1747 68.3743C47.3154 68.6432 47.5084 68.8814 47.7422 69.0749C47.9761 69.2684 48.2462 69.4133 48.5366 69.5013C48.8271 69.5892 49.1323 69.6184 49.4342 69.5871C49.7361 69.5558 50.0287 69.4647 50.295 69.319L69.2276 59.3932Z"
-                      fill="#212121"
+                      d="M18.7031 3.66797L18.7031 69.9349"
+                      stroke="#868687"
+                      stroke-width="3.66693"
+                      stroke-linecap="round"
+                      stroke-dasharray="3.67 3.67"
                     />
-                  </g>
-                </svg>
+                    <circle
+                      cx="18.7018"
+                      cy="18.3366"
+                      r="16.5012"
+                      fill="#F4F4F4"
+                      stroke="#FFCB00"
+                      stroke-width="3.66693"
+                    />
+                    <mask
+                      id="mask0_1018_1529"
+                      maskUnits="userSpaceOnUse"
+                      x="13"
+                      y="12"
+                      width="65"
+                      height="66"
+                    >
+                      <path
+                        d="M13.2051 32.3398L57.8724 12.8428L77.3695 57.5101L32.7022 77.0071L13.2051 32.3398Z"
+                        fill="white"
+                      />
+                    </mask>
+                    <g mask="url(#mask0_1018_1529)">
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M46.4051 62.7146L32.4313 59.1556C31.0928 58.8141 29.9122 58.0229 29.0875 56.9146C28.2627 55.8063 27.8439 54.4482 27.9012 53.0679C27.9584 51.6876 28.4882 50.3689 29.4019 49.3327C30.3156 48.2966 31.5576 47.6058 32.9199 47.3763L36.1497 46.8339L29.5292 31.6666C28.9455 30.3309 28.8755 28.8268 29.3326 27.4427C29.7898 26.0586 30.7418 24.892 32.0062 24.1667C33.2705 23.4414 34.7582 23.2084 36.1837 23.5125C37.6093 23.8166 38.8724 24.6363 39.7307 25.8144L45.209 33.3242L53.4263 31.2563C54.6615 30.9457 55.948 30.8968 57.2032 31.1126C58.4584 31.3285 59.6547 31.8043 60.7152 32.5096C61.7757 33.215 62.6771 34.1342 63.3614 35.2083C64.0458 36.2825 64.4981 37.4878 64.6893 38.7471L66.7336 52.1794L46.4051 62.7146ZM60.1725 39.4324L61.7253 49.6294L45.8467 57.8566L33.5597 54.728C33.2373 54.6443 32.9533 54.4526 32.7551 54.1849C32.557 53.9171 32.4566 53.5895 32.4707 53.2567C32.4849 52.9239 32.6127 52.6061 32.8329 52.3561C33.0531 52.1062 33.3524 51.9393 33.6807 51.8833L36.9065 51.3394L42.6781 50.3689L33.7168 29.8387C33.5818 29.5343 33.5644 29.1907 33.668 28.8743C33.7715 28.5578 33.9887 28.291 34.2775 28.1253C34.5662 27.9596 34.9062 27.9067 35.2317 27.977C35.5571 28.0472 35.845 28.2356 36.0397 28.5057L41.5192 36.0183L43.3361 38.5056L46.3229 37.7569L54.5402 35.689C55.1577 35.5336 55.8009 35.5089 56.4285 35.6167C57.0561 35.7244 57.6542 35.9621 58.1845 36.3146C58.7149 36.6671 59.1656 37.1265 59.508 37.6634C59.8503 38.2003 60.0767 38.8029 60.1725 39.4324ZM69.2276 59.3932C69.7529 59.1059 70.1444 58.6239 70.3178 58.0509C70.4913 57.4779 70.4329 56.8597 70.1552 56.3293C69.8775 55.7989 69.4028 55.3987 68.833 55.2148C68.2633 55.0309 67.6441 55.078 67.1087 55.346L48.1761 65.2718C47.9047 65.4076 47.663 65.5962 47.4653 65.8265C47.2676 66.0568 47.1177 66.3242 47.0245 66.613C46.9313 66.9018 46.8965 67.2064 46.9223 67.5088C46.9481 67.8112 47.0339 68.1055 47.1747 68.3743C47.3154 68.6432 47.5084 68.8814 47.7422 69.0749C47.9761 69.2684 48.2462 69.4133 48.5366 69.5013C48.8271 69.5892 49.1323 69.6184 49.4342 69.5871C49.7361 69.5558 50.0287 69.4647 50.295 69.319L69.2276 59.3932Z"
+                        fill="#212121"
+                      />
+                    </g>
+                  </svg>
 
-                <div className="animate-in slide-in-from-top-4 duration-1000 font-semibold text-2xl">
-                  Click a corner
-                </div>
-                <div className="text-gray-400 animate-in slide-in-from-top-4 duration-1000">
-                  Keep clicking to outline your roof on the map
-                </div>
+                  <div className="animate-in slide-in-from-top-4 duration-1000 font-semibold text-2xl">
+                    Click a corner
+                  </div>
+                  <div className="text-gray-400 animate-in slide-in-from-top-4 duration-1000">
+                    Keep clicking to outline your roof on the map
+                  </div>
 
-                <button
-                  className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2"
-                  onClick={() => setCurrentStep(currentStep + 1)}
-                >
-                  Next <span>&#8594;</span>
-                </button>
-              </div>
+                  <button
+                    className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2"
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                  >
+                    Next <span>&#8594;</span>
+                  </button>
+                  <button
+                    className="mt-2 text-[#868687] underline animate-in slide-in-from-bottom-6 duration-1000"
+                    onClick={() => setCurrentStep(11)}
+                  >
+                    Skip
+                  </button>
+                </div>
+              </>
             )}
             {currentStep === 8 && (
-              <div className=" flex flex-col justify-center gap-4 items-center">
+              <div className="hidden md:flex flex-col gap-2 items-center">
                 <svg
                   width="90"
                   height="79"
@@ -232,8 +276,8 @@ export default function Form() {
                 <div className=" font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000">
                   Roof Marked
                 </div>
-                <div className="text-gray-400 animate-in slide-in-from-top-4 duration-1000">
-                  Keep clicking to outline your roof on the map
+                <div className="text-gray-400 animate-in slide-in-from-top-4 duration-1000 text-center">
+                  Click done to proceed to next step.
                 </div>
                 <button
                   className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2"
@@ -251,12 +295,80 @@ export default function Form() {
                 currentStep={currentStep}
               />
             )}
+            {/* Mobile Map start */}
+            {currentStep < 11 && currentStep > 0 && (
+              <div>
+                <div className="md:hidden absolute md:left-20 md:bottom-10 bottom-4 left-5 py-2 px-4 bg-white bg-opacity-10 rounded-3xl z-0 backdrop-blur-sm blur-safari font-medium animate-in slide-in-from-top-2 duration-700 hover:border">
+                  <button onClick={() => goBack()}>{"<-"} Back</button>
+                </div>
+              </div>
+            )}
+            <div className="md:hidden relative">
+              {currentStep === 6 && (
+                <div className={`fixed inset-0 `}>
+                  <div className="md:hidden h-dvh">
+                    <MapSelector currentStep={currentStep} />
+                  </div>
+                  {currentStep < 11 && currentStep > 0 && (
+                    <div>
+                      {currentStep === 6 && (
+                        <>
+                          <div className="md:hidden absolute md:left-20 md:bottom-10 bottom-4 left-5 py-2 px-4 bg-white bg-opacity-10 rounded-3xl z-0 backdrop-blur-sm blur-safari font-medium animate-in slide-in-from-top-2 duration-700 hover:border">
+                            <button onClick={() => goBack()}>
+                              {"<-"} Back
+                            </button>
+                          </div>
+                          <button
+                            className="md:hidden absolute right-10 bottom-4 flex animate-in fade-in duration-1000 focus:outline-none bg-slate-900 text-white z-0 tracking-wider py-2 px-4 rounded-full hover:bg-slate-800 items-center justify-center gap-2"
+                            onClick={() => goNext()}
+                          >
+                            Next <span>{"->"}</span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {currentStep === 6 && <MobilePopupOne />}
+                </div>
+              )}
+
+              {/* Joystick map */}
+              {currentStep >= 7 && currentStep < 9 && (
+                <div className="md:hidden">
+                  <MapSelectorMobile />
+                  {currentStep < 11 && currentStep > 0 && (
+                    <div>
+                      <div className="absolute md:left-20 md:bottom-10 bottom-4 left-5 py-2 px-4 bg-white bg-opacity-10 rounded-3xl z-0 backdrop-blur-sm blur-safari font-medium animate-in slide-in-from-top-2 duration-700 hover:border">
+                        <button onClick={() => goBack()}>{"<-"} Back</button>
+                      </div>
+                      {currentStep === 6 && (
+                        <button
+                          className="md:hidden absolute right-10 bottom-4 flex animate-in fade-in duration-1000 focus:outline-none bg-slate-900 text-white z-0 tracking-wider py-2 px-4 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                          onClick={() => goNext()}
+                        >
+                          Next <span>{"->"}</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {currentStep === 7 && <MobilePopupTwo />}
+                  {currentStep === 8 && <MobilePopupThree />}
+                </div>
+              )}
+            </div>{" "}
           </div>
+          {currentStep < 11 && currentStep > 0 && (
+            <div>
+              <div className="hidden md:block absolute md:left-20 md:bottom-10 bottom-4 left-5 py-2 px-4 bg-white bg-opacity-10 rounded-3xl z-0 backdrop-blur-sm blur-safari font-medium animate-in slide-in-from-top-2 duration-700 hover:border">
+                <button onClick={() => goBack()}>{"<-"} Back</button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="md:w-1/2 bg-[#F4F4F4] h-auto">
           {currentStep < 6 ? (
-            <div className="hidden md:flex w-full md:items-center justify-center bg-primary shadow-xl md:rounded-tl-3xl md:rounded-bl-3xl rounded-t-3xl md:rounded-t-none md:h-[100vh] py-8 px-5 md:pb-0 pb-28">
+            <div className="animate-in slide-in-from-bottom-4 hidden md:flex w-full md:items-center justify-center bg-primary shadow-xl md:rounded-tl-3xl md:rounded-bl-3xl rounded-t-3xl md:rounded-t-none md:h-[100vh] py-8 px-5 md:pb-0 pb-28">
               <div className="hidden md:block w-[400px] p-6 border rounded-3xl border-black bg-white text-black drop-shadow-xl border-l-8 border-t-2">
                 <div className=" text-xl mb-2 font-semibold flex items-center gap-2">
                   <svg
@@ -280,31 +392,12 @@ export default function Form() {
             </div>
           ) : (
             <div>
-              <div className="hidden md:block">
+              <div className="hidden md:block ">
                 <MapSelector currentStep={currentStep} />
-              </div>
-              <div className="md:hidden relative">
-                {currentStep === 6 && (
-                  <div
-                    className={`fixed inset-0 bg-black opacity-80 md:hidden transition-opacity duration-500 `}
-                  >
-                    <div className="md:hidden h-screen items-center">
-                      <MapSelector currentStep={currentStep} />
-                    </div>
-                    {currentStep === 6 && <MapSelectorMobile />}
-                  </div>
-                )}
               </div>
             </div>
           )}
         </div>
-        {currentStep < 11 && currentStep > 0 && (
-          <div className="absolute md:left-20 md:bottom-10 bottom-20 left-5 py-2 px-4 bg-white border border-black bg-opacity-50 rounded-3xl z-10">
-            <button onClick={() => setCurrentStep(currentStep - 1)}>
-              {"<-"} Back
-            </button>
-          </div>
-        )}
       </main>
     </>
   );

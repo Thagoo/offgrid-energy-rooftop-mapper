@@ -1,25 +1,28 @@
 import LoadingSpinner from "@/app/ui/loading-spinner";
+import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { creatSite } from "@/lib/action";
+import { calculateLifetimeSavings, calculateSolarPanels } from "@/lib/utils";
 import React, { useContext, useState } from "react";
 
 export default function RoofArea() {
   const [loading, setLoading] = useState(false);
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
-
+  const { goNext } = useContext(FormStepContext);
   const handleNext = async () => {
     setLoading(true);
     const siteId = await creatSite(formState);
     setLoading(false);
-    setFormState((prev) => ({ ...prev, siteId: siteId }));
+    updateFormData({ siteId: siteId });
+    goNext();
   };
 
   return (
     <div>
-      <div className=" flex flex-col justify-center gap-4 items-center">
+      <div className=" flex flex-col justify-center gap-6 items-center">
         <div className=" font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000 flex items-center gap-2">
           <svg
             width="94"
@@ -122,16 +125,18 @@ export default function RoofArea() {
             />
           </svg>
 
-          <div className="flex-col">
+          <div>
             <p className="text-[#868687] font-semibold">Roof Area</p>
-            <h1 className="font-semibold text-2xl">
-              {formState && Math.floor(formState.roofArea)} sq. ft
+            <h1 className="font-semibold md:text-2xl text-xl">
+              {formState && Math.floor(formState.roofArea)}{" "}
+              <span className=" text-lg">sq.ft</span>
             </h1>
           </div>
-          <div className="flex-col">
+          <div>
             <p className="text-[#868687] font-semibold">Suitable for</p>
-            <h1 className="font-semibold text-2xl">
-              {formState && Math.floor(formState.roofArea / 27.38)} panels
+            <h1 className="font-semibold md:text-2xl text-xl">
+              {formState && calculateSolarPanels(formState.roofArea)}{" "}
+              <span className="text-lg">panels</span>
             </h1>
           </div>
         </div>
@@ -143,7 +148,13 @@ export default function RoofArea() {
   );
 }
 
-function Submit({ handleNext, loading }) {
+function Submit({
+  handleNext,
+  loading,
+}: {
+  handleNext: any;
+  loading: boolean;
+}) {
   return (
     <button
       className="focus:outline-none hover:opacity-80 animate-in duration-1000 bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full disabled:bg-gray-600 flex items-center justify-center gap-2"

@@ -1,17 +1,20 @@
 "use client";
+import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import React, { useContext, useState } from "react";
 
 export default function Bill() {
-  const { formState, setFormState, updateFormState } = useContext(
+  const { formState, setFormState, updateFormState } = useContext<any>(
     QuoteGeneratorContext
   );
   const [bill, setBill] = useState(0);
+  const { goNext } = useContext(FormStepContext);
 
-  const hanldeSubmit = (e) => {
+  const hanldeSubmit = (e: any) => {
     e.preventDefault();
     setFormState((prev: any) => ({ ...prev, bill: bill }));
+    goNext();
   };
 
   return (
@@ -24,7 +27,7 @@ export default function Bill() {
         onSubmit={hanldeSubmit}
       >
         <input
-          onChange={(e) => setBill(e.target.value)}
+          onChange={(e) => setBill(e.target.value as any)}
           className="px-10 py-4 rounded-full w-full bg-white border-none outline-none"
           placeholder="Enter Value ₹"
         />
@@ -36,7 +39,7 @@ export default function Bill() {
           Next
         </button>
       </form>
-      <p className="text-[#868687] md:text-base text-sm font-light flex items-center gap-1">
+      <p className="text-[#868687] md:text-base text-sm font-light flex items-center gap-1 animate-in fade-in duration-1000">
         <svg
           width="17"
           height="16"
@@ -44,24 +47,24 @@ export default function Bill() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_1015_622)">
-            <path
-              d="M0.5 8C0.5 5.87827 1.34285 3.84344 2.84315 2.34315C4.34344 0.842855 6.37827 0 8.5 0C10.6217 0 12.6566 0.842855 14.1569 2.34315C15.6571 3.84344 16.5 5.87827 16.5 8C16.5 10.1217 15.6571 12.1566 14.1569 13.6569C12.6566 15.1571 10.6217 16 8.5 16C6.37827 16 4.34344 15.1571 2.84315 13.6569C1.34285 12.1566 0.5 10.1217 0.5 8ZM8.5 1.5C6.77609 1.5 5.12279 2.18482 3.90381 3.40381C2.68482 4.62279 2 6.27609 2 8C2 9.72391 2.68482 11.3772 3.90381 12.5962C5.12279 13.8152 6.77609 14.5 8.5 14.5C10.2239 14.5 11.8772 13.8152 13.0962 12.5962C14.3152 11.3772 15 9.72391 15 8C15 6.27609 14.3152 4.62279 13.0962 3.40381C11.8772 2.18482 10.2239 1.5 8.5 1.5ZM7 7.75C7 7.55109 7.07902 7.36032 7.21967 7.21967C7.36032 7.07902 7.55109 7 7.75 7H8.75C8.94891 7 9.13968 7.07902 9.28033 7.21967C9.42098 7.36032 9.5 7.55109 9.5 7.75V10.5H9.75C9.94891 10.5 10.1397 10.579 10.2803 10.7197C10.421 10.8603 10.5 11.0511 10.5 11.25C10.5 11.4489 10.421 11.6397 10.2803 11.7803C10.1397 11.921 9.94891 12 9.75 12H7.75C7.55109 12 7.36032 11.921 7.21967 11.7803C7.07902 11.6397 7 11.4489 7 11.25C7 11.0511 7.07902 10.8603 7.21967 10.7197C7.36032 10.579 7.55109 10.5 7.75 10.5H8V8.5H7.75C7.55109 8.5 7.36032 8.42098 7.21967 8.28033C7.07902 8.13968 7 7.94891 7 7.75ZM8.5 6C8.23478 6 7.98043 5.89464 7.79289 5.70711C7.60536 5.51957 7.5 5.26522 7.5 5C7.5 4.73478 7.60536 4.48043 7.79289 4.29289C7.98043 4.10536 8.23478 4 8.5 4C8.76522 4 9.01957 4.10536 9.20711 4.29289C9.39464 4.48043 9.5 4.73478 9.5 5C9.5 5.26522 9.39464 5.51957 9.20711 5.70711C9.01957 5.89464 8.76522 6 8.5 6Z"
-              fill="#868687"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0_1015_622">
-              <rect
-                width="16"
-                height="16"
-                fill="white"
-                transform="translate(0.5)"
-              />
-            </clipPath>
-          </defs>
+          <path
+            d="M8.5 14C11.8137 14 14.5 11.3137 14.5 8C14.5 4.68629 11.8137 2 8.5 2C5.18629 2 2.5 4.68629 2.5 8C2.5 11.3137 5.18629 14 8.5 14Z"
+            stroke="#636363"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 7.5C8.13261 7.5 8.25979 7.55268 8.35355 7.64645C8.44732 7.74021 8.5 7.86739 8.5 8V10.5C8.5 10.6326 8.55268 10.7598 8.64645 10.8536C8.74021 10.9473 8.86739 11 9 11"
+            stroke="#636363"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8.25 6C8.66421 6 9 5.66421 9 5.25C9 4.83579 8.66421 4.5 8.25 4.5C7.83579 4.5 7.5 4.83579 7.5 5.25C7.5 5.66421 7.83579 6 8.25 6Z"
+            fill="#636363"
+          />
         </svg>
-        Value must be minimum ₹ 1000/-
+        Value must be minimum ₹1000/-
       </p>
     </div>
   );

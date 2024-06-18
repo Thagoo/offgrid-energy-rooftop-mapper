@@ -1,6 +1,12 @@
 import Image from "next/image";
 
-export default function LoadingSpinner({ height, width }) {
+export default function LoadingSpinner({
+  height,
+  width,
+}: {
+  height: any;
+  width: any;
+}) {
   return (
     <div role="status " className="inline-block animate-[spin_1s_infinite]">
       <Image

@@ -1,22 +1,39 @@
 import React from "react";
 import SelectedPlan from "./SelectedPlan";
+import Link from "next/link";
 
-const Drawer = ({ plan, setPlan, solarSize, price }) => {
+const Drawer = ({
+  plan,
+  setPlan,
+  solarSize,
+  price,
+}: {
+  plan: string;
+  setPlan: any;
+  solarSize: number;
+  price?: number;
+}) => {
   return (
     <div>
       <div
         className={`${
-          plan.length > 0 ? "fixed inset-0 bg-black opacity-80" : ""
+          plan.length > 0
+            ? "fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen z-50"
+            : ""
         }`}
         onClick={() => setPlan("")}
       ></div>
+
       <div
-        className={`md:w-3/5 fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 md:rounded-l-2xl overflow-auto ${
+        className={`md:w-3/5 fixed top-0 right-0 h-full bg-white shadow-lg transform transition-transform duration-300 md:rounded-l-2xl overflow-auto z-50 ${
           plan.length > 0 ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex justify-between p-5 items-center">
-          <button className="bg-black text-white rounded-3xl px-4 py-2 text-sm hover:bg-gray-800 flex items-center gap-2">
+          <Link
+            href={"tel:+919731893735"}
+            className="bg-black text-white rounded-3xl px-4 py-2 text-sm hover:bg-gray-800 flex items-center gap-2"
+          >
             Help{" "}
             <svg
               width="24"
@@ -44,12 +61,12 @@ const Drawer = ({ plan, setPlan, solarSize, price }) => {
                 stroke-linecap="round"
               />
             </svg>
-          </button>
+          </Link>
           <button onClick={() => setPlan("")} className="text-4xl font-thin">
             &times;
           </button>
         </div>
-        <div className="border-b-[1px] text-2xl font-medium flex items-center justify-between px-5">
+        <div className="border-b-[1px] text-lg md:text-2xl font-medium flex items-center justify-between px-5">
           <h1>Your solar system</h1>
           <h1>{solarSize} KW</h1>
         </div>
