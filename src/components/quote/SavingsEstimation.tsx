@@ -21,21 +21,17 @@ export default function SavingsEstimation() {
       <p className="text-light text-sm text-[#868687] text-center">
         Below are the calculated returns and savings by switching to solar.
       </p>
-      <div className="grid grid-cols-2 grid-rows-4  w-full border-[1px] rounded-2xl">
+      <div className="grid grid-cols-2 grid-rows-3  w-full border-[1px] rounded-2xl">
         <div className="px-8 py-4 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-semibold">
-            ₹{formState.bill.toLocaleString()}
+            ₹{formState?.bill.toLocaleString()}
           </h1>
           <p className="text-sm text-[#868687]">Monthly Savings</p>
         </div>
         <div className="px-8 py-4 flex justify-center items-center border-b-[1px] border-dashed">
           <div>
             <h1 className="text-2xl font-semibold text-nowrap">
-              ₹
-              {(
-                calculateCostWithoutSolar(formState.bill) -
-                calculateCostWithSolar(formState.solarSize).basic
-              ).toLocaleString()}
+              ₹{formState?.lifetimeSavings.toLocaleString()}
             </h1>
             <p className="text-sm text-[#868687] ">Lifetime Savings</p>
           </div>
@@ -47,11 +43,11 @@ export default function SavingsEstimation() {
           <p className="text-sm text-[#868687]">Payback Period</p>
         </div>
         <div className="px-8 py-4 flex justify-center items-center  border-b-[1px] border-dashed">
-          <div>
-            <h1 className="text-2xl font-semibold">20%* p.a.</h1>
-            <p className="text-sm text-nowrap text-[#868687]">
-              Return on Investment
-            </p>
+          <div className="px-8 py-4 space-y-2 col-span-2">
+            <h1 className="text-2xl font-semibold">
+              {formState.yearlyEnergy.toLocaleString()} kWh
+            </h1>
+            <p className="text-sm text-[#868687]">Annual Energy Production</p>
           </div>
         </div>
         <div className="px-8 py-4 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
@@ -70,12 +66,6 @@ export default function SavingsEstimation() {
             </h1>
             <p className="text-sm text-[#868687]">CO2 Saved</p>
           </div>
-        </div>
-        <div className="px-8 py-4 space-y-2 col-span-2">
-          <h1 className="text-4xl font-semibold">
-            {formState.yearlyEnergy.toLocaleString()} kWh
-          </h1>
-          <p className="text-sm text-[#868687]">Annual Energy Production</p>
         </div>
       </div>
     </div>

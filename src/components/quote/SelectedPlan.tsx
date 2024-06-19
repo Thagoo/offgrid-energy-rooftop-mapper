@@ -1,5 +1,5 @@
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
-import { calculateGovtSubsidy } from "@/lib/utils";
+import { calculateAfterSubsidy } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useContext } from "react";
@@ -252,10 +252,6 @@ export default function SelectedPlan({
   price?: number;
   solarSize: number;
 }) {
-  if (!plan) {
-    return;
-  }
-
   const specifications = [
     {
       icon: "/assets/quote/specifications/icon-1.svg",
@@ -283,7 +279,10 @@ export default function SelectedPlan({
       title: "Solar App Monitoring",
     },
   ];
-
+  const { formState } = useContext<any>(QuoteGeneratorContext);
+  if (!plan) {
+    return;
+  }
   return (
     <div className="flex md:flex-row flex-col justify-between py-5 px-5 gap-5">
       <div className="flex flex-col gap-2 w-full">
@@ -309,12 +308,12 @@ export default function SelectedPlan({
         <div className="w-full">
           <p className=" text-sm text-[#868687]">Quotation Price</p>
           <span className="flex items-center font-semibold md:text-2xl text-lg md:justify-between gap-3 md:gap-0">
-            <h1>₹ {calculateGovtSubsidy(price as number).toLocaleString()}</h1>
+            <h1>₹ {formState.subsidyPrice[plan].toLocaleString()}</h1>
           </span>
         </div>
         <p className="text-[#868687] text-sm">*30% Govt. Subsidy Included</p>
         <Link
-          href={"tel:+919731893735"}
+          href={"tel:+919035061837"}
           className="bg-[#FFCB00] rounded-3xl px-10 md:py-3 py-2 text-sm hover:bg-yellow-500 flex items-center gap-2 font-medium"
         >
           Get in touch

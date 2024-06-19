@@ -1,11 +1,12 @@
 "use client";
 import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import { calculateSolarSize } from "@/lib/utils";
 
 import React, { useContext, useState } from "react";
 
 export default function Bill() {
-  const { formState, setFormState, updateFormState } = useContext<any>(
+  const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
   const [bill, setBill] = useState(0);
@@ -13,7 +14,8 @@ export default function Bill() {
 
   const hanldeSubmit = (e: any) => {
     e.preventDefault();
-    setFormState((prev: any) => ({ ...prev, bill: bill }));
+
+    updateFormData({ bill: bill, solarSize: calculateSolarSize(bill) });
     goNext();
   };
 

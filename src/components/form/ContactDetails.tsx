@@ -1,26 +1,27 @@
 import LoadingSpinner from "@/app/ui/loading-spinner";
+import { ContactDetailsContext } from "@/context/ContactDetailsContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
-import { contactDetails } from "@/lib/action";
+import { createContact } from "@/lib/action";
 import { useContext, useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 
 export default function ContactDetails({ goNext }: { goNext: any }) {
   const initialState = { errors: {}, message: undefined, userData: undefined };
   const [state, formAction] = useFormState<any>(
-    contactDetails as any,
+    createContact as any,
     initialState
   );
   const [validationError, setValidationError] = useState<any>({});
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
+  const { contactDetails, updateContactDetails } = useContext<any>(
+    ContactDetailsContext
   );
 
   useEffect(() => {
     if (state?.errors) {
       setValidationError(state);
     } else if (state.success) {
-      updateFormData({
+      updateContactDetails({
         personalDetails: state.userData,
         leadId: state.leadId,
       });
@@ -28,10 +29,10 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
   }, [state]);
 
   useEffect(() => {
-    if (formState && formState.leadId) {
+    if (contactDetails && contactDetails.leadId) {
       goNext();
     }
-  }, [formState]);
+  }, [contactDetails]);
 
   const handleReset = () => {
     setValidationError({});
@@ -64,7 +65,7 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
               handleReset();
             }}
             required
-            defaultValue={formState && formState.personalDetails.name}
+            defaultValue={contactDetails && contactDetails.personalDetails.name}
           />
           {validationError.errors?.name &&
             validationError.errors.name.map((error: any) => (
@@ -91,7 +92,9 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
               handleReset();
             }}
             required
-            defaultValue={formState && formState.personalDetails.phone_number}
+            defaultValue={
+              contactDetails && contactDetails.personalDetails.phone_number
+            }
           />
           {validationError.errors?.phone_number && (
             <p className="mt-2 text-sm text-red-500">
@@ -117,7 +120,9 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
               handleReset();
             }}
             required
-            defaultValue={formState && formState.personalDetails.email}
+            defaultValue={
+              contactDetails && contactDetails.personalDetails.email
+            }
           />
           {validationError.errors?.email &&
             validationError.errors.email.map((error: any) => (

@@ -1,6 +1,7 @@
 "use client";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbarForm";
 import Drawer from "@/components/quote/Drawer";
+import Quotation from "@/components/quote/PdfComponent";
 import Plans from "@/components/quote/Plans";
 import SavingsEstimation from "@/components/quote/SavingsEstimation";
 import { inclusions } from "@/components/quote/SelectedPlan";
@@ -9,9 +10,11 @@ import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { quoteCreate } from "@/lib/action";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+
 const images = [
   {
     src: "/assets/similar-projects/image-1.svg",
@@ -38,11 +41,20 @@ export default function Quote() {
   const { setCurrentStep } = useContext(FormStepContext);
   const [plan, setPlan] = useState("");
   const [selectedPrice, setSelectedPrice] = useState();
+  const [showAlert, setShowAlert] = useState(false);
   const printContentRef = useRef<any>();
+
   const handlePrint = useReactToPrint({
     content: () => printContentRef.current,
   });
 
+  const handleRestartQuote = () => {
+    setFormState(null);
+    localStorage.removeItem("formState");
+    localStorage.removeItem("formStep");
+    setCurrentStep(0);
+    router.replace("/form");
+  };
   if (!formState) {
     //router.push("/form");
     return;
@@ -57,6 +69,62 @@ export default function Quote() {
         setPlan={setPlan}
         price={selectedPrice}
       />
+      {showAlert && (
+        <>
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen z-50" />
+          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[40%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
+            <div className="font-medium text-lg text-center md:text-2xl animate-in fade-in duration-1000 flex md:gap-2 md:items-center">
+              <svg
+                width="32"
+                height="33"
+                viewBox="0 0 32 33"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.8014 5.5275L28.7339 24.5112C29.5001 25.8487 28.5101 27.5 26.9326 27.5H5.06763C3.49013 27.5 2.50013 25.8487 3.26638 24.5112L14.1989 5.5275C14.9864 4.1575 17.0139 4.1575 17.8014 5.5275Z"
+                  stroke="#212121"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 18.5V13.5"
+                  stroke="#212121"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 24.5C16.8284 24.5 17.5 23.8284 17.5 23C17.5 22.1716 16.8284 21.5 16 21.5C15.1716 21.5 14.5 22.1716 14.5 23C14.5 23.8284 15.1716 24.5 16 24.5Z"
+                  fill="#212121"
+                />
+              </svg>
+              Are you sure you want to restart?
+            </div>
+            <div className="text-sm md:text-lg text-center animate-in fade-in duration-1000">
+              This will erase all the selections which you made.
+            </div>
+            <div className="flex justify-between gap-6 items-center self-end">
+              <button
+                className="animate-in fade-in duration-1000"
+                onClick={() => setShowAlert(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                onClick={() => handleRestartQuote()}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      <div ref={printContentRef} className="print-only">
+        <Quotation />
+      </div>
       <div className="py-5 md:px-20 flex flex-col gap-5 bg-[#F4F4F4]">
         <div className="flex flex-col items-center gap-5 px-5 md:px-0">
           <h1 className="font-medium text-2xl text-center animate-in fade-in duration-1000">
@@ -68,10 +136,7 @@ export default function Quote() {
           <div className="flex md:gap-7 gap-3 animate-in fade-in duration-500">
             <button
               onClick={() => {
-                setFormState(null);
-                localStorage.clear();
-                setCurrentStep(0);
-                router.replace("/form");
+                setShowAlert(true);
               }}
               className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 border border-black px-3 py-2 rounded-full flex gap-2 items-center text-sm text-nowrap"
             >
@@ -113,7 +178,7 @@ export default function Quote() {
             </button>
           </div>
         </div>
-        <div ref={printContentRef} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           <Plans setPlan={setPlan} setSelectedPrice={setSelectedPrice} />
           {/* Savings estimations */}
           <div className="flex md:flex-row flex-col w-full gap-4">
@@ -207,29 +272,34 @@ export default function Quote() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M31.875 7.5H8.125C5.70875 7.5 3.75 9.45875 3.75 11.875V28.125C3.75 30.5412 5.70875 32.5 8.125 32.5H31.875C34.2912 32.5 36.25 30.5412 36.25 28.125V11.875C36.25 9.45875 34.2912 7.5 31.875 7.5Z"
+                  d="M20 35C28.2843 35 35 28.2843 35 20C35 11.7157 28.2843 5 20 5C11.7157 5 5 11.7157 5 20C5 28.2843 11.7157 35 20 35Z"
                   stroke="#212121"
-                  stroke-width="2.5"
+                  stroke-width="2"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <path
-                  d="M3.75 15H36.25M10 23.4375H13.75V25H10V23.4375Z"
+                  d="M20.0039 11.25V20H28.7539"
                   stroke="#212121"
-                  stroke-width="4.6875"
+                  stroke-width="2"
+                  stroke-linecap="round"
                   stroke-linejoin="round"
                 />
               </svg>
 
-              <h1>Validation & Payment</h1>
+              <h1>Site Visit & Validation</h1>
               <p className="text-[#868687]">
-                Once you approve the proposal, we handle permit applications for
-                hassle-free installation. We offer flexible financing options to
-                make solar power accessible to everyone.
+                Our solar specialist visits your home to assess your roof, sun
+                exposure, and electrical system. We confirm project details and
+                answer your questions. This visit ensures your solar system
+                design perfectly matches your needs.
               </p>
-              <h1 className="rounded-3xl px-4 py-2 bg-[#FFCB00] text-sm">
-                Next 5 days
-              </h1>
+              <Link
+                href={"tel:+919035061837"}
+                className="rounded-3xl px-4 py-2 bg-[#FFCB00] text-sm"
+              >
+                Schedule a Visit
+              </Link>
             </div>
             {/* card three*/}
             <div className="rounded-2xl p-5 flex flex-col gap-2 bg-[#F4F4F4] md:min-w-[20vw] min-w-[70vw]">
@@ -246,11 +316,11 @@ export default function Quote() {
                 />
               </svg>
 
-              <h1>Installation </h1>
+              <h1>Installation & Payment</h1>
               <p className="text-[#868687]">
-                Once you approve the proposal, we handle permit applications for
-                hassle-free installation. We offer flexible financing options to
-                make solar power accessible to everyone.
+                Once you approve the proposal, we handle load sanction
+                application for hassle-free installation. We offer flexible
+                financing options to make solar power accessible to everyone.
               </p>
               <h1>1 day</h1>
             </div>

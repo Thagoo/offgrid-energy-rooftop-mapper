@@ -1,5 +1,5 @@
 "use server";
-import z, { number } from "zod";
+import z from "zod";
 import {
   calculateBreakEven,
   calculateCostWithSolar,
@@ -25,7 +25,7 @@ let userSchema = z.object({
 });
 const API_URL = process.env.API_URL;
 
-export const contactDetails = async (prevState, formData) => {
+export const createContact = async (prevState: any, formData: any) => {
   const credentials = Object.fromEntries(formData);
   console.log("credentials", credentials);
 
@@ -74,7 +74,7 @@ export const contactDetails = async (prevState, formData) => {
   }
 };
 
-export const creatSite = async (formData) => {
+export const creatSite = async (formData: any) => {
   console.log("createSite", formData);
 
   const siteData = {
@@ -92,6 +92,7 @@ export const creatSite = async (formData) => {
     roof_coordinates: formData.roofCoordinates,
     lead_id: formData.leadId,
   };
+  console.log(JSON.stringify(siteData));
 
   const response = await fetch(`${API_URL}/site/create`, {
     method: "POST",
@@ -105,11 +106,11 @@ export const creatSite = async (formData) => {
   return data.site_id;
 };
 
-export const quoteDetails = async (formData) => {
+export const quoteDetails = async (formData: any) => {
   const quoteData = {
     annual_energy_gen: calculateYearlyEnergy(formData.bill),
     annual_sunshine: 3650,
-    break_even_period: calculateBreakEven(formData.bill),
+    break_even_period: formData.breakEven,
     cost_with_solar: calculateCostWithSolar(calculateSolarSize(formData.bill))
       .basic,
     cost_without_solar: calculateCostWithoutSolar(formData.bill),
@@ -147,16 +148,17 @@ export const quoteCreate = async (formData: any) => {
     },
     site_id: formData.siteId,
   };
-  console.log(JSON.stringify(quoteCreate));
+  console.log("quoteCreate", JSON.stringify(quoteCreate));
 
   const response = await fetch(`${API_URL}/quote/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(quoteCreate),
   });
-  console.log(response);
+  console.log("quoteCreate", response);
 
   const data = await response.json();
 
-  console.log(data);
+  console.log("quoteCreate", data.quote_id);
+  return data.quote_id;
 };

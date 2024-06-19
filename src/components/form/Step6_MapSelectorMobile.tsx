@@ -50,10 +50,10 @@ export function MobilePopupOne() {
             </svg>
 
             <div className="font-semibold text-2xl animate-in fade-in duration-1000">
-              Pin your roof
+              Drag the pin
             </div>
             <div className=" text-center font-medium animate-in fade-in duration-1000">
-              Drag the map to the center of your house,
+              Drag the pin to the center of your house,
               <br /> then click next
             </div>
             <button

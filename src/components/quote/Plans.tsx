@@ -5,7 +5,7 @@ import Drawer from "./Drawer";
 import SystemSize from "./SystemSize";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
-import { calculateCostWithSolar, calculateGovtSubsidy } from "@/lib/utils";
+import { calculateCostWithSolar, calculateAfterSubsidy } from "@/lib/utils";
 
 export default function Plans({
   setPlan,
@@ -45,17 +45,6 @@ export default function Plans({
       basic: calculateCostWithSolar(formState.solarSize).basic,
       standard: calculateCostWithSolar(formState.solarSize).standard,
       premium: calculateCostWithSolar(formState.solarSize).premium,
-    });
-    setSubsidyPrice({
-      basic: calculateGovtSubsidy(
-        calculateCostWithSolar(formState.solarSize).basic
-      ),
-      standard: calculateGovtSubsidy(
-        calculateCostWithSolar(formState.solarSize).standard
-      ),
-      premium: calculateGovtSubsidy(
-        calculateCostWithSolar(formState.solarSize).premium
-      ),
     });
   }, []);
 
@@ -106,7 +95,7 @@ export default function Plans({
                 {checkboxes.checkbox1 ? (
                   <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
                     {formState &&
-                      subsidyPrice.basic.toLocaleString("en-IN", {
+                      formState.subsidyPrice.basic.toLocaleString("en-IN", {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,
@@ -155,7 +144,7 @@ export default function Plans({
           </div>
           {/* card two */}
           <div
-            className={`rounded-3xl bg-[#F4F4F4] flex flex-col gap-2 py-4 px-4 animate-in fade-in duration-700 min-w-52 md:w-full border-[1px] border-[#FFCB00]`}
+            className={`rounded-3xl bg-[#F4F4F4] flex flex-col gap-2 py-4 px-4 animate-in fade-in duration-700 min-w-52 md:w-full`}
           >
             <h1 className="text-lg md:text-2xl">Standard Plan</h1>
             <div className="border-b-[1px]"></div>
@@ -199,7 +188,7 @@ export default function Plans({
                     className={`font-medium text-2xl animate-in fade-in duration-1000`}
                   >
                     {formState &&
-                      subsidyPrice.standard.toLocaleString("en-IN", {
+                      formState.subsidyPrice.standard.toLocaleString("en-IN", {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,
@@ -233,7 +222,7 @@ export default function Plans({
                 onChange={handleCheckboxChange}
               />
               <button
-                className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-[#FFCB00] text-black`}
+                className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white`}
                 onClick={() => {
                   setPlan("standard");
                   setSelectedPrice(formState.price.standard);
@@ -290,7 +279,7 @@ export default function Plans({
                 {checkboxes.checkbox3 ? (
                   <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
                     {formState &&
-                      subsidyPrice.premium.toLocaleString("en-IN", {
+                      formState.subsidyPrice.premium.toLocaleString("en-IN", {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,

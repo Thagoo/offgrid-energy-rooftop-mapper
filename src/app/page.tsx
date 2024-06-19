@@ -1,10 +1,11 @@
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbarHome";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main>
       <Navbar />
+
       <div className="py-8 md:px-20 px-12 flex flex-col md:gap-16 gap-8">
         <div className="flex flex-col gap-8 justify-center items-center">
           <div className="space-y-4 animate-in slide-in-from-top-10 duration-1000">
@@ -35,9 +36,12 @@ export default function Home() {
               >
                 Get quote now &nbsp; {" ->"}
               </Link>
-              <div className="underline cursor-pointer text-sm md:text-base text-nowrap">
-                Learn more
-              </div>
+              <Link
+                href={"tel:+919035061837"}
+                className="underline cursor-pointer text-sm md:text-base text-nowrap"
+              >
+                Speak to an Expert
+              </Link>
             </div>
           </div>
         </div>

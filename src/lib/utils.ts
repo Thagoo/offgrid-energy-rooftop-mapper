@@ -7,43 +7,43 @@ export const solarTips = [
   "Your location helps us understand data in terms of sunlight and temperature",
 ];
 
-export const plans = {
-  basic: [
-    { size: 1, price: 100000 },
-    { size: 2, price: 150000 },
-    { size: 3, price: 170000 },
-    { size: 4, price: 240000 },
-    { size: 5, price: 290000 },
-    { size: 6, price: 340000 },
-    { size: 7, price: 390000 },
-    { size: 8, price: 425000 },
-    { size: 9, price: 480000 },
-    { size: 10, price: 525000 },
-  ],
-  standard: [
-    { size: 1, price: 115000 },
-    { size: 2, price: 185000 },
-    { size: 3, price: 210000 },
-    { size: 4, price: 270000 },
-    { size: 5, price: 325000 },
-    { size: 6, price: 380000 },
-    { size: 7, price: 430000 },
-    { size: 8, price: 485000 },
-    { size: 9, price: 535000 },
-    { size: 10, price: 580000 },
-  ],
-  premium: [
-    { size: 1, price: 135000 },
-    { size: 2, price: 215000 },
-    { size: 3, price: 295000 },
-    { size: 4, price: 375000 },
-    { size: 5, price: 477000 },
-    { size: 6, price: 550000 },
-    { size: 7, price: 600000 },
-    { size: 8, price: 680000 },
-    { size: 9, price: 740000 },
-    { size: 10, price: 850000 },
-  ],
+export const plans: any = {
+  basic: {
+    1: 100000,
+    2: 150000,
+    3: 170000,
+    4: 240000,
+    5: 290000,
+    6: 340000,
+    7: 390000,
+    8: 425000,
+    9: 480000,
+    10: 525000,
+  },
+  standard: {
+    1: 115000,
+    2: 185000,
+    3: 210000,
+    4: 270000,
+    5: 325000,
+    6: 380000,
+    7: 430000,
+    8: 485000,
+    9: 535000,
+    10: 580000,
+  },
+  premium: {
+    1: 135000,
+    2: 215000,
+    3: 295000,
+    4: 375000,
+    5: 477000,
+    6: 550000,
+    7: 600000,
+    8: 680000,
+    9: 740000,
+    10: 850000,
+  },
 };
 
 export const calculateSolarSize = (bill: number) => {
@@ -85,29 +85,35 @@ export const calculateCostWithoutSolar = (bill: number) => {
 };
 
 export const calculateCostWithSolar = (size: number) => {
-  const [basic] = plans.basic.filter((plan) => plan.size == size);
-  const [standard] = plans.standard.filter((plan) => plan.size == size);
-  const [premium] = plans.premium.filter((plan) => plan.size == size);
-
   return {
-    basic: basic.price,
-    standard: standard.price,
-    premium: premium.price,
+    basic: plans.basic[size],
+    standard: plans.standard[size],
+    premium: plans.premium[size],
   };
 };
 
-export const calculateBreakEven = (bill: number) => {
-  const breakEven =
-    calculateGovtSubsidy(
-      calculateCostWithSolar(calculateSolarSize(bill)).basic
-    ) /
-    bill /
-    12;
-  return Math.round(breakEven);
+// export const calculateBreakEven = (bill: number) => {
+//   const breakEven =
+//     calculateAfterSubsidy(
+//       calculateCostWithSolar(calculateSolarSize(bill)).basic
+//     ) /
+//     bill /
+//     12;
+//   return Math.round(breakEven);
+// };
+
+export const calculateAfterSubsidy = (solarSize: number, price: number) => {
+  return price - calculateGovtSubsidy(solarSize);
 };
 
-export const calculateGovtSubsidy = (price: number) => {
-  return price - (price * 30) / 100;
+export const calculateGovtSubsidy = (solarSize: number) => {
+  if (solarSize === 1) {
+    return 30000;
+  }
+  if (solarSize === 2) {
+    return 60000;
+  }
+  return 78000;
 };
 
 export const calculateCo2 = (yearylyEnergy: number) => {
@@ -124,11 +130,15 @@ export const calculateLifetimeSavings = (bill: number) => {
   console.log("without solar", calculateCostWithoutSolar(bill));
   console.log(
     "with solar",
-    calculateGovtSubsidy(calculateCostWithSolar(calculateSolarSize(bill)).basic)
+    calculateAfterSubsidy(
+      calculateCostWithSolar(calculateSolarSize(bill)).basic
+    )
   );
   return (
     calculateCostWithoutSolar(bill) -
-    calculateGovtSubsidy(calculateCostWithSolar(calculateSolarSize(bill)).basic)
+    calculateAfterSubsidy(
+      calculateCostWithSolar(calculateSolarSize(bill)).basic
+    )
   );
 };
 export const calculateSolarPanels = (roofArea: number) => {

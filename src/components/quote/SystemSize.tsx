@@ -14,7 +14,7 @@ export default function SystemSize() {
 
   const router = useRouter();
   if (formState == null) {
-    router.replace("/form");
+    // router.replace("/form");
     return null;
   }
 
@@ -31,7 +31,7 @@ export default function SystemSize() {
       <div className="w-fit rounded-full border-[1px] flex px-5  justify-center py-1 items-center">
         <span className="font-semibold">
           <span className="text-xs">Solar System Size:</span>{" "}
-          {formState.solarSize} KW
+          {formState?.solarSize} KW
         </span>
       </div>
 

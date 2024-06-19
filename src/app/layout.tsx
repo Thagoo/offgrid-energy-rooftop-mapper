@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QuoteGeneratorProvider } from "@/context/QuoteGeneratorContext";
 import { FormStepProvider } from "@/context/FormStepContext";
+import { ContactDetailsProvider } from "@/context/ContactDetailsContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +33,9 @@ export default function RootLayout({
 
       <body className={inter.className}>
         <QuoteGeneratorProvider>
-          <FormStepProvider>{children}</FormStepProvider>
+          <ContactDetailsProvider>
+            <FormStepProvider>{children}</FormStepProvider>
+          </ContactDetailsProvider>
         </QuoteGeneratorProvider>
       </body>
     </html>

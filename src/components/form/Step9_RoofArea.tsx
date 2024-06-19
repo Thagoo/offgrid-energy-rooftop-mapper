@@ -1,9 +1,18 @@
 import LoadingSpinner from "@/app/ui/loading-spinner";
+import { ContactDetailsContext } from "@/context/ContactDetailsContext";
 import FormStepContext from "@/context/FormStepContext";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { creatSite } from "@/lib/action";
-import { calculateLifetimeSavings, calculateSolarPanels } from "@/lib/utils";
+import {
+  calculateAfterSubsidy,
+  calculateCostWithSolar,
+  calculateCostWithoutSolar,
+  calculateLifetimeSavings,
+  calculateSolarPanels,
+  calculateSolarSize,
+  calculateYearlyEnergy,
+} from "@/lib/utils";
 import React, { useContext, useState } from "react";
 
 export default function RoofArea() {
@@ -11,12 +20,54 @@ export default function RoofArea() {
   const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
+  const { contactDetails } = useContext<any>(ContactDetailsContext);
+
   const { goNext } = useContext(FormStepContext);
+
   const handleNext = async () => {
     setLoading(true);
+    updateFormData({ leadId: contactDetails.leadId });
     const siteId = await creatSite(formState);
     setLoading(false);
     updateFormData({ siteId: siteId });
+    updateFormData({
+      price: {
+        basic: calculateCostWithSolar(calculateSolarSize(formState.bill)).basic,
+        standard: calculateCostWithSolar(calculateSolarSize(formState.bill))
+          .standard,
+        premium: calculateCostWithSolar(calculateSolarSize(formState.bill))
+          .premium,
+      },
+      subsidyPrice: {
+        basic: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).basic
+        ),
+        standard: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).standard
+        ),
+        premium: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).premium
+        ),
+      },
+      lifetimeSavings:
+        calculateCostWithoutSolar(formState?.bill) -
+        calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(formState.solarSize).basic
+        ),
+      yearlyEnergy: calculateYearlyEnergy(formState.bill),
+      breakEven: (
+        calculateAfterSubsidy(
+          calculateSolarSize(formState?.bill),
+          calculateCostWithSolar(formState?.solarSize).basic
+        ) /
+        formState.bill /
+        12
+      ).toFixed(2),
+    });
     goNext();
   };
 

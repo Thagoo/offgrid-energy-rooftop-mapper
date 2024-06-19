@@ -9,7 +9,7 @@ import Bill from "@/components/form/Step4_Bill";
 import Places from "@/components/form/Step5_Places";
 import RoofType from "@/components/form/Step8_RoofType";
 import MapSelector from "@/components/maps/MapSelector";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbarForm";
 
 import { solarTips } from "@/lib/utils";
 
@@ -118,10 +118,10 @@ export default function Form() {
                   </svg>
 
                   <h1 className=" font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000">
-                    Pin your roof
+                    Drag the pin
                   </h1>
                   <p className=" text-[#868687] text-center animate-in slide-in-from-bottom-4 duration-1000">
-                    Drag the map to the center of your house, then click next
+                    Drag the pin to the center of your house, then click next
                   </p>
 
                   <button

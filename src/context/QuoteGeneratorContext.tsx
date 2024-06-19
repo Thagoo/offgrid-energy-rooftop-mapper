@@ -20,11 +20,7 @@ interface QuoteGeneratorForm {
   };
   roofArea: string;
   roofType: string;
-  personalDetails: {
-    email: string;
-    name: string;
-    phone_number: string;
-  };
+
   solarSize: number;
 }
 

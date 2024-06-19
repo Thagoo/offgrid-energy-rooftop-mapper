@@ -4,7 +4,7 @@ import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 import { quoteCreate, quoteDetails } from "@/lib/action";
 import {
-  calculateBreakEven,
+  calculateAfterSubsidy,
   calculateCostWithSolar,
   calculateCostWithoutSolar,
   calculateGovtSubsidy,
@@ -39,23 +39,11 @@ export default function Analysis({
     await quoteDetails(formState);
     setLoading(false);
 
+    const quoteId = await quoteCreate(formState);
     updateFormData({
-      solarSize: calculateSolarSize(formState.bill),
-      price: {
-        basic: calculateCostWithSolar(calculateSolarSize(formState.bill)).basic,
-        standard: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .standard,
-        premium: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .premium,
-      },
-      lifetimeSavings: calculateCostWithSolar(
-        calculateSolarSize(formState.bill)
-      ).basic,
-      yearlyEnergy: calculateYearlyEnergy(formState.bill),
-      breakEven: calculateBreakEven(formState.bill),
+      quoteId: quoteId,
     });
-    quoteCreate(formState);
-    goNext();
+
     router.push("/quote");
   };
 
@@ -95,14 +83,11 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {calculateLifetimeSavings(formState.bill).toLocaleString(
-                  "en-IN",
-                  {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  }
-                )}
+                {formState?.lifetimeSavings.toLocaleString("en-IN", {
+                  style: "currency",
+                  currency: "INR",
+                  maximumFractionDigits: 0,
+                })}
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 Lifetime savings
@@ -112,7 +97,7 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {calculateBreakEven(formState.bill)} years
+                {formState?.breakEven} years
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 Solar Breakeven
@@ -363,7 +348,8 @@ export default function Analysis({
             </div>
             <div className=" animate-in slide-in-from-bottom-2 duration-700">
               <h1 className="text-lg md:text-2xl font-medium">
-                {calculateGovtSubsidy(
+                {calculateAfterSubsidy(
+                  calculateSolarSize(formState.bill),
                   calculateCostWithSolar(calculateSolarSize(formState.bill))
                     .basic
                 ).toLocaleString("en-IN", {
@@ -381,7 +367,8 @@ export default function Analysis({
                 {(
                   calculateCostWithSolar(calculateSolarSize(formState.bill))
                     .basic -
-                  calculateGovtSubsidy(
+                  calculateAfterSubsidy(
+                    calculateSolarSize(formState.bill),
                     calculateCostWithSolar(calculateSolarSize(formState.bill))
                       .basic
                   )
