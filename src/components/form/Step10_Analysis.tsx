@@ -7,15 +7,9 @@ import {
   calculateAfterSubsidy,
   calculateCostWithSolar,
   calculateCostWithoutSolar,
-  calculateGovtSubsidy,
-  calculateLifetimeSavings,
   calculateSolarSize,
-  calculateSystemSize,
   calculateYearlyEnergy,
-  energyCovered,
 } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import BarGraph from "../bar-graph";

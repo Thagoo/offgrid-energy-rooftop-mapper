@@ -37,7 +37,7 @@ const Quotation = () => {
                 Here&apos;s 3 solar installation quotes
               </h3>
               <p className="text-gray-600">
-                For your house in Bangalore, Karnataka
+                For your house in {formState?.address}
               </p>
             </div>
             <div className="flex justify-between">
@@ -224,7 +224,7 @@ const Quotation = () => {
             </div>
           </section>
         </div>
-        <footer className="border-t p-2 py-2 bg-[#929DDB] text-white flex justify-between">
+        <footer className="border-t p-2 py-4 bg-[#929DDB] text-white flex justify-between">
           <p className="text-center text-sm">+91 91482 48898</p>
           <p className="text-center text-sm">www.getoffgrid.energy</p>
           <div></div>

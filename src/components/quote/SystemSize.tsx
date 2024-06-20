@@ -50,7 +50,7 @@ export default function SystemSize() {
         </svg>
         <span className="font-light text-[#868687] text-sm">
           Your recommended solar system size is {formState.solarSize} KW. <br />
-          You can adjust it as needed with our solar advisor
+          You can adjust it as needed with our solar advisor.
         </span>
       </p>
     </div>

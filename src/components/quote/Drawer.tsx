@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import SelectedPlan from "./SelectedPlan";
 import Link from "next/link";
+import PopupAlert from "../common/popup";
 
 const Drawer = ({
   plan,

@@ -1,30 +1,10 @@
-"use client";
 import Link from "next/link";
 import PopupAlert from "../common/popup";
 import { useState } from "react";
 
 const Navbar = () => {
-  const [showAlert, setShowAlert] = useState(false);
   return (
     <div className="md:px-20  py-3 bg-white drop-shadow-md px-5">
-      {showAlert && (
-        <PopupAlert onClick={() => setShowAlert(false)}>
-          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
-            <div className="text-sm md:text-lg text-center animate-in fade-in duration-1000 z-50">
-              We have received your details. Our team will get in touch with you
-              soon.
-            </div>
-            <div className="flex justify-between gap-6 items-center self-end">
-              <button
-                className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
-                onClick={() => setShowAlert(false)}
-              >
-                Done
-              </button>
-            </div>
-          </div>
-        </PopupAlert>
-      )}
       <div className="flex justify-between items-center">
         <div className="text-xl font-semibold">
           <Link href={"/"}>
@@ -102,6 +82,7 @@ const Navbar = () => {
         </div>
         <Link
           href={"tel:+919035061837"}
+          //   onClick={() => setShowAlert(true)}
           className="px-4 rounded-full flex gap-1 py-1 md:text-base text-sm items-center justify-center cursor-pointer"
         >
           <svg
@@ -116,7 +97,7 @@ const Navbar = () => {
               fill="#212121"
             />
           </svg>
-          <span className="font-medium">(+91) 9148248898</span>
+          <span className="font-medium">(+91) 9035061837</span>
         </Link>
       </div>
     </div>

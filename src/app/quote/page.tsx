@@ -18,9 +18,6 @@ import { useReactToPrint } from "react-to-print";
 
 const images = [
   {
-    src: "/assets/similar-projects/image-1.svg",
-  },
-  {
     src: "/assets/similar-projects/installation-1.jpeg",
   },
   {
@@ -31,6 +28,9 @@ const images = [
   },
   {
     src: "/assets/similar-projects/installation-4.png",
+  },
+  {
+    src: "/assets/similar-projects/image-1.svg",
   },
 ];
 
@@ -58,7 +58,7 @@ export default function Quote() {
     router.replace("/form");
   };
   if (!formState) {
-    router.push("/form");
+    // router.push("/form");
     return;
   }
 
@@ -148,7 +148,7 @@ export default function Quote() {
       <div className="py-5 md:px-20 flex flex-col gap-5 bg-[#F4F4F4]">
         <div className="flex flex-col items-center gap-5 px-5 md:px-0">
           <h1 className="font-medium text-2xl text-center animate-in fade-in duration-1000">
-            Here’s 3 solar installation quotes
+            Here’s 3 quotes
           </h1>
           <p className="md:text-base text-sm font-light text-[#868687] animate-in fade-in duration-700 text-center">
             For your house in {formState.address}
@@ -251,7 +251,7 @@ export default function Quote() {
           <div className="text-center">
             <h1 className="font-medium text-xl">Next Steps</h1>
             <p className="font-normal text-sm text-[#868687]">
-              Checkout a few of our installations
+              Here&apos;s Easy four steps procedure
             </p>
           </div>
           <div className="flex gap-4 md:gap-5 overflow-auto w-full">

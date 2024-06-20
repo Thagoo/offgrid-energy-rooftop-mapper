@@ -1,11 +1,25 @@
+"use client";
+import PopupAlert from "@/components/common/popup";
 import Navbar from "@/components/navbar/navbarHome";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [showAlert, setShowAlert] = useState(false);
   return (
     <main>
-      <Navbar />
-
+      <Navbar setShowAlert={setShowAlert} />
+      {showAlert && (
+        <PopupAlert>
+          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
+            <div className="text-lg text-center animate-in fade-in duration-1000 z-50">
+              We have received your details. Our team will get in touch with you
+              soon.
+            </div>
+            <div className="flex justify-between gap-6 items-center self-end"></div>
+          </div>
+        </PopupAlert>
+      )}
       <div className="py-8 md:px-20 px-12 flex flex-col md:gap-16 gap-8">
         <div className="flex flex-col gap-8 justify-center items-center">
           <div className="space-y-4 animate-in slide-in-from-top-10 duration-1000">

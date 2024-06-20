@@ -24,14 +24,22 @@ export default function SavingsEstimation() {
       <div className="grid grid-cols-2 grid-rows-3 w-full border-[1px] rounded-2xl">
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-medium">
-            ₹{formState?.bill.toLocaleString()}
+            {formState?.bill.toLocaleString("en-IN", {
+              style: "currency",
+              currency: "INR",
+              maximumFractionDigits: 0,
+            })}
           </h1>
           <p className="text-xs md:text-sm text-[#868687]">Monthly Savings</p>
         </div>
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center border-b-[1px] border-dashed">
           <div>
             <h1 className="text-2xl font-medium text-nowrap">
-              ₹{formState?.lifetimeSavings.toLocaleString()}
+              {formState?.lifetimeSavings.toLocaleString("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0,
+              })}
             </h1>
             <p className="text-xs md:text-sm text-[#868687] ">
               Lifetime Savings
@@ -45,7 +53,10 @@ export default function SavingsEstimation() {
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed">
           <div className="md:px-8 md:py-4 py-3 px-3 space-y-2 col-span-2 text-nowrap">
             <h1 className="text-2xl font-medium">
-              {formState.yearlyEnergy.toLocaleString()} kWh
+              {formState.yearlyEnergy.toLocaleString("en-IN", {
+                maximumFractionDigits: 0,
+              })}{" "}
+              kWh
             </h1>
             <p className="text-xs md:text-sm text-[#868687]">
               Annual Energy Production
@@ -54,16 +65,21 @@ export default function SavingsEstimation() {
         </div>
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-medium">
-            {Math.round(calculateTressPlanted(formState.yearlyEnergy))}
+            {Math.round(
+              calculateTressPlanted(formState.yearlyEnergy)
+            ).toLocaleString()}
           </h1>
           <p className="text-xs md:text-sm text-[#868687]">Trees Planted</p>
         </div>
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed text-nowrap">
           <div>
             <h1 className="text-2xl font-medium">
-              {Math.round(
-                calculateCo2(formState.yearlyEnergy)
-              ).toLocaleString()}{" "}
+              {Math.round(calculateCo2(formState.yearlyEnergy)).toLocaleString(
+                "en-IN",
+                {
+                  maximumFractionDigits: 0,
+                }
+              )}{" "}
               tons
             </h1>
             <p className="text-xs md:text-sm text-[#868687]">CO2 Saved</p>
