@@ -4,13 +4,14 @@ import "./globals.css";
 import { QuoteGeneratorProvider } from "@/context/QuoteGeneratorContext";
 import { FormStepProvider } from "@/context/FormStepContext";
 import { ContactDetailsProvider } from "@/context/ContactDetailsContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Offgird Energy",
-  description: "Offgrid installs solar in an all new way.",
-  metadataBase: new URL("https://offgrid-website.vercel.app/"),
+  title: "Quote | Offgrid",
+  description: "Find the right price for your solar in few clicks",
+  metadataBase: new URL("https://quote.getoffgrid.vercel.app/"),
   openGraph: {
     images: "/assets/offgrid-favicon.png",
   },
@@ -26,6 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <GoogleAnalytics gaId="AW-16617404215" />
+
       {/* <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y&libraries=places,drawing&callback=initMap"
         async
