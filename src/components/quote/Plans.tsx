@@ -144,9 +144,9 @@ export default function Plans({
           </div>
           {/* card two */}
           <div
-            className={`rounded-3xl bg-[#F4F4F4] flex flex-col gap-2 py-4 px-4 animate-in fade-in duration-700 min-w-52 md:w-full`}
+            className={`rounded-3xl bg-[#F4F4F4] flex flex-col justify-between gap-2 py-4 px-5 animate-in fade-in duration-500 min-w-52 md:w-full`}
           >
-            <h1 className="text-lg md:text-2xl">Standard Plan</h1>
+            <h1 className="md:text-2xl text-lg">Standard Plan</h1>
             <div className="border-b-[1px]"></div>
             <p className="text-[#868687] text-sm ">
               Offers a good balance between affordability and features
@@ -172,21 +172,18 @@ export default function Plans({
               <div>
                 <Image
                   src={"/assets/panel.svg"}
-                  alt="waree"
+                  alt="solar"
                   width={114}
                   height={140}
                   loading="eager"
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col md:gap-3 gap-2">
               <p>Quotation Price</p>
-
-              <div className="flex md:flex-row flex-col items-start md:items-center md:gap-6 gap-4 animate-in fade-in duration-1000">
+              <div className="flex md:flex-row flex-col items-start md:items-center md:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox2 ? (
-                  <h1
-                    className={`font-medium text-2xl animate-in fade-in duration-1000`}
-                  >
+                  <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
                     {formState &&
                       formState.subsidyPrice.standard.toLocaleString("en-IN", {
                         style: "currency",
@@ -206,7 +203,7 @@ export default function Plans({
                 )}
 
                 {checkboxes.checkbox2 && (
-                  <h1 className="font-medium line-through  text-[#868687] animate-in fade-in duration-1000">
+                  <h1 className="font-medium line-through text-[#868687] animate-in fade-in duration-1000">
                     {formState &&
                       price.standard.toLocaleString("en-IN", {
                         style: "currency",
@@ -216,13 +213,15 @@ export default function Plans({
                   </h1>
                 )}
               </div>
-              <SubsidyCheckbox
-                id="checkbox2"
-                checked={checkboxes.checkbox2}
-                onChange={handleCheckboxChange}
-              />
+              <span className="flex items-center gap-2 text-xs md:text-base">
+                <SubsidyCheckbox
+                  id="checkbox2"
+                  checked={checkboxes.checkbox2}
+                  onChange={handleCheckboxChange}
+                />
+              </span>
               <button
-                className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white`}
+                className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white `}
                 onClick={() => {
                   setPlan("standard");
                   setSelectedPrice(formState.price.standard);

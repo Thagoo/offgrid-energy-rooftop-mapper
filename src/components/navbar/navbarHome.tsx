@@ -1,50 +1,29 @@
 "use client";
 import Link from "next/link";
+import PopupAlert from "../common/popup";
 import { useState } from "react";
 
 const Navbar = () => {
   const [showAlert, setShowAlert] = useState(false);
-
   return (
-    <div className="md:px-20  py-3 bg-white z-50 drop-shadow-md px-5">
+    <div className="md:px-20  py-3 bg-white drop-shadow-md px-5">
       {showAlert && (
-        <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen z-50" />
-          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[40%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
-            <div className="font-medium text-lg text-center md:text-2xl animate-in fade-in duration-1000 flex md:gap-2 md:items-center">
-              <svg
-                width="32"
-                height="33"
-                viewBox="0 0 32 33"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M17.8014 5.5275L28.7339 24.5112C29.5001 25.8487 28.5101 27.5 26.9326 27.5H5.06763C3.49013 27.5 2.50013 25.8487 3.26638 24.5112L14.1989 5.5275C14.9864 4.1575 17.0139 4.1575 17.8014 5.5275Z"
-                  stroke="#212121"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16 18.5V13.5"
-                  stroke="#212121"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M16 24.5C16.8284 24.5 17.5 23.8284 17.5 23C17.5 22.1716 16.8284 21.5 16 21.5C15.1716 21.5 14.5 22.1716 14.5 23C14.5 23.8284 15.1716 24.5 16 24.5Z"
-                  fill="#212121"
-                />
-              </svg>
-              Are you sure you want to restart?
+        <PopupAlert onClick={() => setShowAlert(false)}>
+          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
+            <div className="text-sm md:text-lg text-center animate-in fade-in duration-1000 z-50">
+              We have received your details. Our team will get in touch with you
+              soon.
             </div>
-            <div className="text-sm md:text-lg text-center animate-in fade-in duration-1000">
-              This will erase all the selections which you made.
+            <div className="flex justify-between gap-6 items-center self-end">
+              <button
+                className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                onClick={() => setShowAlert(false)}
+              >
+                Done
+              </button>
             </div>
           </div>
-        </>
+        </PopupAlert>
       )}
       <div className="flex justify-between items-center">
         <div className="text-xl font-semibold">
@@ -123,7 +102,6 @@ const Navbar = () => {
         </div>
         <Link
           href={"tel:+919035061837"}
-          //   onClick={() => setShowAlert(true)}
           className="px-4 rounded-full flex gap-1 py-1 md:text-base text-sm items-center justify-center cursor-pointer"
         >
           <svg

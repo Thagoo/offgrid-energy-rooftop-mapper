@@ -9,13 +9,14 @@ export default function Bill() {
   const { formState, setFormState, updateFormData } = useContext<any>(
     QuoteGeneratorContext
   );
-  const [bill, setBill] = useState(0);
+  const [bill, setBill] = useState(formState?.bill);
   const { goNext } = useContext(FormStepContext);
 
   const hanldeSubmit = (e: any) => {
     e.preventDefault();
 
     updateFormData({ bill: bill, solarSize: calculateSolarSize(bill) });
+
     goNext();
   };
 
@@ -32,6 +33,7 @@ export default function Bill() {
           onChange={(e) => setBill(e.target.value as any)}
           className="px-10 py-4 rounded-full w-full bg-white border-none outline-none"
           placeholder="Enter Value ₹"
+          defaultValue={formState?.bill}
         />
         <button
           type="submit"

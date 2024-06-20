@@ -79,7 +79,7 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
             Phone Number
           </label>
           <input
-            type="text"
+            type="tel"
             className={`border-2 ${
               validationError?.errors?.phone_number
                 ? "border-red-300"

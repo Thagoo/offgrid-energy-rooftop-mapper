@@ -37,16 +37,59 @@ export default function Analysis({
   const handleNext = async () => {
     setLoading(true);
     await quoteDetails(formState);
-    setLoading(false);
 
     const quoteId = await quoteCreate(formState);
     updateFormData({
       quoteId: quoteId,
     });
-
+    setLoading(false);
     router.push("/quote");
   };
 
+  useEffect(() => {
+    updateFormData({
+      price: {
+        basic: calculateCostWithSolar(calculateSolarSize(formState.bill)).basic,
+        standard: calculateCostWithSolar(calculateSolarSize(formState.bill))
+          .standard,
+        premium: calculateCostWithSolar(calculateSolarSize(formState.bill))
+          .premium,
+      },
+      subsidyPrice: {
+        basic: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).basic
+        ),
+        standard: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).standard
+        ),
+        premium: calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(calculateSolarSize(formState.bill)).premium
+        ),
+      },
+      lifetimeSavings:
+        calculateCostWithoutSolar(formState?.bill) -
+        calculateAfterSubsidy(
+          calculateSolarSize(formState.bill),
+          calculateCostWithSolar(formState.solarSize).basic
+        ),
+      yearlyEnergy: calculateYearlyEnergy(formState.bill),
+      breakEven: (
+        calculateAfterSubsidy(
+          calculateSolarSize(formState?.bill),
+          calculateCostWithSolar(formState?.solarSize).basic
+        ) /
+        formState.bill /
+        12
+      ).toFixed(2),
+    });
+  }, []);
+
+  if (!formState?.lifetimeSavings) {
+    return <div>Loading</div>;
+  }
   return (
     <div className="flex flex-col gap-6 h-dvh pb-20 hide-scrollbar overflow-y-auto pt-4 md:pb-20 w-full">
       <div className="rounded-2xl bg-white py-5 px-4 md:px-6 flex flex-col gap-2 md:gap-3 drop-shadow-3xl animate-in fade-in duration-700">
@@ -83,11 +126,12 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {formState?.lifetimeSavings.toLocaleString("en-IN", {
-                  style: "currency",
-                  currency: "INR",
-                  maximumFractionDigits: 0,
-                })}
+                {formState &&
+                  formState?.lifetimeSavings.toLocaleString("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                    maximumFractionDigits: 0,
+                  })}
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 Lifetime savings

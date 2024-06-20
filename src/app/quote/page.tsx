@@ -1,4 +1,5 @@
 "use client";
+import PopupAlert from "@/components/common/popup";
 import Navbar from "@/components/navbar/navbarForm";
 import Drawer from "@/components/quote/Drawer";
 import Quotation from "@/components/quote/PdfComponent";
@@ -41,7 +42,8 @@ export default function Quote() {
   const { setCurrentStep } = useContext(FormStepContext);
   const [plan, setPlan] = useState("");
   const [selectedPrice, setSelectedPrice] = useState();
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlertRestart, setShowAlertRestart] = useState(false);
+  const [showAlertVisit, setShowAlertVisit] = useState(false);
   const printContentRef = useRef<any>();
 
   const handlePrint = useReactToPrint({
@@ -56,7 +58,7 @@ export default function Quote() {
     router.replace("/form");
   };
   if (!formState) {
-    //router.push("/form");
+    router.push("/form");
     return;
   }
 
@@ -69,7 +71,25 @@ export default function Quote() {
         setPlan={setPlan}
         price={selectedPrice}
       />
-      {showAlert && (
+      {showAlertVisit && (
+        <PopupAlert onClick={() => setShowAlertVisit(false)}>
+          <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
+            <div className="text-lg text-center animate-in fade-in duration-1000 z-50">
+              We have received your details. Our team will get in touch with you
+              soon.
+            </div>
+            <div className="flex justify-between gap-6 items-center self-end">
+              <button
+                className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                onClick={() => setShowAlertVisit(false)}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </PopupAlert>
+      )}
+      {showAlertRestart && (
         <>
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen z-50" />
           <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[40%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
@@ -108,7 +128,7 @@ export default function Quote() {
             <div className="flex justify-between gap-6 items-center self-end">
               <button
                 className="animate-in fade-in duration-1000"
-                onClick={() => setShowAlert(false)}
+                onClick={() => setShowAlertRestart(false)}
               >
                 Cancel
               </button>
@@ -136,7 +156,7 @@ export default function Quote() {
           <div className="flex md:gap-7 gap-3 animate-in fade-in duration-500">
             <button
               onClick={() => {
-                setShowAlert(true);
+                setShowAlertRestart(true);
               }}
               className="transition ease-in-out delay-150 hover:-translate-y-[2px] hover:scale-10 border border-black px-3 py-2 rounded-full flex gap-2 items-center text-sm text-nowrap"
             >
@@ -260,7 +280,7 @@ export default function Quote() {
                 You&apos;ll receive a clear proposal outlining the system&apos;s
                 benefits and the potential cost savings.
               </p>
-              <h1>Done</h1>
+              <h1 className="mt-auto">Done</h1>
             </div>
             {/* card two */}
             <div className="rounded-2xl p-5 flex flex-col gap-2 bg-[#F4F4F4] border-[1px] border-[#FFCB00] items-start md:min-w-[20vw] min-w-[70vw]">
@@ -294,12 +314,12 @@ export default function Quote() {
                 answer your questions. This visit ensures your solar system
                 design perfectly matches your needs.
               </p>
-              <Link
-                href={"tel:+919035061837"}
-                className="rounded-3xl px-4 py-2 bg-[#FFCB00] text-sm"
+              <button
+                onClick={() => setShowAlertVisit(true)}
+                className="mt-auto rounded-3xl px-4 py-2 bg-[#FFCB00] text-sm"
               >
                 Schedule a Visit
-              </Link>
+              </button>
             </div>
             {/* card three*/}
             <div className="rounded-2xl p-5 flex flex-col gap-2 bg-[#F4F4F4] md:min-w-[20vw] min-w-[70vw]">
@@ -322,7 +342,7 @@ export default function Quote() {
                 application for hassle-free installation. We offer flexible
                 financing options to make solar power accessible to everyone.
               </p>
-              <h1>1 day</h1>
+              <h1 className="mt-auto">1 day</h1>
             </div>
             {/* card four*/}
             <div className="rounded-2xl p-5 flex flex-col gap-2 bg-[#F4F4F4] md:min-w-[20vw] min-w-[70vw]">
@@ -350,7 +370,7 @@ export default function Quote() {
                 system activation and monitoring. Enjoy clean energy and watch
                 your savings grow!
               </p>
-              <h1>4 days</h1>
+              <h1 className="mt-auto">4 days</h1>
             </div>
           </div>
         </div>

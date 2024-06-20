@@ -1,7 +1,6 @@
 "use server";
 import z from "zod";
 import {
-  calculateBreakEven,
   calculateCostWithSolar,
   calculateCostWithoutSolar,
   calculateSolarSize,
@@ -45,6 +44,11 @@ export const createContact = async (prevState: any, formData: any) => {
   };
 
   try {
+    // return {
+    //   success: true,
+    //   userData: userData,
+    //   leadId: "data.lead_id",
+    // };
     const response = await fetch(`${API_URL}/leads/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

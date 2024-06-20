@@ -30,44 +30,7 @@ export default function RoofArea() {
     const siteId = await creatSite(formState);
     setLoading(false);
     updateFormData({ siteId: siteId });
-    updateFormData({
-      price: {
-        basic: calculateCostWithSolar(calculateSolarSize(formState.bill)).basic,
-        standard: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .standard,
-        premium: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .premium,
-      },
-      subsidyPrice: {
-        basic: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).basic
-        ),
-        standard: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).standard
-        ),
-        premium: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).premium
-        ),
-      },
-      lifetimeSavings:
-        calculateCostWithoutSolar(formState?.bill) -
-        calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(formState.solarSize).basic
-        ),
-      yearlyEnergy: calculateYearlyEnergy(formState.bill),
-      breakEven: (
-        calculateAfterSubsidy(
-          calculateSolarSize(formState?.bill),
-          calculateCostWithSolar(formState?.solarSize).basic
-        ) /
-        formState.bill /
-        12
-      ).toFixed(2),
-    });
+
     goNext();
   };
 

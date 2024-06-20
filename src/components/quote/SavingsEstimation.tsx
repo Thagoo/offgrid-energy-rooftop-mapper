@@ -17,54 +17,56 @@ export default function SavingsEstimation() {
 
   return (
     <div className="bg-white rounded-3xl flex flex-col gap-3 items-center px-4 py-5 md:py-5 md:px-20 md:w-3/4">
-      <h1 className="font-medium text-xl">Savings From Solar</h1>
-      <p className="text-light text-sm text-[#868687] text-center">
+      <h1 className="font-medium text-2xl">Savings From Solar</h1>
+      <p className="text-sm text-[#868687] text-center">
         Below are the calculated returns and savings by switching to solar.
       </p>
-      <div className="grid grid-cols-2 grid-rows-3  w-full border-[1px] rounded-2xl">
-        <div className="px-8 py-4 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
-          <h1 className="text-2xl font-semibold">
+      <div className="grid grid-cols-2 grid-rows-3 w-full border-[1px] rounded-2xl">
+        <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
+          <h1 className="text-2xl font-medium">
             ₹{formState?.bill.toLocaleString()}
           </h1>
-          <p className="text-sm text-[#868687]">Monthly Savings</p>
+          <p className="text-xs md:text-sm text-[#868687]">Monthly Savings</p>
         </div>
-        <div className="px-8 py-4 flex justify-center items-center border-b-[1px] border-dashed">
+        <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center border-b-[1px] border-dashed">
           <div>
-            <h1 className="text-2xl font-semibold text-nowrap">
+            <h1 className="text-2xl font-medium text-nowrap">
               ₹{formState?.lifetimeSavings.toLocaleString()}
             </h1>
-            <p className="text-sm text-[#868687] ">Lifetime Savings</p>
+            <p className="text-xs md:text-sm text-[#868687] ">
+              Lifetime Savings
+            </p>
           </div>
         </div>
-        <div className="px-8 py-4 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
-          <h1 className="text-2xl font-semibold">
-            {formState.breakEven} years
-          </h1>
-          <p className="text-sm text-[#868687]">Payback Period</p>
+        <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
+          <h1 className="text-2xl font-medium">{formState.breakEven} years</h1>
+          <p className="text-xs md:text-sm text-[#868687]">Payback Period</p>
         </div>
-        <div className="px-8 py-4 flex justify-center items-center  border-b-[1px] border-dashed">
-          <div className="px-8 py-4 space-y-2 col-span-2">
-            <h1 className="text-2xl font-semibold">
+        <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed">
+          <div className="md:px-8 md:py-4 py-3 px-3 space-y-2 col-span-2 text-nowrap">
+            <h1 className="text-2xl font-medium">
               {formState.yearlyEnergy.toLocaleString()} kWh
             </h1>
-            <p className="text-sm text-[#868687]">Annual Energy Production</p>
+            <p className="text-xs md:text-sm text-[#868687]">
+              Annual Energy Production
+            </p>
           </div>
         </div>
-        <div className="px-8 py-4 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
-          <h1 className="text-2xl font-semibold">
+        <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
+          <h1 className="text-2xl font-medium">
             {Math.round(calculateTressPlanted(formState.yearlyEnergy))}
           </h1>
-          <p className="text-sm text-[#868687]">Trees Planted</p>
+          <p className="text-xs md:text-sm text-[#868687]">Trees Planted</p>
         </div>
-        <div className="px-8 py-4 flex justify-center items-center  border-b-[1px] border-dashed text-nowrap">
+        <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed text-nowrap">
           <div>
-            <h1 className="text-2xl font-semibold">
+            <h1 className="text-2xl font-medium">
               {Math.round(
                 calculateCo2(formState.yearlyEnergy)
               ).toLocaleString()}{" "}
               tons
             </h1>
-            <p className="text-sm text-[#868687]">CO2 Saved</p>
+            <p className="text-xs md:text-sm text-[#868687]">CO2 Saved</p>
           </div>
         </div>
       </div>

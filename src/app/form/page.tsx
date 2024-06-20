@@ -213,7 +213,7 @@ export default function Form() {
                   </button>
                   <button
                     className="mt-2 text-[#868687] underline animate-in slide-in-from-bottom-6 duration-1000"
-                    onClick={() => setCurrentStep(11)}
+                    onClick={() => setCurrentStep(10)}
                   >
                     Skip
                   </button>

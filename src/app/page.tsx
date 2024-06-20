@@ -29,7 +29,7 @@ export default function Home() {
               Luckily the sun also does.
             </div>
 
-            <div className="flex flex-row gap-2 justify-between items-center">
+            <div className="flex flex-col md:flex-row gap-2 justify-between items-start md:items-center">
               <Link
                 href={"/form"}
                 className="md:px-6 md:py-4 px-3 py-2 rounded-full bg-black text-white text-sm md:text-base text-nowrap"
@@ -38,7 +38,7 @@ export default function Home() {
               </Link>
               <Link
                 href={"tel:+919035061837"}
-                className="underline cursor-pointer text-sm md:text-base text-nowrap"
+                className="mx-2 md:mx-0 underline cursor-pointer text-sm md:text-base text-nowrap"
               >
                 Speak to an Expert
               </Link>
