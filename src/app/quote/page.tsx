@@ -79,12 +79,13 @@ export default function Quote() {
               soon.
             </div>
             <div className="flex justify-between gap-6 items-center self-end">
-              <button
+              <Link
                 className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
                 onClick={() => setShowAlertVisit(false)}
+                href={"https://getoffgrid.energy"}
               >
-                Done
-              </button>
+                Visit Website
+              </Link>
             </div>
           </div>
         </PopupAlert>
