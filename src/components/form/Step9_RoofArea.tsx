@@ -17,16 +17,13 @@ import React, { useContext, useState } from "react";
 
 export default function RoofArea() {
   const [loading, setLoading] = useState(false);
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
-  const { contactDetails } = useContext<any>(ContactDetailsContext);
+  const { formState, updateFormData } = useContext<any>(QuoteGeneratorContext);
 
   const { goNext } = useContext(FormStepContext);
 
   const handleNext = async () => {
     setLoading(true);
-    updateFormData({ leadId: contactDetails.leadId });
+
     const siteId = await creatSite(formState);
     setLoading(false);
     updateFormData({ siteId: siteId });

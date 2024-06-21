@@ -16,6 +16,7 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
   const { contactDetails, updateContactDetails } = useContext<any>(
     ContactDetailsContext
   );
+  const { updateFormData } = useContext<any>(QuoteGeneratorContext);
 
   useEffect(() => {
     if (state?.errors) {
@@ -25,6 +26,7 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
         personalDetails: state.userData,
         leadId: state.leadId,
       });
+      updateFormData({ leadId: state.leadId });
     }
   }, [state]);
 

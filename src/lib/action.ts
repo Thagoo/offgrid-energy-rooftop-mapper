@@ -114,7 +114,7 @@ export const quoteDetails = async (formData: any) => {
   const quoteData = {
     annual_energy_gen: calculateYearlyEnergy(formData.bill),
     annual_sunshine: 3650,
-    break_even_period: formData.breakEven,
+    break_even_period: parseFloat(formData.breakEven),
     cost_with_solar: calculateCostWithSolar(calculateSolarSize(formData.bill))
       .basic,
     cost_without_solar: calculateCostWithoutSolar(formData.bill),
