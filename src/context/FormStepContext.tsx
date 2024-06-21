@@ -6,13 +6,14 @@ const FormStepContext = createContext<any>(0);
 
 // Create a provider component
 export const FormStepProvider = ({ children }: { children: any }) => {
-  const [currentStep, setCurrentStep] = useState<any>(0);
+  const [currentStep, setCurrentStep] = useState<any>();
 
   const goNext = () => setCurrentStep((prevState: number) => prevState + 1);
   const goBack = () => setCurrentStep((prevState: number) => prevState - 1);
 
   useEffect(() => {
     const savedStep = localStorage.getItem("formStep");
+    setCurrentStep(0);
     if (savedStep) {
       setCurrentStep(parseInt(savedStep, 10) || 0);
     }
