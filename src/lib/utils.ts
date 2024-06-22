@@ -47,7 +47,7 @@ export const plans: any = {
 };
 
 export const calculateSolarSize = (bill: number) => {
-  const perUnit = 7;
+  const perUnit = 8.4;
   const monthlyConsumtion = bill / perUnit;
   const dailyConsumption = monthlyConsumtion / 30;
   const effectiveDailySunshineHrs = 4;

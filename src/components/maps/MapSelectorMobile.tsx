@@ -292,7 +292,7 @@ export default function MapSelectorMobile() {
           </button>
           <button
             className=" mt-2 hover:underline animate-in fade-in duration-1000"
-            onClick={() => setCurrentStep(11)}
+            onClick={() => setCurrentStep(10)}
           >
             Skip
           </button>

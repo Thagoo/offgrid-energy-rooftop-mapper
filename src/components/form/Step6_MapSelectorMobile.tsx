@@ -64,7 +64,7 @@ export function MobilePopupOne() {
             </button>
             <button
               className="text-white mt-2 underline animate-in fade-in duration-1000"
-              onClick={() => setCurrentStep(11)}
+              onClick={() => setCurrentStep(10)}
             >
               Skip
             </button>
@@ -106,7 +106,7 @@ export function MobilePopupTwo() {
             </button>
             <button
               className="text-white mt-2 hover:underline animate-in fade-in duration-1000"
-              onClick={() => setCurrentStep(11)}
+              onClick={() => setCurrentStep(10)}
             >
               Skip
             </button>
@@ -172,7 +172,7 @@ export function MobilePopupThree() {
             </button>
             <button
               className="text-white mt-2 hover:underline animate-in fade-in duration-1000"
-              onClick={() => setCurrentStep(11)}
+              onClick={() => setCurrentStep(10)}
             >
               Skip
             </button>
