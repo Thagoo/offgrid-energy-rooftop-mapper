@@ -59,7 +59,7 @@ export default function MapSelectorMobile() {
           (vertex: any) => new google.maps.LatLng(vertex.lat, vertex.lng)
         )
       );
-      updateFormData({ roofArea: area });
+      updateFormData({ roofCoordinates: vertices, roofArea: area });
       goNext();
     } else {
       setPolygonArea(0);
@@ -97,7 +97,7 @@ export default function MapSelectorMobile() {
     }
   };
   const resetVertex = () => {
-    setVertices([currentVertex]);
+    setVertices([]);
     setNextEdgeEnd(null); // Reset next edge when vertex is placed
   };
   useEffect(() => {
@@ -142,7 +142,6 @@ export default function MapSelectorMobile() {
     console.log("Stick Update: ", stick);
     handleJoystickMove(stick.direction);
   };
-
   const handleStop = () => {};
 
   return (
@@ -285,8 +284,9 @@ export default function MapSelectorMobile() {
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
           <button
-            className="py-2 text-[#1D7739] "
+            className="py-2 text-[#1D7739] disabled:opacity-40"
             onClick={calculatePolygonArea}
+            disabled={!(vertices.length > 2)}
           >
             Mark as Complete
           </button>

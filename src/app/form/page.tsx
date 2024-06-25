@@ -13,7 +13,7 @@ import Navbar from "@/components/navbar/navbarForm";
 
 import { solarTips } from "@/lib/utils";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import RoofArea from "@/components/form/Step9_RoofArea";
 import FormStepContext from "@/context/FormStepContext";
@@ -25,14 +25,14 @@ import {
 import InstructionModal from "@/components/modal";
 import MapSelectorMobile from "@/components/maps/MapSelectorMobile";
 import { useRouter } from "next/navigation";
+import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 export default function Form() {
   const { currentStep, setCurrentStep, goNext, goBack } =
     useContext(FormStepContext);
-  const router = useRouter();
-  const handleReDraw = () => {
-    setCurrentStep(6);
-  };
+
+  const { formState } = useContext<any>(QuoteGeneratorContext);
+
   return (
     <>
       <main className="flex md:flex-row flex-col w-full h-dvh relative overflow-y-hidden">
@@ -126,7 +126,6 @@ export default function Form() {
 
                   <button
                     className="hidden md:flex animate-in slide-in-from-bottom-2 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
-                    type="button"
                     onClick={() => goNext()}
                   >
                     Next <span>&#8594;</span>
@@ -206,8 +205,9 @@ export default function Form() {
                   </div>
 
                   <button
-                    className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2"
+                    className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2 disabled:opacity-60"
                     onClick={() => setCurrentStep(currentStep + 1)}
+                    disabled={!(formState?.roofCoordinates?.length > 0)}
                   >
                     Next <span>&#8594;</span>
                   </button>

@@ -56,7 +56,7 @@ export const calculateSolarSize = (bill: number) => {
 };
 
 export const calculateYearlyEnergy = (bill: number) => {
-  const yearlySunshineHrs = 3650;
+  const yearlySunshineHrs = 2461;
   const solarSize = calculateSolarSize(bill);
   const yearlyEnergyGenerated = yearlySunshineHrs * solarSize;
   return Math.ceil(yearlyEnergyGenerated);

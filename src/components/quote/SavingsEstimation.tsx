@@ -24,7 +24,7 @@ export default function SavingsEstimation() {
       <div className="grid grid-cols-2 grid-rows-3 w-full border-[1px] rounded-2xl">
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-medium">
-            {formState?.bill.toLocaleString("en-IN", {
+            {parseInt(formState?.bill).toLocaleString("en-IN", {
               style: "currency",
               currency: "INR",
               maximumFractionDigits: 0,
