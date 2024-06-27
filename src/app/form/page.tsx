@@ -67,7 +67,7 @@ export default function Form() {
               </li>
             ))}
           </ol>
-          <div className="flex-1 w-full flex justify-center items-start md:items-center md:pt-0 pt-5 bg-[#F4F4F4] px-5 md:px-20">
+          <div className="flex-1 w-full flex justify-center items-start md:items-center md:pt-0 bg-[#F4F4F4] px-5 md:px-20">
             {currentStep === 0 && <ContactDetails goNext={goNext} />}
             {currentStep === 1 && <SiteType />}
             {currentStep === 2 && <Floors />}
@@ -335,28 +335,21 @@ export default function Form() {
               )}
 
               {/* Joystick map */}
-              {currentStep >= 7 && currentStep < 9 && (
-                <div className="md:hidden">
-                  <MapSelectorMobile />
-                  {currentStep < 11 && currentStep > 0 && (
-                    <div>
-                      <div className="absolute md:left-20 md:bottom-10 bottom-4 left-5 py-2 px-4 bg-white bg-opacity-10 rounded-3xl z-0 backdrop-blur-sm blur-safari font-medium animate-in slide-in-from-top-2 duration-700 hover:border">
-                        <button onClick={() => goBack()}>{"<-"} Back</button>
-                      </div>
-                      {currentStep === 6 && (
-                        <button
-                          className="md:hidden absolute right-10 bottom-4 flex animate-in fade-in duration-1000 focus:outline-none bg-slate-900 text-white z-0 tracking-wider py-2 px-4 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
-                          onClick={() => goNext()}
-                        >
-                          Next <span>{"->"}</span>
-                        </button>
-                      )}
-                    </div>
-                  )}
-                  {currentStep === 7 && <MobilePopupTwo />}
-                  {currentStep === 8 && <MobilePopupThree />}
-                </div>
-              )}
+
+              <div className="md:hidden relative h-dvh">
+                {currentStep === 7 && (
+                  <>
+                    <MobilePopupTwo />
+                    <MapDrawing currentStep={currentStep} />
+                  </>
+                )}
+                {currentStep === 8 && (
+                  <>
+                    <MapDrawing currentStep={currentStep} />
+                    <MobilePopupThree />
+                  </>
+                )}
+              </div>
             </div>{" "}
           </div>
           {currentStep < 11 && currentStep > 0 && (
@@ -397,7 +390,7 @@ export default function Form() {
               <div className="hidden md:block ">
                 {currentStep === 6 && <MapMarker currentStep={currentStep} />}
                 {currentStep === 7 && <MapDrawing currentStep={currentStep} />}
-                {currentStep >= 8 && <MapSelected currentStep={currentStep} />}
+                {currentStep >= 8 && <MapSelected />}
               </div>
             </div>
           )}

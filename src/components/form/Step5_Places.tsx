@@ -19,7 +19,7 @@ export default function Places() {
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col text-center justify-center gap-6 items-center w-full">
+    <div className="flex flex-col text-center justify-center gap-6 items-center w-full md:pt-0 pt-5">
       <div className="animate-in slide-in-from-top-4 duration-1000 font-semibold text-2xl">
         Search for and select your address
       </div>

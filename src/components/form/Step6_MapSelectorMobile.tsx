@@ -12,7 +12,7 @@ export function MobilePopupOne() {
     <>
       {open && (
         <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen" />
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm blur-safari overflow-hidden h-dvh w-screen md:pt-0 pt-5" />
           <div className="fixed transform top-1/2 left-1/2 py-4 px-2 -translate-y-1/2 -translate-x-1/2 w-[90%] bg-white flex flex-col justify-center gap-2 items-center rounded-3xl backdrop-blur-md blur-safari bg-opacity-30 border border-white">
             <svg
               className="animate-in fade-in duration-1000"

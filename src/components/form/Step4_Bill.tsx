@@ -21,7 +21,7 @@ export default function Bill() {
   };
 
   return (
-    <div className="flex flex-col text-center justify-center gap-6 items-center w-full">
+    <div className="flex flex-col text-center justify-center gap-6 items-center w-full md:pt-0 pt-5">
       <div className="font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000">
         What is your average electricity bill every month?
       </div>

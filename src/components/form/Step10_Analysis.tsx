@@ -85,7 +85,7 @@ export default function Analysis({
     return <div>Loading</div>;
   }
   return (
-    <div className="flex flex-col gap-6 h-dvh pb-20 hide-scrollbar overflow-y-auto pt-4 md:pb-20 w-full">
+    <div className="flex flex-col gap-6 h-dvh pb-20 hide-scrollbar overflow-y-auto  md:pb-20 w-full md:pt-0 pt-5">
       <div className="rounded-2xl bg-white py-5 px-4 md:px-6 flex flex-col gap-2 md:gap-3 drop-shadow-3xl animate-in fade-in duration-700">
         <h1 className="font-medium animate-in slide-in-from-top-2 duration-1000">
           Solar Potential Analysis

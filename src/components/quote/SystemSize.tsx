@@ -6,6 +6,7 @@ import { calculateCostWithSolar, calculateSolarSize } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect } from "react";
+import MapSelected from "../maps/MapSelected";
 
 export default function SystemSize() {
   const { formState, setFormState, updateFormState } = useContext<any>(
@@ -28,6 +29,7 @@ export default function SystemSize() {
         height={350}
         className="rounded-3xl"
       />
+
       <div className="w-fit rounded-full border-[1px] flex px-5  justify-center py-1 items-center">
         <span className="font-semibold">
           <span className="text-xs">Solar System Size:</span>{" "}

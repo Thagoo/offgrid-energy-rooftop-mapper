@@ -10,7 +10,7 @@ export default function Floors() {
   const { goNext } = useContext(FormStepContext);
 
   return (
-    <div className="flex flex-col justify-center md:w-[400px] items-center gap-6">
+    <div className="flex flex-col justify-center md:w-[400px] items-center gap-6 md:pt-0 pt-5">
       <div className="font-semibold text-2xl text-center animate-in slide-in-from-top-4 duration-1000">
         How many floors does your building have?
       </div>

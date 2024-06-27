@@ -33,7 +33,7 @@ export default function RoofArea() {
 
   return (
     <div>
-      <div className=" flex flex-col justify-center gap-6 items-center">
+      <div className=" flex flex-col justify-center gap-6 items-center md:pt-0 pt-5">
         <div className=" font-semibold text-2xl animate-in slide-in-from-top-4 duration-1000 flex items-center gap-2">
           <svg
             width="94"

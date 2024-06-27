@@ -27,7 +27,7 @@ const drawingManagerOptions: any = {
     fillColor: "rgb(242, 219, 157)",
     strokeColor: "rgb(252, 192, 28)",
     fillOpacity: 0.5,
-    strokeWeight: 10,
+    strokeWeight: 4,
     clickable: true,
     editable: false,
     zIndex: 1,
@@ -39,11 +39,12 @@ const mapOptions = {
   draggable: false,
   zoomControl: false,
   scrollwheel: false,
+  keyboardShortcuts: false,
   disableDoubleClickZoom: false,
   mapTypeId: "satellite",
 };
 
-export default function MapSelected({ currentStep }: { currentStep: number }) {
+export default function MapSelected() {
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y",
@@ -91,7 +92,7 @@ export default function MapSelected({ currentStep }: { currentStep: number }) {
           onLoad={onLoad}
           zoom={20}
           center={drawerCenter}
-          mapContainerClassName="h-dvh w-full rounded-tl-3xl rounded-bl-3xl"
+          mapContainerClassName="h-[90dvh] md:h-dvh md:w-full w-screen md:rounded-tl-3xl md:rounded-bl-3xl relative"
           options={mapOptions}
         >
           {" "}

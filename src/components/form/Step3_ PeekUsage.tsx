@@ -14,7 +14,7 @@ export default function PeekUsage() {
   const { goNext } = useContext(FormStepContext);
 
   return (
-    <div className="flex flex-col justify-center md:items-center gap-6 w-full">
+    <div className="flex flex-col justify-center md:items-center gap-6 w-full md:pt-0 pt-5">
       <div className="font-semibold text-lg md:text-2xl text-center animate-in slide-in-from-top-4 duration-1000">
         When is your peak electricity usage?
       </div>

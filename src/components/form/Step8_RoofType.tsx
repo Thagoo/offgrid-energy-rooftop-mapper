@@ -9,7 +9,7 @@ export default function RoofType() {
   );
   const { goNext } = useContext(FormStepContext);
   return (
-    <div className=" flex flex-col justify-center gap-6 items-center">
+    <div className=" flex flex-col justify-center gap-6 items-center md:pt-0 pt-5">
       <svg
         className="animate-in slide-in-from-top-6 duration-1000"
         width="94"
