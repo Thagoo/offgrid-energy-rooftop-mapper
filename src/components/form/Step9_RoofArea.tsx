@@ -140,14 +140,14 @@ export default function RoofArea() {
             <p className="text-[#868687] font-semibold">Roof Area</p>
             <h1 className="font-semibold md:text-2xl text-xl">
               {Math.floor(formState?.roofArea) || "--"}
-              <span className=" text-lg">sq.ft</span>
+              <span className=" text-lg"> sq.ft</span>
             </h1>
           </div>
           <div>
             <p className="text-[#868687] font-semibold">Suitable for</p>
             <h1 className="font-semibold md:text-2xl text-xl">
               {calculateSolarPanels(formState.roofArea) || "--"}
-              <span className="text-lg">panels</span>
+              <span className="text-lg"> panels</span>
             </h1>
           </div>
         </div>

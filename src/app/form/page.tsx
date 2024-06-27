@@ -8,7 +8,6 @@ import PeekUsage from "@/components/form/Step3_ PeekUsage";
 import Bill from "@/components/form/Step4_Bill";
 import Places from "@/components/form/Step5_Places";
 import RoofType from "@/components/form/Step8_RoofType";
-import MapSelector from "@/components/maps/MapSelector";
 import Navbar from "@/components/navbar/navbarForm";
 
 import { solarTips } from "@/lib/utils";
@@ -26,6 +25,9 @@ import InstructionModal from "@/components/modal";
 import MapSelectorMobile from "@/components/maps/MapSelectorMobile";
 import { useRouter } from "next/navigation";
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import MapMarker from "@/components/maps/MapMarker";
+import MapDrawing from "@/components/maps/MapDrawing";
+import MapSelected from "@/components/maps/MapSelected";
 
 export default function Form() {
   const { currentStep, setCurrentStep, goNext, goBack } =
@@ -307,7 +309,7 @@ export default function Form() {
               {currentStep === 6 && (
                 <div className={`fixed inset-0 `}>
                   <div className="md:hidden h-dvh">
-                    <MapSelector currentStep={currentStep} />
+                    <MapMarker currentStep={currentStep} />
                   </div>
                   {currentStep < 11 && currentStep > 0 && (
                     <div>
@@ -393,7 +395,9 @@ export default function Form() {
           ) : (
             <div>
               <div className="hidden md:block ">
-                <MapSelector currentStep={currentStep} />
+                {currentStep === 6 && <MapMarker currentStep={currentStep} />}
+                {currentStep === 7 && <MapDrawing currentStep={currentStep} />}
+                {currentStep >= 8 && <MapSelected currentStep={currentStep} />}
               </div>
             </div>
           )}

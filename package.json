@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.4",
     "@next/third-parties": "^14.2.4",
     "@reach/combobox": "^0.18.0",
     "@react-google-maps/api": "^2.19.3",
