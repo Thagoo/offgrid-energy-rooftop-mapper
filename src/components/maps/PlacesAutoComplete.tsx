@@ -7,7 +7,7 @@ import {
   ComboboxList,
   ComboboxOption,
 } from "@reach/combobox";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -15,10 +15,12 @@ import usePlacesAutocomplete, {
 import "@reach/combobox/styles.css";
 import FormStepContext from "@/context/FormStepContext";
 import { MapPinIcon } from "@heroicons/react/24/outline";
+import LoadingPage from "@/app/ui/loading-page";
 
 export default function PlacesAutocomplete() {
   const { formState, updateFormData } = useContext<any>(QuoteGeneratorContext);
   const { goNext } = useContext(FormStepContext);
+  const [loading, setLoading] = useState(false);
 
   const {
     ready,
@@ -56,6 +58,7 @@ export default function PlacesAutocomplete() {
 
           const geocoder = new window.google.maps.Geocoder();
           try {
+            setLoading(true);
             const response = await geocoder.geocode({
               location: { lat: latitude, lng: longitude },
             });
@@ -81,34 +84,37 @@ export default function PlacesAutocomplete() {
     }
   };
   return (
-    <Combobox
-      className="animate-in slide-in-from-bottom-4 duration-1000 w-full"
-      onSelect={handleSelect}
-    >
-      <div className="relative">
-        <ComboboxInput
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          disabled={!ready}
-          className="p-4 rounded-full w-[100%] bg-[#F6EBBB]border-none outline-none"
-          placeholder="Search an address"
-        />
+    <>
+      <div>{loading && <LoadingPage />}</div>
+      <Combobox
+        className="animate-in slide-in-from-bottom-4 duration-1000 w-full"
+        onSelect={handleSelect}
+      >
+        <div className="relative">
+          <ComboboxInput
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            disabled={!ready}
+            className="p-4 rounded-full w-[100%] bg-[#F6EBBB]border-none outline-none"
+            placeholder="Search an address"
+          />
 
-        <MapPinIcon
-          className="absolute right-6 top-1/2 h-[24px] w-[24px] translate-x-0 -translate-y-1/2 text-gray-500 "
-          onClick={handleCurrentLocation}
-        />
-      </div>
-      <ComboboxPopover>
-        <ComboboxList>
-          {status === "OK" &&
-            data.map(({ place_id, description }: any) => (
-              <ComboboxOption key={place_id} value={description} />
-            ))}
-        </ComboboxList>
-      </ComboboxPopover>
-    </Combobox>
+          <MapPinIcon
+            className="absolute right-6 top-1/2 h-[24px] w-[24px] translate-x-0 -translate-y-1/2 text-gray-500 "
+            onClick={handleCurrentLocation}
+          />
+        </div>
+        <ComboboxPopover>
+          <ComboboxList>
+            {status === "OK" &&
+              data.map(({ place_id, description }: any) => (
+                <ComboboxOption key={place_id} value={description} />
+              ))}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
+    </>
   );
 }
