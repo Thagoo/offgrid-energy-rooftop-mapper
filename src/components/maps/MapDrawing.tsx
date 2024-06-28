@@ -83,6 +83,12 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
     noDraw();
   }, []);
 
+  useEffect(() => {
+    if (map) {
+      map.panTo(formState?.center);
+    }
+  }, [formState?.center]);
+
   const noDraw = () => {
     setState(function set(prevState) {
       return Object.assign({}, prevState, {
