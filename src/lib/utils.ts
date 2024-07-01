@@ -1,3 +1,10 @@
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: any) {
+  return twMerge(clsx(inputs));
+}
+
 export const solarTips = [
   "Your contact details will help us stay in touch with you.",
   "This helps us understand whether you are on commercial or residential tarifs to help calculate savings data.",

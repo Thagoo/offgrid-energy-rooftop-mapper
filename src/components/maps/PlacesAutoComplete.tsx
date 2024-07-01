@@ -1,26 +1,31 @@
 import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
-
 import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopover,
-  ComboboxList,
-  ComboboxOption,
-} from "@reach/combobox";
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/app/ui/command";
+
 import { useContext, useEffect, useState } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
 } from "use-places-autocomplete";
-import "@reach/combobox/styles.css";
 import FormStepContext from "@/context/FormStepContext";
-import { MapPinIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/app/ui/loading-page";
 
 export default function PlacesAutocomplete() {
   const { formState, updateFormData } = useContext<any>(QuoteGeneratorContext);
   const { goNext } = useContext(FormStepContext);
   const [loading, setLoading] = useState(false);
+
+  const [search, setSearch] = useState("");
 
   const {
     ready,
@@ -84,9 +89,47 @@ export default function PlacesAutocomplete() {
     }
   };
   return (
-    <>
+    <div className="w-full md:h-52 h-full ">
       <div>{loading && <LoadingPage />}</div>
-      <Combobox
+
+      <Command>
+        <div className="relative">
+          <CommandInput
+            placeholder="Search your location..."
+            value={value}
+            onValueChange={setValue}
+            disabled={false}
+          />
+          {value.length >= 1 && (
+            <button
+              className="animate-in fade-in duration-700 absolute right-4 text-xl md:text-2xl translate-x-0 top-1 font-extralight"
+              onClick={() => setValue("")}
+            >
+              &times;
+            </button>
+          )}
+        </div>
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandSeparator />
+          <CommandItem onSelect={() => handleCurrentLocation()}>
+            <MapPinIcon className="w-4 h-4" />
+            <span className="ml-2">Use Current location</span>
+          </CommandItem>
+
+          {data.map(({ place_id, description }: any) => (
+            <CommandItem
+              key={place_id}
+              disabled={false}
+              onSelect={() => handleSelect(description)}
+            >
+              {description}
+            </CommandItem>
+          ))}
+        </CommandList>
+      </Command>
+
+      {/* <Combobox
         className="animate-in slide-in-from-bottom-4 duration-1000 w-full text-ellipsis"
         onSelect={handleSelect}
       >
@@ -114,7 +157,7 @@ export default function PlacesAutocomplete() {
               ))}
           </ComboboxList>
         </ComboboxPopover>
-      </Combobox>
-    </>
+      </Combobox> */}
+    </div>
   );
 }
