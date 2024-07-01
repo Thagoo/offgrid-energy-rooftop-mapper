@@ -24,7 +24,7 @@ const ContentArray = [
 ];
 
 export default function InstructionModal() {
-  const { goNext, goBack, currentStep } = useContext(FormStepContext);
+  const { goBack } = useContext(FormStepContext);
   const [showModal, setShowModal] = useState(true);
 
   return (

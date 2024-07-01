@@ -100,7 +100,7 @@ export default function RoofArea() {
         <div className=" text-[#868687] animate-in slide-in-from-top-2 duration-1000">
           Your roof is suitable for solar installation.
         </div>
-        <div className="bg-white rounded-2xl flex items-center px-4 py-4 gap-8  animate-in fade-in duration-1000">
+        <div className="bg-white rounded-2xl flex items-center px-4 py-4 md:gap-8 gap-6  animate-in fade-in duration-1000">
           <svg
             width="52"
             height="45"
@@ -137,17 +137,17 @@ export default function RoofArea() {
           </svg>
 
           <div>
-            <p className="text-[#868687] font-semibold">Roof Area</p>
-            <h1 className="font-semibold md:text-2xl text-xl">
+            <p className="text-[#868687] font-medium">Roof Area</p>
+            <h1 className="font-medium md:text-2xl">
               {Math.floor(formState?.roofArea) || "--"}
               <span className=" text-lg"> sq.ft</span>
             </h1>
           </div>
           <div>
-            <p className="text-[#868687] font-semibold">Suitable for</p>
-            <h1 className="font-semibold md:text-2xl text-xl">
+            <p className="text-[#868687] font-medium">Suitable for</p>
+            <h1 className="font-medium md:text-2xl">
               {calculateSolarPanels(formState.roofArea) || "--"}
-              <span className="text-lg"> panels</span>
+              <span className=""> panels</span>
             </h1>
           </div>
         </div>

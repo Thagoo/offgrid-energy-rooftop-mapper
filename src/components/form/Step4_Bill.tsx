@@ -26,7 +26,7 @@ export default function Bill() {
         What is your average electricity bill every month?
       </div>
       <form
-        className="w-full relative animate-in slide-in-from-bottom-4 duration-1000"
+        className="w-full relative animate-in fade-in duration-1000"
         onSubmit={hanldeSubmit}
       >
         <input
@@ -37,13 +37,13 @@ export default function Bill() {
         />
         <button
           type="submit"
-          className={`animate-in fade-in-0 duration-1000 absolute right-4 top-1/2 -translate-y-1/2 bg-[#212121] rounded-3xl md:px-4 md:py-2 px-4 py-2 text-white disabled:bg-gray-400 hover:bg-opacity-75`}
+          className={` absolute right-4 top-1/2 -translate-y-1/2 bg-[#212121] rounded-3xl md:px-4 md:py-2 px-4 py-2 text-white disabled:bg-gray-400 hover:bg-opacity-75`}
           disabled={bill >= 1000 && bill <= 10000 ? false : true}
         >
           Next
         </button>
       </form>
-      <p className="text-[#868687] md:text-base text-sm font-light flex items-center gap-1 animate-in fade-in duration-1000">
+      <p className="text-[#868687] md:text-base text-sm flex items-center gap-1 animate-in fade-in duration-1000 text-nowrap">
         <svg
           width="17"
           height="16"

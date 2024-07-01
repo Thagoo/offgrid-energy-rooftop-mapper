@@ -86,12 +86,6 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
           <Marker
             position={drawerCenter}
             draggable={true}
-            icon={{
-              url: "/assets/form/marker.png", // URL to your SVG icon
-              scaledSize: new window.google.maps.Size(44, 44),
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(16, 16),
-            }}
             onDragEnd={(map) => onDragEnd(map)}
           />
         </GoogleMap>

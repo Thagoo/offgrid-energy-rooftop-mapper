@@ -109,7 +109,7 @@ export default function ContactDetails({ goNext }: { goNext: any }) {
             Email Address
           </label>
           <input
-            type="text"
+            type="email"
             className={`border-2 ${
               validationError?.errors?.email
                 ? "border-red-300"

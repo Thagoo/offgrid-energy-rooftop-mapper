@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const Navbar = () => {
   return (
-    <div className="md:px-20  py-3 bg-white drop-shadow-md px-5">
+    <div className="md:px-20 py-3 bg-white drop-shadow-md px-5">
       <div className="flex justify-between items-center">
         <div className="text-xl font-semibold">
           <Link href={"/"}>

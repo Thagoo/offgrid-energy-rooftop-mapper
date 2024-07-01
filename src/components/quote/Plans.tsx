@@ -54,7 +54,7 @@ export default function Plans({
         <div className="bg-white rounded-3xl px-6 py-8 md:px-5 md:py-6 md:w-3/4 w-full gap-4 flex justify-between overflow-x-scroll hide-scrollbar">
           {/* card one */}
           <div
-            className={`rounded-3xl bg-[#F4F4F4] flex flex-col justify-between gap-2 py-4 px-5 animate-in fade-in duration-500 min-w-52 md:w-full`}
+            className={`rounded-3xl bg-[#F4F4F4] flex flex-col justify-between gap-2 py-4 px-4 animate-in fade-in duration-500 min-w-52 md:w-full`}
           >
             <h1 className="md:text-2xl text-lg">Basic Plan</h1>
             <div className="border-b-[1px]"></div>
@@ -91,9 +91,9 @@ export default function Plans({
             </div>
             <div className="flex flex-col md:gap-3 gap-2">
               <p>Quotation Price</p>
-              <div className="flex md:flex-row flex-col items-start md:items-center md:gap-6 gap-2 animate-in fade-in duration-1000">
+              <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox1 ? (
-                  <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
+                  <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
                     {formState &&
                       formState.subsidyPrice.basic.toLocaleString("en-IN", {
                         style: "currency",
@@ -113,7 +113,7 @@ export default function Plans({
                 )}
 
                 {checkboxes.checkbox1 && (
-                  <h1 className="font-medium line-through text-[#868687] animate-in fade-in duration-1000">
+                  <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
                     {formState &&
                       price.basic.toLocaleString("en-IN", {
                         style: "currency",
@@ -144,7 +144,7 @@ export default function Plans({
           </div>
           {/* card two */}
           <div
-            className={`rounded-3xl bg-[#F4F4F4] flex flex-col justify-between gap-2 py-4 px-5 animate-in fade-in duration-500 min-w-52 md:w-full`}
+            className={`rounded-3xl bg-[#F4F4F4] flex flex-col justify-between gap-2 py-4 px-4 animate-in fade-in duration-500 min-w-52 md:w-full`}
           >
             <h1 className="md:text-2xl text-lg">Standard Plan</h1>
             <div className="border-b-[1px]"></div>
@@ -181,9 +181,9 @@ export default function Plans({
             </div>
             <div className="flex flex-col md:gap-3 gap-2">
               <p>Quotation Price</p>
-              <div className="flex md:flex-row flex-col items-start md:items-center md:gap-6 gap-2 animate-in fade-in duration-1000">
+              <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox2 ? (
-                  <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
+                  <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
                     {formState &&
                       formState.subsidyPrice.standard.toLocaleString("en-IN", {
                         style: "currency",
@@ -203,7 +203,7 @@ export default function Plans({
                 )}
 
                 {checkboxes.checkbox2 && (
-                  <h1 className="font-medium line-through text-[#868687] animate-in fade-in duration-1000">
+                  <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
                     {formState &&
                       price.standard.toLocaleString("en-IN", {
                         style: "currency",
@@ -274,9 +274,9 @@ export default function Plans({
             <div className="flex flex-col gap-2">
               <p>Quotation Price</p>
 
-              <div className="flex md:flex-row flex-col items-start md:items-center md:gap-6 gap-4 animate-in fade-in duration-1000">
+              <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox3 ? (
-                  <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
+                  <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
                     {formState &&
                       formState.subsidyPrice.premium.toLocaleString("en-IN", {
                         style: "currency",
@@ -296,7 +296,7 @@ export default function Plans({
                 )}
 
                 {checkboxes.checkbox3 && (
-                  <h1 className="font-medium line-through text-[#868687] animate-in fade-in duration-1000">
+                  <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
                     {formState &&
                       price.premium.toLocaleString("en-IN", {
                         style: "currency",
@@ -347,7 +347,7 @@ const SubsidyCheckbox = ({
         id={id}
         checked={checked}
         onChange={onChange}
-        className="form-checkbox h-4 w-4 text-yellow-400 rounded-md border-gray-300 focus:ring-0"
+        className="cursor-pointer h-4 w-4 text-yellow-400 rounded-md border-gray-300 focus:ring-0"
         style={{ backgroundColor: checked ? "#FFCB00" : "transparent" }}
       />
       <label

@@ -87,7 +87,7 @@ export default function PlacesAutocomplete() {
     <>
       <div>{loading && <LoadingPage />}</div>
       <Combobox
-        className="animate-in slide-in-from-bottom-4 duration-1000 w-full"
+        className="animate-in slide-in-from-bottom-4 duration-1000 w-full text-ellipsis"
         onSelect={handleSelect}
       >
         <div className="relative">
@@ -97,12 +97,12 @@ export default function PlacesAutocomplete() {
               setValue(e.target.value);
             }}
             disabled={!ready}
-            className="p-4 rounded-full w-[100%] bg-[#F6EBBB]border-none outline-none"
+            className="p-4 rounded-full w-full border-none outline-none text-ellipsis text-wrap pr-10"
             placeholder="Search an address"
           />
 
           <MapPinIcon
-            className="absolute right-6 top-1/2 h-[24px] w-[24px] translate-x-0 -translate-y-1/2 text-gray-500 "
+            className="absolute right-6 top-1/2 h-[24px] w-[24px] translate-x-0 -translate-y-1/2 text-gray-500 bg-white rounded-full cursor-pointer"
             onClick={handleCurrentLocation}
           />
         </div>

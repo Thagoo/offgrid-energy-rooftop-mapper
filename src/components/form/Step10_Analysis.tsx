@@ -85,12 +85,12 @@ export default function Analysis({
     return <div>Loading</div>;
   }
   return (
-    <div className="flex flex-col gap-6 h-dvh pb-20 hide-scrollbar overflow-y-auto  md:pb-20 w-full md:pt-0 pt-5">
+    <div className="flex flex-col gap-6 h-dvh pb-20 hide-scrollbar overflow-y-auto md:pb-20 w-full md:pt-0 pt-5">
       <div className="rounded-2xl bg-white py-5 px-4 md:px-6 flex flex-col gap-2 md:gap-3 drop-shadow-3xl animate-in fade-in duration-700">
         <h1 className="font-medium animate-in slide-in-from-top-2 duration-1000">
           Solar Potential Analysis
         </h1>
-        <div className="grid grid-cols-2 p-4 md:gap-10 gap-5 relative ">
+        <div className="grid grid-cols-2 py-4 md:gap-10 gap-5 relative ">
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
@@ -351,12 +351,12 @@ export default function Analysis({
           </p>
         </span> */}
 
-      <div className="rounded-2xl bg-white py-5 px-6 flex flex-col gap-4 drop-shadow-3xl animate-in fade-in duration-1000">
+      <div className="rounded-2xl bg-white py-5 px-5 flex flex-col gap-4 drop-shadow-3xl animate-in fade-in duration-1000">
         <h1 className="font-semibold animate-in slide-in-from-top-2 duration-1000">
           Cost Analysis for 25 Years
         </h1>
-        <div className="grid grid-cols-2 py-5 px-6 md:gap-10 gap-5">
-          <div className="flex flex-col justify-between items-center">
+        <div className="grid grid-cols-2 py-5 md:gap-10 gap-5">
+          <div className="flex flex-col justify-between items-center w-full">
             <div></div>
             <BarGraph
               costWithoutSolar={calculateCostWithoutSolar(formState.bill)}
@@ -380,7 +380,7 @@ export default function Analysis({
                 {" "}
                 {calculateSolarSize(formState.bill)} KW
               </h1>
-              <p className="text-sm md:text-base text-[#868687]">
+              <p className="text-sm md:text-base text-[#868687] text-nowrap">
                 Installation Size
               </p>
             </div>
@@ -396,7 +396,7 @@ export default function Analysis({
                   maximumFractionDigits: 0,
                 })}
               </h1>
-              <p className="text-sm md:text-base text-[#868687]">
+              <p className="text-sm md:text-base text-[#868687] text-nowrap">
                 Installation cost
               </p>
             </div>

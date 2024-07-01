@@ -72,15 +72,21 @@ export default function Quote() {
         price={selectedPrice}
       />
       {showAlertVisit && (
-        <PopupAlert onClick={() => setShowAlertVisit(false)}>
+        <PopupAlert>
           <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
             <div className="text-lg text-center animate-in fade-in duration-1000 z-50">
               We have received your details. Our team will get in touch with you
               soon.
             </div>
-            <div className="flex justify-between gap-6 items-center self-end">
+            <div className="w-full flex justify-between gap-6 items-center px-5">
+              <button
+                onClick={() => setShowAlertVisit(false)}
+                className="border rounded-full px-6 py-2 text-sm md:text-base"
+              >
+                Close
+              </button>
               <Link
-                className="flex animate-in fade-in duration-700 focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2"
+                className="flex focus:outline-none bg-primary tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 items-center justify-center gap-2 md:text-base text-sm text-nowrap"
                 onClick={() => setShowAlertVisit(false)}
                 href={"https://getoffgrid.energy"}
               >

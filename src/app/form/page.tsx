@@ -208,7 +208,7 @@ export default function Form() {
 
                   <button
                     className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2 disabled:opacity-60"
-                    onClick={() => setCurrentStep(currentStep + 1)}
+                    onClick={() => goNext()}
                     disabled={!(formState?.roofCoordinates?.length > 0)}
                   >
                     Next <span>&#8594;</span>
@@ -321,7 +321,7 @@ export default function Form() {
                             </button>
                           </div>
                           <button
-                            className="md:hidden absolute right-10 bottom-4 flex animate-in fade-in duration-1000 focus:outline-none bg-slate-900 text-white z-0 tracking-wider py-2 px-4 rounded-full hover:bg-slate-800 items-center justify-center gap-2"
+                            className="md:hidden absolute right-10 bottom-4 flex animate-in fade-in duration-1000 focus:outline-none bg-slate-900 text-white z-0 py-2 px-4 rounded-full hover:bg-slate-800 items-center justify-center gap-2"
                             onClick={() => goNext()}
                           >
                             Next <span>{"->"}</span>
