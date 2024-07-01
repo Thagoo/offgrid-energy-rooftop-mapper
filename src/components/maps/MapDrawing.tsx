@@ -94,12 +94,12 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
 
   useEffect(() => {
     // Empty the roofCoordinates array on mount
-    // updateFormData({ roofCoordinates: [] });
+    //updateFormData({ roofCoordinates: [] });
 
     setTimeout(() => {
       setClicked(true);
     }, 2000);
-  }, []);
+  }, [1]);
 
   if (!isLoaded) return <div>Loading...</div>;
 

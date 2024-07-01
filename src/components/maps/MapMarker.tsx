@@ -63,6 +63,12 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
     });
   };
 
+  const handleCenterChanged = () => {
+    if (map) {
+      setDrawerCenter(map.getCenter().toJSON());
+    }
+  };
+
   useEffect(() => {
     if (map) {
       map.panTo(drawerCenter);
@@ -81,13 +87,23 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
           center={drawerCenter}
           mapContainerClassName="h-dvh w-full rounded-tl-3xl rounded-bl-3xl"
           options={mapOptions}
+          onDragEnd={handleCenterChanged}
         >
-          {" "}
-          <Marker
-            position={drawerCenter}
-            draggable={true}
-            onDragEnd={(map) => onDragEnd(map)}
-          />
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: "0",
+              pointerEvents: "none",
+            }}
+          >
+            <img
+              src="https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+              alt="center marker"
+            />
+          </div>
         </GoogleMap>
       </div>
     </>
