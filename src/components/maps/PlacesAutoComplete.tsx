@@ -88,6 +88,7 @@ export default function PlacesAutocomplete() {
       // Handle the error appropriately, maybe with an error message to the user
     }
   };
+
   return (
     <div className="w-full md:h-52 h-full ">
       <div>{loading && <LoadingPage />}</div>
@@ -112,10 +113,16 @@ export default function PlacesAutocomplete() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandSeparator />
-          <CommandItem onSelect={() => handleCurrentLocation()}>
-            <MapPinIcon className="w-4 h-4" />
-            <span className="ml-2">Use Current location</span>
-          </CommandItem>
+
+          {data.length === 0 && (
+            <CommandItem
+              onSelect={() => handleCurrentLocation()}
+              className="bg-[#F4F4F4] hover:bg-[#F4F4F4] cursor-pointer"
+            >
+              <MapPinIcon className="w-4 h-4" />
+              <span className="ml-2">Use Current location</span>
+            </CommandItem>
+          )}
 
           {data.map(({ place_id, description }: any) => (
             <CommandItem

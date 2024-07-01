@@ -1,5 +1,6 @@
 "use client";
 
+import { ContactDetails } from "@/lib/types";
 import React, {
   createContext,
   useContext,
@@ -9,7 +10,7 @@ import React, {
 } from "react";
 
 // Create the context
-export const ContactDetailsContext = createContext<any | null>(null);
+export const ContactDetailsContext = createContext<ContactDetails | null>(null);
 
 // Create a provider component
 export const ContactDetailsProvider = ({ children }: { children: any }) => {
