@@ -7,7 +7,10 @@ import Plans from "@/components/quote/Plans";
 import SavingsEstimation from "@/components/quote/SavingsEstimation";
 import { inclusions } from "@/components/quote/SelectedPlan";
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import { quoteCreate } from "@/lib/action";
 import Image from "next/image";
@@ -36,9 +39,10 @@ const images = [
 
 export default function Quote() {
   const router = useRouter();
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, setFormData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { setCurrentStep } = useContext(FormStepContext);
   const [plan, setPlan] = useState("");
   const [selectedPrice, setSelectedPrice] = useState();
@@ -51,13 +55,13 @@ export default function Quote() {
   });
 
   const handleRestartQuote = () => {
-    setFormState(null);
-    localStorage.removeItem("formState");
+    setFormData(null);
+    localStorage.removeItem("formData");
     localStorage.removeItem("formStep");
     setCurrentStep(0);
     router.replace("/form");
   };
-  if (!formState) {
+  if (!formData) {
     // router.push("/form");
     return;
   }
@@ -66,7 +70,7 @@ export default function Quote() {
     <>
       <Navbar />
       <Drawer
-        solarSize={formState.solarSize}
+        solarSize={formData?.siteDetails?.solarSize as number}
         plan={plan}
         setPlan={setPlan}
         price={selectedPrice}
@@ -158,7 +162,7 @@ export default function Quote() {
             Here’s 3 quotes
           </h1>
           <p className="md:text-base text-sm font-light text-[#868687] animate-in fade-in duration-700 text-center">
-            For your house in {formState.address}
+            For your house in {formData?.siteDetails?.address}
           </p>
           <div className="flex md:gap-7 gap-3 animate-in fade-in duration-500">
             <button

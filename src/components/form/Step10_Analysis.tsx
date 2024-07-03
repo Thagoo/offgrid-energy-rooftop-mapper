@@ -1,6 +1,9 @@
 import LoadingSpinner from "@/app/ui/loading-spinner";
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import { quoteCreate, quoteDetails } from "@/lib/action";
 import {
@@ -9,10 +12,12 @@ import {
   calculateCostWithoutSolar,
   calculateSolarSize,
   calculateYearlyEnergy,
+  energyCovered,
 } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import BarGraph from "../bar-graph";
+import { NewQuoteDetails } from "@/lib/types";
 
 export default function Analysis({
   setCurrentStep,
@@ -21,20 +26,35 @@ export default function Analysis({
   setCurrentStep: any;
   currentStep: number;
 }) {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext } = useContext(FormStepContext);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleNext = async () => {
     setLoading(true);
-    await quoteDetails(formState);
+    const newQuoteData: NewQuoteDetails = {
+      yearlyEnergy: formData?.quoteDetails?.yearlyEnergy,
+      breakEven: formData?.quoteDetails?.breakEven,
+      price: formData?.quoteDetails?.price,
+      costWithoutSolar: calculateCostWithoutSolar(formData?.siteDetails?.bill),
+      energyCovered: formData?.quoteDetails?.yearlyEnergy,
+      installationSize: formData?.siteDetails?.solarSize,
+      savings:
+        calculateCostWithoutSolar(formData?.siteDetails?.bill) -
+        calculateCostWithSolar(formData?.siteDetails?.solarSize).basic,
+      siteId: formData?.siteDetails?.siteId,
+    };
+    await quoteDetails(newQuoteData);
 
-    const quoteId = await quoteCreate(formState);
+    const quoteId = await quoteCreate(newQuoteData);
     updateFormData({
-      quoteId: quoteId,
+      quoteDetails: {
+        quoteId: quoteId,
+      },
     });
     setLoading(false);
     router.push("/quote");
@@ -42,46 +62,63 @@ export default function Analysis({
 
   useEffect(() => {
     updateFormData({
-      price: {
-        basic: calculateCostWithSolar(calculateSolarSize(formState.bill)).basic,
-        standard: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .standard,
-        premium: calculateCostWithSolar(calculateSolarSize(formState.bill))
-          .premium,
+      quoteDetails: {
+        price: {
+          basic: calculateCostWithSolar(
+            calculateSolarSize(formData?.siteDetails?.bill)
+          ).basic,
+          standard: calculateCostWithSolar(
+            calculateSolarSize(formData?.siteDetails?.bill)
+          ).standard,
+          premium: calculateCostWithSolar(
+            calculateSolarSize(formData?.siteDetails?.bill)
+          ).premium,
+        },
+        subsidyPrice: {
+          basic: calculateAfterSubsidy(
+            calculateSolarSize(formData?.siteDetails?.bill),
+            calculateCostWithSolar(
+              calculateSolarSize(formData?.siteDetails?.bill)
+            ).basic
+          ),
+          standard: calculateAfterSubsidy(
+            calculateSolarSize(formData?.siteDetails?.bill),
+            calculateCostWithSolar(
+              calculateSolarSize(formData?.siteDetails?.bill)
+            ).standard
+          ),
+          premium: calculateAfterSubsidy(
+            calculateSolarSize(formData?.siteDetails?.bill),
+            calculateCostWithSolar(
+              calculateSolarSize(formData?.siteDetails?.bill)
+            ).premium
+          ),
+        },
+        lifeTimeSavings:
+          calculateCostWithoutSolar(formData?.siteDetails?.bill) -
+          calculateAfterSubsidy(
+            calculateSolarSize(formData?.siteDetails?.bill),
+            calculateCostWithSolar(formData?.siteDetails?.solarSize).basic
+          ),
+        yearlyEnergy: calculateYearlyEnergy(formData?.siteDetails?.bill),
+        breakEven: parseInt(
+          (
+            calculateAfterSubsidy(
+              calculateSolarSize(formData?.siteDetails?.bill),
+              calculateCostWithSolar(formData?.siteDetails?.solarSize).basic
+            ) /
+            Number(formData?.siteDetails?.bill) /
+            12
+          ).toFixed(2)
+        ),
+        costWithoutSolar: calculateCostWithoutSolar(
+          formData?.siteDetails?.bill
+        ),
       },
-      subsidyPrice: {
-        basic: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).basic
-        ),
-        standard: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).standard
-        ),
-        premium: calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(calculateSolarSize(formState.bill)).premium
-        ),
-      },
-      lifetimeSavings:
-        calculateCostWithoutSolar(formState?.bill) -
-        calculateAfterSubsidy(
-          calculateSolarSize(formState.bill),
-          calculateCostWithSolar(formState.solarSize).basic
-        ),
-      yearlyEnergy: calculateYearlyEnergy(formState.bill),
-      breakEven: (
-        calculateAfterSubsidy(
-          calculateSolarSize(formState?.bill),
-          calculateCostWithSolar(formState?.solarSize).basic
-        ) /
-        formState.bill /
-        12
-      ).toFixed(2),
     });
   }, []);
 
-  if (!formState?.lifetimeSavings) {
+  if (!formData?.quoteDetails?.lifeTimeSavings) {
     return <div>Loading</div>;
   }
   return (
@@ -104,12 +141,14 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {formState &&
-                  (formState.bill * 12).toLocaleString("en-IN", {
+                {((formData?.siteDetails?.bill as number) * 12).toLocaleString(
+                  "en-IN",
+                  {
                     style: "currency",
                     currency: "INR",
                     maximumFractionDigits: 0,
-                  })}
+                  }
+                )}
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 1st year saving
@@ -120,12 +159,14 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {formState &&
-                  formState?.lifetimeSavings.toLocaleString("en-IN", {
+                {formData?.quoteDetails?.lifeTimeSavings.toLocaleString(
+                  "en-IN",
+                  {
                     style: "currency",
                     currency: "INR",
                     maximumFractionDigits: 0,
-                  })}
+                  }
+                )}
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 Lifetime savings
@@ -135,7 +176,7 @@ export default function Analysis({
           <div className="text-center flex flex-col md:gap-2 gap-1  animate-in slide-in-from-top-2 duration-700">
             <div>
               <h1 className="text-lg md:text-2xl font-medium">
-                {formState?.breakEven} years
+                {formData?.quoteDetails?.breakEven} years
               </h1>
               <p className="text-sm md:text-base text-[#868687]">
                 Solar Breakeven
@@ -359,9 +400,13 @@ export default function Analysis({
           <div className="flex flex-col justify-between items-center w-full">
             <div></div>
             <BarGraph
-              costWithoutSolar={calculateCostWithoutSolar(formState.bill)}
+              costWithoutSolar={calculateCostWithoutSolar(
+                formData?.siteDetails?.bill
+              )}
               costWithSolar={
-                calculateCostWithSolar(calculateSolarSize(formState.bill)).basic
+                calculateCostWithSolar(
+                  calculateSolarSize(formData?.siteDetails?.bill)
+                ).basic
               }
             />
             <h1 className="font-medium md:text-lg flex items-center text-nowrap animate-in slide-in-from-bottom-2 duration-700">
@@ -378,7 +423,7 @@ export default function Analysis({
             <div className=" animate-in slide-in-from-bottom-2 duration-700">
               <h1 className="text-lg md:text-2xl font-medium">
                 {" "}
-                {calculateSolarSize(formState.bill)} KW
+                {calculateSolarSize(formData?.siteDetails?.bill)} KW
               </h1>
               <p className="text-sm md:text-base text-[#868687] text-nowrap">
                 Installation Size
@@ -387,9 +432,10 @@ export default function Analysis({
             <div className=" animate-in slide-in-from-bottom-2 duration-700">
               <h1 className="text-lg md:text-2xl font-medium">
                 {calculateAfterSubsidy(
-                  calculateSolarSize(formState.bill),
-                  calculateCostWithSolar(calculateSolarSize(formState.bill))
-                    .basic
+                  calculateSolarSize(formData?.siteDetails?.bill),
+                  calculateCostWithSolar(
+                    calculateSolarSize(formData?.siteDetails?.bill)
+                  ).basic
                 ).toLocaleString("en-IN", {
                   style: "currency",
                   currency: "INR",
@@ -403,12 +449,14 @@ export default function Analysis({
             <div className=" animate-in slide-in-from-bottom-2 duration-700">
               <h1 className="text-lg md:text-2xl font-medium">
                 {(
-                  calculateCostWithSolar(calculateSolarSize(formState.bill))
-                    .basic -
+                  calculateCostWithSolar(
+                    calculateSolarSize(formData?.siteDetails?.bill)
+                  ).basic -
                   calculateAfterSubsidy(
-                    calculateSolarSize(formState.bill),
-                    calculateCostWithSolar(calculateSolarSize(formState.bill))
-                      .basic
+                    calculateSolarSize(formData?.siteDetails?.bill),
+                    calculateCostWithSolar(
+                      calculateSolarSize(formData?.siteDetails?.bill)
+                    ).basic
                   )
                 ).toLocaleString("en-IN", {
                   style: "currency",
@@ -420,9 +468,11 @@ export default function Analysis({
             </div>
             <div className=" animate-in slide-in-from-bottom-2 duration-700">
               <h1 className="text-lg md:text-2xl font-medium">
-                {formState &&
+                {formData?.siteDetails &&
                   Math.round(
-                    ((calculateSolarSize(formState.bill) * 1000) / 500) * 27.38
+                    ((calculateSolarSize(formData?.siteDetails?.bill) * 1000) /
+                      500) *
+                      27.38
                   )}{" "}
                 <span className="md:text-sm text-xs"> sq.ft</span>
               </h1>

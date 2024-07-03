@@ -1,33 +1,35 @@
 import LoadingSpinner from "@/app/ui/loading-spinner";
-import { ContactDetailsContext } from "@/context/ContactDetailsContext";
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import { creatSite } from "@/lib/action";
-import {
-  calculateAfterSubsidy,
-  calculateCostWithSolar,
-  calculateCostWithoutSolar,
-  calculateLifetimeSavings,
-  calculateSolarPanels,
-  calculateSolarSize,
-  calculateYearlyEnergy,
-} from "@/lib/utils";
+import { calculateSolarPanels } from "@/lib/utils";
 import React, { useContext, useState } from "react";
 
 export default function RoofArea() {
   const [loading, setLoading] = useState(false);
-  const { formState, updateFormData } = useContext<any>(QuoteGeneratorContext);
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
 
   const { goNext } = useContext(FormStepContext);
 
   const handleNext = async () => {
     setLoading(true);
-
-    const siteId = await creatSite(formState);
+    const newSiteData = {
+      ...formData?.siteDetails,
+      leadId: formData?.contactDetails?.leadId,
+    };
+    const siteId = await creatSite(newSiteData);
     setLoading(false);
-    updateFormData({ siteId: siteId });
-
+    updateFormData({
+      siteDetails: {
+        siteId: siteId,
+      },
+    });
     goNext();
   };
 
@@ -139,14 +141,16 @@ export default function RoofArea() {
           <div>
             <p className="text-[#868687] font-medium">Roof Area</p>
             <h1 className="font-medium md:text-2xl">
-              {Math.floor(formState?.roofArea) || "--"}
+              {Math.floor(formData?.siteDetails?.roofArea as number) || "--"}
               <span className=" text-lg"> sq.ft</span>
             </h1>
           </div>
           <div>
             <p className="text-[#868687] font-medium">Suitable for</p>
             <h1 className="font-medium md:text-2xl">
-              {calculateSolarPanels(formState.roofArea) || "--"}
+              {calculateSolarPanels(
+                formData?.siteDetails?.roofArea as number
+              ) || "--"}
               <span className=""> panels</span>
             </h1>
           </div>

@@ -1,5 +1,9 @@
 "use client";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
+import { quoteDetails } from "@/lib/action";
 
 import {
   calculateCo2,
@@ -11,9 +15,9 @@ import {
 import React, { useContext, useEffect } from "react";
 
 export default function SavingsEstimation() {
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
 
   return (
     <div className="bg-white rounded-3xl flex flex-col gap-3 items-center px-4 py-5 md:py-5 md:px-20 md:w-3/4">
@@ -24,7 +28,7 @@ export default function SavingsEstimation() {
       <div className="grid grid-cols-2 grid-rows-3 w-full border-[1px] rounded-2xl">
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-medium">
-            {parseInt(formState?.bill).toLocaleString("en-IN", {
+            {formData?.siteDetails?.bill?.toLocaleString("en-IN", {
               style: "currency",
               currency: "INR",
               maximumFractionDigits: 0,
@@ -35,11 +39,14 @@ export default function SavingsEstimation() {
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center border-b-[1px] border-dashed">
           <div>
             <h1 className="text-2xl font-medium text-nowrap">
-              {formState?.lifetimeSavings.toLocaleString("en-IN", {
-                style: "currency",
-                currency: "INR",
-                maximumFractionDigits: 0,
-              })}
+              {formData?.quoteDetails?.lifeTimeSavings?.toLocaleString(
+                "en-IN",
+                {
+                  style: "currency",
+                  currency: "INR",
+                  maximumFractionDigits: 0,
+                }
+              )}
             </h1>
             <p className="text-xs md:text-sm text-[#868687] ">
               Lifetime Savings
@@ -47,13 +54,15 @@ export default function SavingsEstimation() {
           </div>
         </div>
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
-          <h1 className="text-2xl font-medium">{formState.breakEven} years</h1>
+          <h1 className="text-2xl font-medium">
+            {formData?.quoteDetails?.breakEven} years
+          </h1>
           <p className="text-xs md:text-sm text-[#868687]">Payback Period</p>
         </div>
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed">
           <div className="md:px-8 md:py-4 py-3 px-3 space-y-2 col-span-2 text-nowrap">
             <h1 className="text-2xl font-medium">
-              {formState.yearlyEnergy.toLocaleString("en-IN", {
+              {formData?.quoteDetails?.yearlyEnergy?.toLocaleString("en-IN", {
                 maximumFractionDigits: 0,
               })}{" "}
               kWh
@@ -66,7 +75,7 @@ export default function SavingsEstimation() {
         <div className="md:px-8 md:py-4 py-3 px-3 border-b-[1px] border-r-[1px] border-dashed flex justify-center flex-col">
           <h1 className="text-2xl font-medium">
             {Math.round(
-              calculateTressPlanted(formState.yearlyEnergy)
+              calculateTressPlanted(formData?.quoteDetails?.yearlyEnergy)
             ).toLocaleString()}
           </h1>
           <p className="text-xs md:text-sm text-[#868687]">Trees Planted</p>
@@ -74,12 +83,11 @@ export default function SavingsEstimation() {
         <div className="md:px-8 md:py-4 py-3 px-3 flex justify-center items-center  border-b-[1px] border-dashed text-nowrap">
           <div>
             <h1 className="text-2xl font-medium">
-              {Math.round(calculateCo2(formState.yearlyEnergy)).toLocaleString(
-                "en-IN",
-                {
-                  maximumFractionDigits: 0,
-                }
-              )}{" "}
+              {Math.round(
+                calculateCo2(formData?.quoteDetails?.yearlyEnergy)
+              ).toLocaleString("en-IN", {
+                maximumFractionDigits: 0,
+              })}{" "}
               tons
             </h1>
             <p className="text-xs md:text-sm text-[#868687]">CO2 Saved</p>

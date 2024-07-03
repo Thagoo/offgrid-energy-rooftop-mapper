@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { QuoteGeneratorProvider } from "@/context/QuoteGeneratorContext";
 import { FormStepProvider } from "@/context/FormStepContext";
 import { ContactDetailsProvider } from "@/context/ContactDetailsContext";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { FormDataProvider } from "@/context/FormDataContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,11 +35,11 @@ export default function RootLayout({
       ></script> */}
 
       <body className={inter.className}>
-        <QuoteGeneratorProvider>
+        <FormDataProvider>
           <ContactDetailsProvider>
             <FormStepProvider>{children}</FormStepProvider>
           </ContactDetailsProvider>
-        </QuoteGeneratorProvider>
+        </FormDataProvider>
       </body>
     </html>
   );

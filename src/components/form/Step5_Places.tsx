@@ -1,15 +1,10 @@
 "use client";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
-import React, { useContext } from "react";
+import React from "react";
 import PlacesAutocomplete from "../maps/PlacesAutoComplete";
 import { useLoadScript } from "@react-google-maps/api";
 
 export default function Places() {
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
-
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y",

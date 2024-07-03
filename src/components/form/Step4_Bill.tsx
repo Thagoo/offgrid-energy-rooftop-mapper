@@ -1,22 +1,30 @@
 "use client";
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import { calculateSolarSize } from "@/lib/utils";
 
 import React, { useContext, useState } from "react";
 
 export default function Bill() {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
-  const [bill, setBill] = useState(formState?.bill);
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
+  const [bill, setBill] = useState(formData?.siteDetails?.bill);
   const { goNext } = useContext(FormStepContext);
 
   const hanldeSubmit = (e: any) => {
     e.preventDefault();
 
-    updateFormData({ bill: bill, solarSize: calculateSolarSize(bill) });
-
+    updateFormData({
+      siteDetails: {
+        bill: bill,
+        solarSize: calculateSolarSize(bill as number),
+      },
+    });
     goNext();
   };
 
@@ -33,12 +41,14 @@ export default function Bill() {
           onChange={(e) => setBill(e.target.value as any)}
           className="px-10 py-4 rounded-full w-full bg-white border-none outline-none"
           placeholder="Enter Value ₹"
-          defaultValue={formState?.bill}
+          defaultValue={formData?.siteDetails?.bill}
         />
         <button
           type="submit"
           className={` absolute right-4 top-1/2 -translate-y-1/2 bg-[#212121] rounded-3xl md:px-4 md:py-2 px-4 py-2 text-white disabled:bg-gray-400 hover:bg-opacity-75`}
-          disabled={bill >= 1000 && bill <= 10000 ? false : true}
+          disabled={
+            (bill as number) >= 1000 && (bill as number) <= 10000 ? false : true
+          }
         >
           Next
         </button>

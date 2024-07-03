@@ -53,7 +53,7 @@ export const plans: any = {
   },
 };
 
-export const calculateSolarSize = (bill: number) => {
+export const calculateSolarSize = (bill = 0) => {
   const perUnit = 8.4;
   const monthlyConsumtion = bill / perUnit;
   const dailyConsumption = monthlyConsumtion / 30;
@@ -62,14 +62,14 @@ export const calculateSolarSize = (bill: number) => {
   return Math.ceil(solarSize);
 };
 
-export const calculateYearlyEnergy = (bill: number) => {
+export const calculateYearlyEnergy = (bill = 0) => {
   const yearlySunshineHrs = 2461;
   const solarSize = calculateSolarSize(bill);
   const yearlyEnergyGenerated = yearlySunshineHrs * solarSize;
   return Math.ceil(yearlyEnergyGenerated);
 };
 
-export const energyCovered = (bill: number) => {
+export const energyCovered = (bill = 0) => {
   const flooredSolarSize = calculateSolarSize(bill);
   const perUnit = 6;
   const monthlyConsumtion = bill / perUnit;
@@ -79,7 +79,7 @@ export const energyCovered = (bill: number) => {
   return Math.ceil((flooredSolarSize * 100) / unflooredSolarSize);
 };
 
-export const calculateCostWithoutSolar = (bill: number) => {
+export const calculateCostWithoutSolar = (bill = 0) => {
   const years = 25;
   const inflation = 1.05;
   let currentBill = bill;
@@ -91,7 +91,7 @@ export const calculateCostWithoutSolar = (bill: number) => {
   return Math.ceil(total);
 };
 
-export const calculateCostWithSolar = (size: number) => {
+export const calculateCostWithSolar = (size = 0) => {
   return {
     basic: plans.basic[size],
     standard: plans.standard[size],
@@ -99,7 +99,7 @@ export const calculateCostWithSolar = (size: number) => {
   };
 };
 
-// export const calculateBreakEven = (bill: number) => {
+// export const calculateBreakEven = (bill=0) => {
 //   const breakEven =
 //     calculateAfterSubsidy(
 //       calculateCostWithSolar(calculateSolarSize(bill)).basic
@@ -109,11 +109,11 @@ export const calculateCostWithSolar = (size: number) => {
 //   return Math.round(breakEven);
 // };
 
-export const calculateAfterSubsidy = (solarSize: number, price: number) => {
+export const calculateAfterSubsidy = (solarSize = 0, price = 0) => {
   return price - calculateGovtSubsidy(solarSize);
 };
 
-export const calculateGovtSubsidy = (solarSize: number) => {
+export const calculateGovtSubsidy = (solarSize = 0) => {
   if (solarSize === 1) {
     return 30000;
   }
@@ -123,17 +123,17 @@ export const calculateGovtSubsidy = (solarSize: number) => {
   return 78000;
 };
 
-export const calculateCo2 = (yearylyEnergy: number) => {
+export const calculateCo2 = (yearylyEnergy = 0) => {
   const carbonIntensity = 0.713;
   return yearylyEnergy * 25 * carbonIntensity;
 };
-export const calculateTressPlanted = (yearlyEnergy: number) => {
+export const calculateTressPlanted = (yearlyEnergy = 0) => {
   const treeCo2Consumption = 22;
   const co2saved = calculateCo2(yearlyEnergy);
   return co2saved / treeCo2Consumption;
 };
 
-export const calculateLifetimeSavings = (bill: number) => {
+export const calculateLifetimeSavings = (bill = 0) => {
   console.log("without solar", calculateCostWithoutSolar(bill));
   console.log(
     "with solar",
@@ -148,10 +148,10 @@ export const calculateLifetimeSavings = (bill: number) => {
     )
   );
 };
-export const calculateSolarPanels = (roofArea: number) => {
+export const calculateSolarPanels = (roofArea = 0) => {
   return Math.floor(roofArea / 27.38);
 };
 
-export const calculateSystemSize = (size: number) => {
+export const calculateSystemSize = (size = 0) => {
   return (size * 1000) / 500;
 };

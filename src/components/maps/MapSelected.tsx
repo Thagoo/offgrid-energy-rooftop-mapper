@@ -1,21 +1,11 @@
 "use client";
-import {
-  useState,
-  useMemo,
-  useCallback,
-  useEffect,
-  useContext,
-  useRef,
-} from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 
+import { GoogleMap, useLoadScript, Polygon } from "@react-google-maps/api";
 import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  DrawingManager,
-  Polygon,
-} from "@react-google-maps/api";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 const drawingManagerOptions: any = {
   drawingMode: "",
@@ -51,12 +41,12 @@ export default function MapSelected() {
     libraries: ["places", "drawing"],
   });
 
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
 
-  const [drawerCenter, setDrawerCenter] = useState<any>(
-    formState && formState?.center
+  const [drawerCenter, setDrawerCenter] = useState(
+    formData?.siteDetails?.center
   );
 
   const [map, setMap] = useState<any>(null);
@@ -69,18 +59,18 @@ export default function MapSelected() {
   const onLoad = (mapInstance: any) => {
     setMap(mapInstance);
     const newPolygon = new window.google.maps.Polygon({
-      paths: formState?.roofCoordinates,
+      paths: formData?.siteDetails?.roofCoordinates,
       ...drawingManagerOptions.polygonOptions,
     });
     newPolygon.setMap(mapInstance);
-    polygonsRef.current.push(newPolygon);
+    polygonsRef.current.push(newPolygon as never);
   };
 
   useEffect(() => {
     if (map) {
       map.panTo(drawerCenter);
     }
-    updateFormData({ center: drawerCenter });
+    updateFormData({ siteDetails: { center: drawerCenter } });
   }, [drawerCenter]);
 
   if (!isLoaded) return <div>Loading...</div>;
@@ -91,19 +81,18 @@ export default function MapSelected() {
         <GoogleMap
           onLoad={onLoad}
           zoom={20}
-          center={drawerCenter}
+          center={drawerCenter as never}
           mapContainerClassName="h-[90dvh] md:h-dvh md:w-full w-screen md:rounded-tl-3xl md:rounded-bl-3xl relative"
           options={mapOptions}
         >
           {" "}
-          {formState?.roofCoordinates &&
-            formState?.roofCoordinates.map((path, i) => (
-              <Polygon
-                key={i}
-                paths={path}
-                options={drawingManagerOptions.polygonOptions}
-              />
-            ))}
+          {formData?.siteDetails?.roofCoordinates?.map((path, i) => (
+            <Polygon
+              key={i}
+              paths={path as any}
+              options={drawingManagerOptions.polygonOptions}
+            />
+          ))}
         </GoogleMap>
       </div>
     </>

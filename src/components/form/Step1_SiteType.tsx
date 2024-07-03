@@ -1,12 +1,16 @@
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import React, { useContext } from "react";
 
 export default function SiteType() {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext } = useContext(FormStepContext);
 
   return (
@@ -17,11 +21,15 @@ export default function SiteType() {
       <div className="flex w-full gap-4">
         <div
           onClick={() => {
-            updateFormData({ siteType: "home" });
+            updateFormData({
+              siteDetails: {
+                siteType: "home",
+              },
+            });
             goNext();
           }}
           className={`${
-            formState && formState.siteType == "home"
+            formData?.siteDetails?.siteType == "home"
               ? "bg-primary"
               : "bg-white"
           } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center h-[50px] flex py-2 px-6 gap-2 items-center rounded-full cursor-pointer`}
@@ -31,11 +39,15 @@ export default function SiteType() {
 
         <div
           onClick={() => {
-            updateFormData({ siteType: "office" });
+            updateFormData({
+              siteDetails: {
+                siteType: "office",
+              },
+            });
             goNext();
           }}
           className={`${
-            formState && formState.siteType == "office"
+            formData?.siteDetails?.siteType == "office"
               ? "bg-primary"
               : "bg-white"
           } animate-in slide-in-from-bottom-4 duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center h-[50px] flex py-2 px-6 gap-2 items-center rounded-full cursor-pointer`}

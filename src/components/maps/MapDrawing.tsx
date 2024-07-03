@@ -7,9 +7,13 @@ import {
   DrawingManager,
   Marker,
 } from "@react-google-maps/api";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import Image from "next/image";
 import FormStepContext from "@/context/FormStepContext";
+import { LatLng } from "use-places-autocomplete";
 
 const drawingManagerOptions: any = {
   drawingMode: "polygon",
@@ -46,9 +50,10 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
     libraries: ["places", "drawing"],
   });
 
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext, goBack } = useContext(FormStepContext);
   const [map, setMap] = useState<any>(null);
   const mapRef = useRef(null);
@@ -75,11 +80,12 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
       );
       const areaInSquareFeet = areaInSquareMeters * 10.7639;
 
-      setFormState((prev: any) => ({
-        ...prev,
-        roofCoordinates: polygonArray,
-        roofArea: areaInSquareFeet,
-      }));
+      updateFormData({
+        siteDetails: {
+          roofCoordinates: polygonArray,
+          roofArea: areaInSquareFeet,
+        },
+      });
     }
     noDraw();
   }, []);
@@ -100,7 +106,9 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
       setClicked(true);
     }, 2000);
   }, [1]);
-
+  if (!formData?.siteDetails) {
+    return;
+  }
   if (!isLoaded) return <div>Loading...</div>;
 
   return (
@@ -110,7 +118,7 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
           ref={mapRef}
           onLoad={onLoad}
           zoom={20}
-          center={formState?.center}
+          center={formData.siteDetails.center as unknown as LatLng}
           mapContainerClassName="h-[90dvh] md:h-dvh md:w-full w-screen md:rounded-tl-3xl md:rounded-bl-3xl relative"
           options={mapOptions}
         >
@@ -142,7 +150,7 @@ export default function MapDrawing({ currentStep }: { currentStep: number }) {
   );
 }
 
-const FingerTap = ({ setClicked }) => {
+const FingerTap = ({ setClicked }: { setClicked: any }) => {
   return (
     <div>
       <div

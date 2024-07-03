@@ -1,12 +1,16 @@
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import React, { useContext, useState } from "react";
 
 export default function RoofType() {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext } = useContext(FormStepContext);
   return (
     <div className=" flex flex-col justify-center gap-6 items-center md:pt-0 pt-5">
@@ -104,11 +108,15 @@ export default function RoofType() {
       <div className="flex w-full justify-center gap-2 animate-in slide-in-from-bottom-2 duration-1000">
         <div
           onClick={() => {
-            updateFormData({ roofType: "pitched" });
+            updateFormData({
+              siteDetails: {
+                roofType: "pitched",
+              },
+            });
             goNext();
           }}
           className={`${
-            formState && formState.roofType == "pitched"
+            formData?.siteDetails?.roofType == "pitched"
               ? "bg-primary"
               : "bg-white"
           } animate-in duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
@@ -117,11 +125,15 @@ export default function RoofType() {
         </div>
         <div
           onClick={() => {
-            updateFormData({ roofType: "flat" });
+            updateFormData({
+              siteDetails: {
+                roofType: "flat",
+              },
+            });
             goNext();
           }}
           className={`${
-            formState && formState.roofType == "flat"
+            formData?.siteDetails?.roofType == "flat"
               ? "bg-primary"
               : "bg-white"
           } animate-in duration-1000 border-black border-[1px] hover:bg-primary w-full justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}
@@ -132,11 +144,15 @@ export default function RoofType() {
       <div className="w-full flex justify-center animate-in slide-in-from-bottom-4 duration-1000">
         <div
           onClick={() => {
-            updateFormData({ roofType: "flat_with_beams" });
+            updateFormData({
+              siteDetails: {
+                roofType: "flat_with_beams",
+              },
+            });
             goNext();
           }}
           className={`${
-            formState && formState.roofType == "flat_with_beams"
+            formData?.siteDetails?.roofType == "flat_with_beams"
               ? "bg-primary"
               : "bg-white"
           } animate-in duration-1000 border-black border-[1px] hover:bg-primary justify-center flex gap-2 items-center rounded-full cursor-pointer py-2 px-6`}

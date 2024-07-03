@@ -5,19 +5,37 @@ import React, {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useState,
+  ReactNode,
 } from "react";
 
+export interface ContactDetailsContextValue {
+  contactDetails: ContactDetails | null;
+  setContactDetails: React.Dispatch<
+    React.SetStateAction<ContactDetails | null>
+  >;
+  updateContactDetails: (newState: ContactDetails) => void;
+}
+
 // Create the context
-export const ContactDetailsContext = createContext<ContactDetails | null>(null);
+export const ContactDetailsContext =
+  createContext<ContactDetailsContextValue | null>(null);
 
 // Create a provider component
-export const ContactDetailsProvider = ({ children }: { children: any }) => {
-  const [contactDetails, setContactDetails] = useState<any | null>(null);
+export const ContactDetailsProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [contactDetails, setContactDetails] = useState<ContactDetails | null>(
+    null
+  );
 
-  const updateContactDetails = (newState: any) => {
-    setContactDetails((prevState) => ({ ...prevState, ...newState }));
+  const updateContactDetails = (newState: ContactDetails) => {
+    setContactDetails((prevState) => ({
+      ...prevState,
+      ...newState,
+    }));
   };
 
   useEffect(() => {
@@ -28,7 +46,9 @@ export const ContactDetailsProvider = ({ children }: { children: any }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("contactDetails", JSON.stringify(contactDetails));
+    if (contactDetails !== null) {
+      localStorage.setItem("contactDetails", JSON.stringify(contactDetails));
+    }
   }, [contactDetails]);
 
   return (
@@ -39,7 +59,3 @@ export const ContactDetailsProvider = ({ children }: { children: any }) => {
     </ContactDetailsContext.Provider>
   );
 };
-
-export function useContactDetailsContext() {
-  return useContext(ContactDetailsContext);
-}

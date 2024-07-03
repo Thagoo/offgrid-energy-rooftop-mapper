@@ -1,18 +1,26 @@
 import SavingsEstimation from "@/components/quote/SavingsEstimation";
 import { inclusions } from "@/components/quote/SelectedPlan";
 import SystemSize from "@/components/quote/SystemSize";
-import { ContactDetailsContext } from "@/context/ContactDetailsContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 import {
-  calculateCostWithSolar,
-  calculateAfterSubsidy,
-  calculateSolarSize,
-} from "@/lib/utils";
+  ContactDetailsContext,
+  ContactDetailsContextValue,
+} from "@/context/ContactDetailsContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
+
 import React, { useContext } from "react";
 
 const Quotation = () => {
-  const { formState } = useContext<any>(QuoteGeneratorContext);
-  const { contactDetails } = useContext<any>(ContactDetailsContext);
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
+  const { contactDetails } = useContext(
+    ContactDetailsContext
+  ) as ContactDetailsContextValue;
+
   var today = new Date();
   return (
     <main>
@@ -37,7 +45,7 @@ const Quotation = () => {
                 Here&apos;s 3 solar installation quotes
               </h3>
               <p className="text-gray-600">
-                For your house in {formState?.address}
+                For your house in {formData?.siteDetails?.address}
               </p>
             </div>
             <div className="flex justify-between">
@@ -46,10 +54,10 @@ const Quotation = () => {
                   Date: {today.toLocaleDateString("en-US")}
                 </p>
                 <p className="text-[#868687] text-sm">
-                  Customer Name: {contactDetails?.personalDetails.name}
+                  Customer Name: {contactDetails?.name}
                 </p>
                 <p className="text-[#868687] text-sm">
-                  Quote ID: {formState?.quoteId}
+                  Quote ID: {formData?.quoteDetails?.quoteId}
                 </p>
               </div>
             </div>
@@ -79,16 +87,20 @@ const Quotation = () => {
               <div className="flex flex-col justify-between items-end">
                 <p className="text-[#868687] text-sm">
                   Quote:{" "}
-                  {formState?.price.basic.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.price?.basic?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
                 <p className="text-[#868687] text-sm">
                   Govt. Subsidy:{" "}
                   {(
-                    formState?.price.premium - formState?.subsidyPrice.premium
+                    formData?.quoteDetails?.price?.basic -
+                    formData?.quoteDetails?.subsidyPrice?.basic
                   ).toLocaleString("en-IN", {
                     style: "currency",
                     currency: "INR",
@@ -98,11 +110,14 @@ const Quotation = () => {
                 </p>
                 <p className="font-medium text-2xl">
                   {" "}
-                  {(formState?.subsidyPrice.basic).toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.subsidyPrice?.basic?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
               </div>
             </div>
@@ -135,16 +150,20 @@ const Quotation = () => {
               <div className="flex flex-col justify-between items-end">
                 <p className="text-[#868687] text-sm">
                   Quote:{" "}
-                  {formState?.price.standard.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.price?.standard?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
                 <p className="text-[#868687] text-sm">
                   Govt. Subsidy:{" "}
                   {(
-                    formState?.price.standard - formState?.subsidyPrice.standard
+                    formData?.quoteDetails?.price.standard -
+                    formData?.quoteDetails?.subsidyPrice.standard
                   ).toLocaleString("en-IN", {
                     style: "currency",
                     currency: "INR",
@@ -154,11 +173,14 @@ const Quotation = () => {
                 </p>
                 <p className="font-medium text-2xl">
                   {" "}
-                  {formState?.subsidyPrice.standard.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.subsidyPrice?.standard?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
               </div>
             </div>
@@ -186,16 +208,20 @@ const Quotation = () => {
               <div className="flex flex-col justify-between items-end">
                 <p className="text-[#868687] text-sm">
                   Quote:{" "}
-                  {formState?.price.premium.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.price?.premium?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
                 <p className="text-[#868687] text-sm">
                   Govt. Subsidy:{" "}
                   {(
-                    formState?.price.premium - formState?.subsidyPrice.premium
+                    formData?.quoteDetails?.price?.premium -
+                    formData?.quoteDetails?.subsidyPrice?.premium
                   ).toLocaleString("en-IN", {
                     style: "currency",
                     currency: "INR",
@@ -205,11 +231,14 @@ const Quotation = () => {
                 </p>
                 <p className="font-medium text-2xl">
                   {" "}
-                  {formState?.subsidyPrice.premium.toLocaleString("en-IN", {
-                    style: "currency",
-                    currency: "INR",
-                    maximumFractionDigits: 0,
-                  })}
+                  {formData?.quoteDetails?.subsidyPrice?.premium?.toLocaleString(
+                    "en-IN",
+                    {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    }
+                  )}
                 </p>
               </div>
             </div>
