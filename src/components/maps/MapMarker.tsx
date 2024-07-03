@@ -14,7 +14,11 @@ import {
   Marker,
   DrawingManager,
 } from "@react-google-maps/api";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
+import { LatLng } from "use-places-autocomplete";
 
 const mapOptions = {
   disableDefaultUI: true,
@@ -33,12 +37,12 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
     libraries: ["places", "drawing"],
   });
 
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
 
-  const [drawerCenter, setDrawerCenter] = useState<any>(
-    formState && formState?.center
+  const [drawerCenter, setDrawerCenter] = useState(
+    formData?.siteDetails?.center
   );
 
   const [map, setMap] = useState<any>(null);
@@ -69,11 +73,30 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
     }
   };
 
+  const updateAddress = async () => {
+    const geocoder = new window.google.maps.Geocoder();
+    const response = await geocoder.geocode({
+      location: {
+        lat: drawerCenter?.lat as number,
+        lng: drawerCenter?.lng as number,
+      },
+    });
+    if (response.results[0]) {
+      updateFormData({
+        siteDetails: {
+          address: response.results[0].formatted_address,
+        },
+      });
+    }
+  };
+
   useEffect(() => {
+    updateAddress();
     if (map) {
       map.panTo(drawerCenter);
     }
-    updateFormData({ center: drawerCenter });
+
+    updateFormData({ siteDetails: { center: drawerCenter } });
   }, [drawerCenter]);
 
   if (!isLoaded) return <div>Loading...</div>;
@@ -84,7 +107,7 @@ export default function MapMarker({ currentStep }: { currentStep: number }) {
         <GoogleMap
           onLoad={onLoad}
           zoom={20}
-          center={drawerCenter}
+          center={drawerCenter as unknown as LatLng}
           mapContainerClassName="h-dvh w-full rounded-tl-3xl rounded-bl-3xl"
           options={mapOptions}
           onDragEnd={handleCenterChanged}

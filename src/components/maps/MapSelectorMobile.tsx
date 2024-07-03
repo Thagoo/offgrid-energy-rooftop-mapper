@@ -11,7 +11,10 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 
 import { Joystick } from "react-joystick-component";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import FormStepContext from "@/context/FormStepContext";
 
 //import VirtualJoystick from "./VirtualJoystick";
@@ -28,9 +31,10 @@ const placedVertexColor = "blue";
 const nextEdgeColor = "green";
 
 export default function MapSelectorMobile() {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext } = useContext(FormStepContext);
   const [map, setMap] = useState<any>(null);
   const [vertices, setVertices] = useState<any>([]);

@@ -24,7 +24,10 @@ import {
 import InstructionModal from "@/components/modal";
 import MapSelectorMobile from "@/components/maps/MapSelectorMobile";
 import { useRouter } from "next/navigation";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import MapMarker from "@/components/maps/MapMarker";
 import MapDrawing from "@/components/maps/MapDrawing";
 import MapSelected from "@/components/maps/MapSelected";
@@ -33,7 +36,7 @@ export default function Form() {
   const { currentStep, setCurrentStep, goNext, goBack } =
     useContext(FormStepContext);
 
-  const { formState } = useContext<any>(QuoteGeneratorContext);
+  const { formData } = useContext(FormDataContext) as FormDataContextValue;
 
   return (
     <>
@@ -209,7 +212,9 @@ export default function Form() {
                   <button
                     className="animate-in slide-in-from-bottom-6 duration-1000 focus:outline-none bg-slate-900 text-white tracking-wider px-6 py-2 rounded-full hover:bg-opacity-85 flex items-center justify-center gap-2 disabled:opacity-60"
                     onClick={() => goNext()}
-                    disabled={!(formState?.roofCoordinates?.length > 0)}
+                    disabled={
+                      formData?.siteDetails?.roofCoordinates?.length == 0
+                    }
                   >
                     Next <span>&#8594;</span>
                   </button>

@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
-import Drawer from "./Drawer";
 import SystemSize from "./SystemSize";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import { calculateCostWithSolar, calculateAfterSubsidy } from "@/lib/utils";
 
@@ -14,10 +16,9 @@ export default function Plans({
   setPlan: any;
   setSelectedPrice: any;
 }) {
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
-
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
   const [price, setPrice] = useState({ basic: 0, standard: 0, premium: 0 });
 
   const [subsidyPrice, setSubsidyPrice] = useState({
@@ -42,9 +43,10 @@ export default function Plans({
 
   useEffect(() => {
     setPrice({
-      basic: calculateCostWithSolar(formState.solarSize).basic,
-      standard: calculateCostWithSolar(formState.solarSize).standard,
-      premium: calculateCostWithSolar(formState.solarSize).premium,
+      basic: calculateCostWithSolar(formData?.siteDetails?.solarSize).basic,
+      standard: calculateCostWithSolar(formData?.siteDetails?.solarSize)
+        .standard,
+      premium: calculateCostWithSolar(formData?.siteDetails?.solarSize).premium,
     });
   }, []);
 
@@ -94,32 +96,32 @@ export default function Plans({
               <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox1 ? (
                   <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
-                    {formState &&
-                      formState.subsidyPrice.basic.toLocaleString("en-IN", {
+                    {formData?.quoteDetails?.subsidyPrice?.basic?.toLocaleString(
+                      "en-IN",
+                      {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,
-                      })}
+                      }
+                    )}
                   </h1>
                 ) : (
                   <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
-                    {formState &&
-                      price.basic.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.basic.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
 
                 {checkboxes.checkbox1 && (
                   <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
-                    {formState &&
-                      price.basic.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.basic.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
               </div>
@@ -134,7 +136,7 @@ export default function Plans({
                 className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white `}
                 onClick={() => {
                   setPlan("basic");
-                  setSelectedPrice(formState.price.basic);
+                  setSelectedPrice(formData?.quoteDetails?.price?.basic);
                 }}
               >
                 {" "}
@@ -184,32 +186,32 @@ export default function Plans({
               <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox2 ? (
                   <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
-                    {formState &&
-                      formState.subsidyPrice.standard.toLocaleString("en-IN", {
+                    {formData?.quoteDetails?.subsidyPrice?.standard?.toLocaleString(
+                      "en-IN",
+                      {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,
-                      })}
+                      }
+                    )}
                   </h1>
                 ) : (
                   <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
-                    {formState &&
-                      price.standard.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.standard.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
 
                 {checkboxes.checkbox2 && (
                   <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
-                    {formState &&
-                      price.standard.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.standard.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
               </div>
@@ -224,7 +226,7 @@ export default function Plans({
                 className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white `}
                 onClick={() => {
                   setPlan("standard");
-                  setSelectedPrice(formState.price.standard);
+                  setSelectedPrice(formData?.quoteDetails?.price?.standard);
                 }}
               >
                 {" "}
@@ -277,32 +279,32 @@ export default function Plans({
               <div className="flex items-center min-h-8 md:gap-2 xl:gap-6 gap-2 animate-in fade-in duration-1000">
                 {checkboxes.checkbox3 ? (
                   <h1 className="font-medium xl:text-2xl text-xl animate-in fade-in duration-1000">
-                    {formState &&
-                      formState.subsidyPrice.premium.toLocaleString("en-IN", {
+                    {formData?.quoteDetails?.subsidyPrice?.premium?.toLocaleString(
+                      "en-IN",
+                      {
                         style: "currency",
                         currency: "INR",
                         maximumFractionDigits: 0,
-                      })}
+                      }
+                    )}
                   </h1>
                 ) : (
                   <h1 className="font-medium text-2xl animate-in fade-in duration-1000">
-                    {formState &&
-                      price.premium.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.premium.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
 
                 {checkboxes.checkbox3 && (
                   <h1 className="font line-through text-[#868687] animate-in fade-in duration-1000">
-                    {formState &&
-                      price.premium.toLocaleString("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      })}
+                    {price.premium.toLocaleString("en-IN", {
+                      style: "currency",
+                      currency: "INR",
+                      maximumFractionDigits: 0,
+                    })}
                   </h1>
                 )}
               </div>
@@ -315,7 +317,7 @@ export default function Plans({
                 className={`rounded-full py-2 px-10 md:text-base text-sm text-nowrap bg-black text-white `}
                 onClick={() => {
                   setPlan("premium");
-                  setSelectedPrice(formState.price.premium);
+                  setSelectedPrice(formData?.quoteDetails?.price?.premium);
                 }}
               >
                 {" "}

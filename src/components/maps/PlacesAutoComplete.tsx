@@ -1,17 +1,17 @@
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import {
   Command,
-  CommandDialog,
   CommandEmpty,
-  CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/app/ui/command";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import usePlacesAutocomplete, {
   getGeocode,
   getLatLng,
@@ -21,7 +21,9 @@ import { MapPinIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import LoadingPage from "@/app/ui/loading-page";
 
 export default function PlacesAutocomplete() {
-  const { formState, updateFormData } = useContext<any>(QuoteGeneratorContext);
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
   const { goNext } = useContext(FormStepContext);
   const [loading, setLoading] = useState(false);
 
@@ -41,13 +43,14 @@ export default function PlacesAutocomplete() {
   });
   const handleSelect = async (address: any) => {
     setValue(address, false);
-    clearSuggestions();
 
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
     updateFormData({
-      address: address,
-      center: { lat: lat, lng: lng },
+      siteDetails: {
+        address: address,
+        center: { lat: lat, lng: lng },
+      },
     });
     goNext();
   };
@@ -58,7 +61,9 @@ export default function PlacesAutocomplete() {
         async ({ coords }) => {
           const { latitude, longitude } = coords;
           updateFormData({
-            center: { lat: latitude, lng: longitude },
+            siteDetails: {
+              center: { lat: latitude, lng: longitude },
+            },
           });
 
           const geocoder = new window.google.maps.Geocoder();
@@ -69,7 +74,9 @@ export default function PlacesAutocomplete() {
             });
             if (response.results[0]) {
               updateFormData({
-                address: response.results[0].formatted_address,
+                siteDetails: {
+                  address: response.results[0].formatted_address,
+                },
               });
             }
             goNext();

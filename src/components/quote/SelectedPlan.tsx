@@ -1,4 +1,7 @@
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 import { calculateAfterSubsidy } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -280,7 +283,10 @@ export default function SelectedPlan({
       title: "Solar App Monitoring",
     },
   ];
-  const { formState } = useContext<any>(QuoteGeneratorContext);
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const [showAlert, setShowAlert] = useState(false);
   if (!plan) {
     return;
@@ -289,7 +295,7 @@ export default function SelectedPlan({
     <div className="flex md:flex-row flex-col justify-between py-5 px-5 gap-5">
       <div className="md:hidden">
         {showAlert && (
-          <PopupAlert onClick={() => setShowAlert(false)}>
+          <PopupAlert>
             <div className="fixed transform top-1/2 left-1/2 px-6 py-3 md:py-10 md:px-10 -translate-y-1/2 -translate-x-1/2 md:w-[30%] w-[90%] bg-white flex flex-col justify-center gap-4 md:gap-6 items-center rounded-3xl border border-white z-50">
               <div className="text-lg text-center animate-in fade-in duration-1000 z-50">
                 We have received your details. Our team will get in touch with
@@ -332,11 +338,14 @@ export default function SelectedPlan({
           <span className="flex items-center font-semibold md:text-2xl text-lg md:justify-between gap-3 md:gap-0">
             <h1>
               {" "}
-              {formState.subsidyPrice[plan].toLocaleString("en-IN", {
-                style: "currency",
-                currency: "INR",
-                maximumFractionDigits: 0,
-              })}
+              {formData?.quoteDetails?.subsidyPrice[plan]?.toLocaleString(
+                "en-IN",
+                {
+                  style: "currency",
+                  currency: "INR",
+                  maximumFractionDigits: 0,
+                }
+              )}
             </h1>
           </span>
         </div>
@@ -410,7 +419,8 @@ function BrandCard({
   units: string;
   url: string;
 }) {
-  const { formState } = useContext<any>(QuoteGeneratorContext);
+  const { formData } = useContext(FormDataContext) as FormDataContextValue;
+
   return (
     <div className="rounded-xl px-6 py-5 md:px-8 md:py-5 flex justify-between bg-[#F4F4F4] w-full">
       <div className="flex flex-col  items-start gap-1 md:gap-2">
@@ -420,11 +430,15 @@ function BrandCard({
         </div>
         <div>
           <h1>
-            {formState && (formState.solarSize * 1000) / 500} Solar Panels
+            {formData?.siteDetails &&
+              ((formData?.siteDetails?.solarSize as number) * 1000) / 500}{" "}
+            Solar Panels
           </h1>
           <h1>
             {units === "kva" ? (
-              <>{formState && formState.solarSize} KVA</>
+              <>
+                {formData?.quoteDetails && formData?.siteDetails?.solarSize} KVA
+              </>
             ) : (
               <>
                 {power} {units.toUpperCase()}

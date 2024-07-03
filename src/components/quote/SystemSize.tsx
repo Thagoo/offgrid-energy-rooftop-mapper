@@ -1,20 +1,19 @@
 "use client";
 
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
-import { calculateCostWithSolar, calculateSolarSize } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
-import MapSelected from "../maps/MapSelected";
+import React, { useContext } from "react";
 
 export default function SystemSize() {
-  const { formState, setFormState, updateFormState } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData } = useContext(FormDataContext) as FormDataContextValue;
 
   const router = useRouter();
-  if (formState == null) {
+  if (!formData?.quoteDetails) {
     // router.replace("/form");
     return null;
   }
@@ -23,7 +22,7 @@ export default function SystemSize() {
     <div className="bg-white rounded-3xl px-5 pt-8 pb-4 w-full md:w-1/3 gap-4 flex flex-col items-center animate-in fade-in duration-1000">
       <h1 className="font-medium">Your system size</h1>
       <Image
-        src={`https://maps.googleapis.com/maps/api/staticmap?center=${formState.center.lat},${formState.center.lng}&zoom=18&size=400x300&maptype=satellite&key=AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y`}
+        src={`https://maps.googleapis.com/maps/api/staticmap?center=${formData?.siteDetails?.center?.lat},${formData?.siteDetails?.center?.lng}&zoom=18&size=400x300&maptype=satellite&key=AIzaSyCBAkfjgh0sZBWGf7EIab1PRBAwwi9CL5Y`}
         alt="map"
         width={400}
         height={350}
@@ -33,7 +32,7 @@ export default function SystemSize() {
       <div className="w-fit rounded-full border-[1px] flex px-5  justify-center py-1 items-center">
         <span className="font-semibold">
           <span className="text-xs">Solar System Size:</span>{" "}
-          {formState?.solarSize} KW
+          {formData?.siteDetails?.solarSize} KW
         </span>
       </div>
 
@@ -51,7 +50,8 @@ export default function SystemSize() {
           />
         </svg>
         <span className="font-light text-[#868687] text-sm">
-          Your recommended solar system size is {formState.solarSize} KW. <br />
+          Your recommended solar system size is{" "}
+          {formData.siteDetails?.solarSize} KW. <br />
           You can adjust it as needed with our solar advisor.
         </span>
       </p>

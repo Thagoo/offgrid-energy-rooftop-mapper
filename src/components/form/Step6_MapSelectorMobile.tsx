@@ -2,10 +2,9 @@ import React, { useContext, useState } from "react";
 
 import FormStepContext from "@/context/FormStepContext";
 import Image from "next/image";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
 
 export function MobilePopupOne() {
-  const { currentStep, setCurrentStep, goNext } = useContext(FormStepContext);
+  const { setCurrentStep } = useContext(FormStepContext);
   const [open, setOpen] = useState(true);
 
   return (

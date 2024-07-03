@@ -1,27 +1,18 @@
 "use server";
 import z from "zod";
-import {
-  calculateCostWithSolar,
-  calculateCostWithoutSolar,
-  calculateSolarSize,
-  calculateYearlyEnergy,
-  energyCovered,
-} from "./utils";
+import { calculateYearlyEnergy } from "./utils";
+import { NewQuoteDetails } from "./types";
 
 let userSchema = z.object({
-  name: z
-    .string("Please fill this field")
-    .min(3, "Name is too short")
-    .max(32, "Name is too long"),
+  name: z.string().min(3, "Name is too short").max(32, "Name is too long"),
   phone_number: z
-    .string("Please fill this field")
+    .string()
     .min(10, "Please enter a valid number")
     .max(10, "Please enter a valid number")
     .regex(/^[0-9]+$/, "Please enter a valid number"),
-  email: z
-    .string("Please fill this field")
-    .email("Please provide a valid email"),
+  email: z.string().email("Please provide a valid email"),
 });
+
 const API_URL = process.env.API_URL;
 
 export const createContact = async (prevState: any, formData: any) => {
@@ -44,11 +35,14 @@ export const createContact = async (prevState: any, formData: any) => {
   };
 
   try {
-    // return {
-    //   success: true,
-    //   userData: userData,
-    //   leadId: "data.lead_id",
-    // };
+    if (process.env.NODE_ENV == "development") {
+      return {
+        success: true,
+        userData: userData,
+        leadId: "data.lead_id",
+      };
+    }
+
     const response = await fetch(`${API_URL}/leads/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -110,21 +104,19 @@ export const creatSite = async (formData: any) => {
   return data.site_id;
 };
 
-export const quoteDetails = async (formData: any) => {
+export const quoteDetails = async (formData: NewQuoteDetails) => {
   const quoteData = {
-    annual_energy_gen: calculateYearlyEnergy(formData.bill),
+    annual_energy_gen: formData?.yearlyEnergy,
     annual_sunshine: 3650,
     break_even_period: parseFloat(formData.breakEven),
-    cost_with_solar: calculateCostWithSolar(calculateSolarSize(formData.bill))
-      .basic,
-    cost_without_solar: calculateCostWithoutSolar(formData.bill),
-    energy_covered: energyCovered(formData.bill),
-    installation_size: calculateSolarSize(formData.bill),
-    savings:
-      calculateCostWithoutSolar(formData.bill) -
-      calculateCostWithSolar(calculateSolarSize(formData.bill)).basic,
+    cost_with_solar: formData?.price?.basic,
+    cost_without_solar: formData.costWithoutSolar,
+    energy_covered: formData?.yearlyEnergy,
+    installation_size: formData?.installationSize,
+    savings: formData?.savings,
     site_id: formData.siteId,
   };
+
   console.log(JSON.stringify(quoteData));
 
   const response = await fetch(
@@ -142,13 +134,13 @@ export const quoteDetails = async (formData: any) => {
   console.log(data);
 };
 
-export const quoteCreate = async (formData: any) => {
+export const quoteCreate = async (formData: NewQuoteDetails) => {
   const quoteCreate = {
-    installation_size: calculateSolarSize(formData.bill),
+    installation_size: formData?.installationSize,
     quoted_prices: {
-      basic: formData.price.basic,
-      premium: formData.price.basic,
-      standard: formData.price.basic,
+      basic: formData?.price?.basic,
+      standard: formData?.price?.standard,
+      premium: formData?.price?.premium,
     },
     site_id: formData.siteId,
   };

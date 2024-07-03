@@ -1,5 +1,8 @@
 import FormStepContext from "@/context/FormStepContext";
-import { QuoteGeneratorContext } from "@/context/QuoteGeneratorContext";
+import {
+  FormDataContext,
+  FormDataContextValue,
+} from "@/context/FormDataContext";
 
 import React, { useContext } from "react";
 
@@ -8,9 +11,10 @@ const halfDayArray = [40, 20, 80, 40, 30, 40, 90, 100, 80, 40, 30, 10, 30];
 const fullDayArray = [60, 70, 60, 70, 60, 70, 60, 70, 80, 60, 50, 60, 70];
 
 export default function PeekUsage() {
-  const { formState, setFormState, updateFormData } = useContext<any>(
-    QuoteGeneratorContext
-  );
+  const { formData, updateFormData } = useContext(
+    FormDataContext
+  ) as FormDataContextValue;
+
   const { goNext } = useContext(FormStepContext);
 
   return (
@@ -20,11 +24,15 @@ export default function PeekUsage() {
       </div>
       <div
         onClick={() => {
-          updateFormData({ peekUsage: "half" });
+          updateFormData({
+            siteDetails: {
+              peekUsage: "half",
+            },
+          });
           goNext();
         }}
         className={`animate-in slide-in-from-bottom-2 duration-1000 hover:bg-[#FBF4D8] border border-black md:h-40 cursor-pointer w-full relative rounded-lg flex flex-col items-center justify-center py-6 gap-4 ${
-          formState && formState.peekUsage == "half"
+          formData?.siteDetails?.peekUsage == "half"
             ? "bg-[#FBF4D8]"
             : "bg-white"
         }`}
@@ -47,11 +55,15 @@ export default function PeekUsage() {
 
       <div
         onClick={() => {
-          updateFormData({ peekUsage: "full" });
+          updateFormData({
+            siteDetails: {
+              peekUsage: "full",
+            },
+          });
           goNext();
         }}
         className={`animate-in slide-in-from-bottom-4 duration-1000 hover:bg-[#FBF4D8] border border-black md:h-40 cursor-pointer w-full  relative rounded-lg flex flex-col items-center justify-center py-6 gap-4 ${
-          formState && formState.peekUsage == "full"
+          formData?.siteDetails?.peekUsage == "full"
             ? "bg-[#FBF4D8]"
             : "bg-white"
         }`}
